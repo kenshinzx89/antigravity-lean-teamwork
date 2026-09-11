@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Evaluation Suggestion Panel — {{TASK_NAME}}</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root {
+      --background: #0f172a;
+      --card: #1e293b;
+      --foreground: #f8fafc;
+      --muted-foreground: #94a3b8;
+      --border: #334155;
+      --primary: #3b82f6;
+      --primary-foreground: #ffffff;
+      --success: #10b981;
+      --warning: #f59e0b;
+    }
+  </style>
+</head>
+<body class="bg-[var(--background)] text-[var(--foreground)] antialiased p-4 md:p-6 font-sans">
+  <div class="max-w-4xl mx-auto space-y-6">
+
+    <!-- Header & Status Badge -->
+    <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-lg flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div>
+        <div class="flex items-center gap-3">
+          <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 mr-2 animate-pulse"></span>
+            Side Panel Đang Sống (Persistent)
+          </span>
+          <span class="text-xs text-[var(--muted-foreground)]">{{TIMESTAMP}}</span>
+        </div>
+        <h1 class="text-2xl font-bold mt-2 text-[var(--foreground)] flex items-center gap-2">
+          <i data-lucide="clipboard-check" class="w-7 h-7 text-blue-400 inline-block"></i>
+          <span>Bảng Đánh Giá: {{TASK_NAME}}</span>
+        </h1>
+        <p class="text-sm text-[var(--muted-foreground)] mt-1">Bảng này nằm độc lập ở Side Panel. Khung chat bên trái vẫn mở để bạn chat yêu cầu sửa tiếp bất kỳ lúc nào.</p>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <div class="text-right">
+          <div class="text-xs text-[var(--muted-foreground)]">Trạng thái</div>
+          <div class="text-sm font-semibold text-amber-400 flex items-center gap-1 justify-end">
+            <i data-lucide="clock" class="w-4 h-4 text-amber-400"></i>
+            <span>Chờ Người Dùng Test</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tóm Tắt Khối Thay Đổi -->
+    <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-lg">
+      <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
+        <i data-lucide="sparkles" class="w-5 h-5 text-blue-400"></i>
+        <span>Tóm Tắt Công Việc Đã Thực Hiện</span>
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+        <div class="bg-slate-900/50 p-4 rounded-xl border border-[var(--border)]">
+          <span class="text-[var(--muted-foreground)] block text-xs mb-1">Mục tiêu</span>
+          <span class="font-medium text-[var(--foreground)]">{{TASK_OBJECTIVE}}</span>
+        </div>
+        <div class="bg-slate-900/50 p-4 rounded-xl border border-[var(--border)]">
+          <span class="text-[var(--muted-foreground)] block text-xs mb-1">Bằng chứng kỹ thuật</span>
+          <span class="font-medium text-emerald-400 flex items-center gap-1.5">
+            <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
+            <span>{{VERIFICATION_EVIDENCE}}</span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Checklist Kiểm Tra Cho Người Dùng -->
+    <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-lg">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-semibold flex items-center gap-2">
+          <i data-lucide="list-checks" class="w-5 h-5 text-emerald-400"></i>
+          <span>Checklist Kiểm Tra Độc Lập (Tự Test Trên Máy)</span>
+        </h2>
+        <span class="text-xs text-[var(--muted-foreground)]">Chạy từng bước bên dưới</span>
+      </div>
+
+      <div class="space-y-3" id="checklist">
+        {{CHECKLIST_ITEMS_HTML}}
+      </div>
+    </div>
+
+    <!-- Hướng Dẫn 2 Hướng Xử Lý (2 Vế Chuẩn Icon Mạng) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Vế 1: Chưa ưng ý -> Chat tiếp / Tự sửa lỗi -->
+      <div class="bg-amber-500/5 border border-amber-500/20 rounded-2xl p-5 hover:border-amber-500/40 transition">
+        <h3 class="font-semibold text-amber-400 text-sm flex items-center gap-2 mb-2">
+          <i data-lucide="wrench" class="w-5 h-5 text-amber-400"></i>
+          <span>Vế 1: Nếu Còn Lỗi Hoặc Cần Sửa Thêm</span>
+        </h3>
+        <p class="text-xs text-[var(--muted-foreground)] leading-relaxed">
+          Bạn cứ để nguyên bảng này ở Side Panel! Hãy quay lại <strong>ô chat bên trái</strong> và gõ yêu cầu sửa tiếp hoặc yêu cầu mở Subagent tự sửa lỗi. Agent sẽ tiếp tục code và tự cập nhật lại bảng này.
+        </p>
+      </div>
+
+      <!-- Vế 2: Đã đúng 100% -> Xác nhận hoàn thành -->
+      <div class="bg-emerald-500/5 border border-emerald-500/20 rounded-2xl p-5 hover:border-emerald-500/40 transition">
+        <h3 class="font-semibold text-emerald-400 text-sm flex items-center gap-2 mb-2">
+          <i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-400"></i>
+          <span>Vế 2: Khi Đã Kiểm Tra Đúng 100%</span>
+        </h3>
+        <p class="text-xs text-[var(--muted-foreground)] leading-relaxed mb-3">
+          Gõ <strong class="text-emerald-300">"OK"</strong> hoặc bấm nút bên dưới để sao chép tin nhắn xác nhận chốt nghiệm thu:
+        </p>
+        <button onclick="copyConfirm()" id="copyBtn" class="w-full py-2.5 px-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-semibold transition flex items-center justify-center gap-2 shadow-lg">
+          <i data-lucide="copy" class="w-4 h-4"></i>
+          <span>Sao Chép Xác Nhận: "OK - Đã xong hoàn toàn"</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Tự Vấn Quota & Ghi Chú Cách Ly Tri Thức -->
+    <div class="bg-slate-900/40 border border-[var(--border)] rounded-2xl p-4 text-xs text-[var(--muted-foreground)] flex items-center justify-between">
+      <span class="flex items-center gap-2">
+        <i data-lucide="shield" class="w-4 h-4 text-blue-400"></i>
+        <span><strong>Nguyên tắc cách ly tri thức:</strong> Kinh nghiệm sẽ được Subagent lưu vào file ngoài, KHÔNG nhồi nhét vào SKILL.md.</span>
+      </span>
+      <span class="text-slate-500 font-mono text-[11px]">Lean Teamwork Protocol</span>
+    </div>
+
+  </div>
+
+  <script>
+    // Khởi tạo icon từ Lucide CDN
+    lucide.createIcons();
+
+    function copyConfirm() {
+      navigator.clipboard.writeText("OK - Đã xong hoàn toàn. Hãy mở Subagent tổng hợp kinh nghiệm.");
+      const btn = document.getElementById("copyBtn");
+      btn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i><span>Đã sao chép! Hãy dán vào ô chat bên trái</span>';
+      btn.classList.add("bg-blue-600");
+      lucide.createIcons();
+      setTimeout(() => {
+        btn.innerHTML = '<i data-lucide="copy" class="w-4 h-4"></i><span>Sao Chép Xác Nhận: "OK - Đã xong hoàn toàn"</span>';
+        btn.classList.remove("bg-blue-600");
+        lucide.createIcons();
+      }, 3000);
+    }
+  </script>
+</body>
+</html>

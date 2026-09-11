@@ -1,0 +1,11 @@
+{
+  "lean-teamwork-auto-sync": {
+    "PreInvocation": [
+      {
+        "type": "command",
+        "command": "python scripts/auto_sync_hook.py",
+        "timeout": 15
+      }
+    ]
+  }
+}
