@@ -1,0 +1,40 @@
+name: 🐛 Bug Report
+description: Report an issue or unexpected behavior in Lean Teamwork
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! Please ensure you have tested with `python sync_skill.py`.
+  - type: input
+    id: version
+    attributes:
+      label: Lean Teamwork Version
+      description: What version are you using? (Check `VERSION` file)
+      placeholder: "e.g. 1.4.0"
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Exact commands run and observed behavior.
+      placeholder: |
+        1. Run '...'
+        2. Expected '...'
+        3. Actually got '...'
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant Logs / Exit Codes
+      description: Terminal output from `python tests/test_skill_integrity.py` or agent logs.
+      render: shell

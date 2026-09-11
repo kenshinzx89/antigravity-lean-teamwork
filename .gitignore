@@ -31,6 +31,8 @@ Thumbs.db
 *.tmp
 temp/
 tmp/
+*.driveupload
+.tmp.driveupload/
 
 # Testing caches
 .pytest_cache/

@@ -1,0 +1,27 @@
+name: 💡 Feature Request / Improvement
+description: Suggest an idea, optimization, or new capability for Lean Teamwork
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        We love optimizations! Remember that any new rule must comply with the **Anti-Rule-Bloat** and **Zero-Scan** standards.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Is your feature request related to a problem or token inefficiency?
+      description: A clear description of the bottleneck (e.g. "Agent wastes 10k tokens when...").
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Describe the proposed solution
+      description: How should Lean Teamwork address this?
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Describe alternatives you have considered
+      description: Any alternative scripts, hooks, or approaches.
