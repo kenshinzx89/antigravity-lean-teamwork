@@ -129,9 +129,31 @@ Tự động so sánh phiên bản:
 
 ---
 
-## ⚡ Hướng Dẫn Sử Dụng Nhanh
+## 💡 Cách Dùng Đơn Giản Nhất: "Dạy Một Lần — Tự Học Suốt Đời"
 
-### Cài Đặt / Cập Nhật Lên Máy Tính Mới (1 Giây)
+Không cần cấu hình phức tạp, bạn chỉ cần thực hiện 3 bước:
+
+### 1. Tải Về & Mở Workspace
+Tải repo này về máy và mở thư mục `antigravity-lean-teamwork` trong Google Antigravity.
+
+### 2. Nói Đúng 1 Câu Với AI
+Trong khung chat Antigravity, bạn chỉ cần gõ đúng 1 câu:
+> 🗣️ **"Từ nay xài skill Lean Teamwork này nhé"**  
+> *(hoặc gõ ngắn gọn: `"update"`, `"cập nhật"`, hay `"áp dụng skill"`)*
+
+AI sẽ tự động chạy lệnh `py sync_skill.py`, tự nạp bộ phanh hãm ẩu, kích hoạt hook toàn cục và chạy bộ test 10/10 PASS trong đúng **1.5 giây**.
+
+### 3. Điều Kỳ Diệu: Kỹ Năng Tự Phát Triển & Tự Học Theo Quá Trình Làm Việc
+Điểm đột phá nhất của Lean Teamwork không phải là một tập quy tắc tĩnh:
+- **Tự học hỏi sau mỗi task**: Mỗi khi bạn bấm nghiệm thu (`💎 [100% HOÀN TẤT] ✨`), Subagent sẽ tự động chạy chu trình **Tự Vấn Phản Tư 5 Chiều** để tự mổ xẻ: *Tại sao có bước phải làm lại? Có thao tác nào lãng phí token không? Làm sao để lần sau làm chuẩn xác 100% ngay từ lượt 1?*
+- **Càng dùng càng khôn mà KHÔNG bị phình to quy tắc**: Nó tự động nén tri thức vào kho ngoài, tự động **GỘP (Merge)** bài học tương đồng và **TỈA BỎ (Prune)** quy tắc cũ thừa, giúp AI không bao giờ bị quá tải nhận thức.
+- **Tự động lan tỏa giữa các thiết bị**: Mọi bài học AI tự đúc kết được trên Laptop sẽ tự động PUSH về folder gốc để PC dùng ngay mà không cần cài đặt lại!
+
+---
+
+## ⚡ Hướng Dẫn Kỹ Thuật (Dành Cho Nhà Phát Triển)
+
+### Cài Đặt / Cập Nhật Thủ Công (1 Giây)
 ```bash
 git clone https://github.com/kenshinzx89/antigravity-lean-teamwork.git
 cd antigravity-lean-teamwork
