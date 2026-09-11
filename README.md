@@ -3,36 +3,36 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com"><img src="https://img.shields.io/badge/target-Google%20Antigravity%20Only-4285F4.svg?style=for-the-badge&logo=google" alt="Google Antigravity Only"></a>
-  <a href="https://github.com"><img src="https://img.shields.io/badge/cure-Anti--Blind%20Lean-FF0000.svg?style=for-the-badge" alt="Cure Blind Lean"></a>
-  <a href="https://github.com"><img src="https://img.shields.io/badge/version-1.4.0-00C853.svg?style=for-the-badge" alt="Version"></a>
-  <a href="https://github.com"><img src="https://img.shields.io/badge/tests-10%2F10%20passing-brightgreen.svg?style=for-the-badge" alt="Tests"></a>
-  <a href="https://github.com"><img src="https://img.shields.io/badge/license-MIT-purple.svg?style=for-the-badge" alt="License"></a>
+  <a href="https://github.com/kenshinzx89/antigravity-lean-teamwork"><img src="https://img.shields.io/badge/target-Google%20Antigravity%20(Gemini%203.7%2F3.8)-4285F4.svg?style=for-the-badge&logo=google" alt="Google Antigravity Only"></a>
+  <a href="https://github.com/kenshinzx89/antigravity-lean-teamwork"><img src="https://img.shields.io/badge/role-Phanh%20H%C3%A3m%20%E1%BA%A8u%20ABS-FF6D00.svg?style=for-the-badge" alt="Phanh Hãm Ẩu ABS"></a>
+  <a href="https://github.com/kenshinzx89/antigravity-lean-teamwork"><img src="https://img.shields.io/badge/version-1.4.0-00C853.svg?style=for-the-badge" alt="Version"></a>
+  <a href="https://github.com/kenshinzx89/antigravity-lean-teamwork"><img src="https://img.shields.io/badge/tests-10%2F10%20passing-brightgreen.svg?style=for-the-badge" alt="Tests"></a>
+  <a href="https://github.com/kenshinzx89/antigravity-lean-teamwork"><img src="https://img.shields.io/badge/license-MIT-purple.svg?style=for-the-badge" alt="License"></a>
 </p>
 
 <p align="center">
-  <b>⚡ The Ultra-Lean, Token-Disciplined Autonomous Multi-Agent Framework Tailored Exclusively for Google Antigravity.</b><br/>
-  <i>Crushes context drift, eliminates runaway token burn, prevents rule bloat, and enforces First-Time Right execution.</i>
+  <b>⚡ Bộ Kỹ Năng "Hãm Phanh ABS" Dành Riêng Cho Google Antigravity (Gemini 3.7 / 3.8).</b><br/>
+  <i>Chữa dứt điểm tật "quá nhanh quá nguy hiểm", triệt tiêu cãi cọ với AI, chấm dứt vòng lặp làm đi làm lại gây ức chế.</i>
 </p>
 
 ---
 
-> [!CAUTION]
-> ### 🛑 CHỈ ĐỊNH DUY NHẤT & CHỐNG CHỈ ĐỊNH ĐẶC BIỆT (CONTRAINDICATION NOTICE)
+> [!NOTE]
+> ### 🎯 SỰ THẬT ĐẰNG SAU BỘ KỸ NĂNG NÀY (THE NAKED TRUTH)
 > 
-> - 🎯 **Chỉ Định Duy Nhất (Exclusively Tailored For)**: **Google Antigravity**.  
->   Đây là bài thuốc đặc trị được nghiên cứu và may đo 100% để **chữa tận gốc những căn bệnh kinh niên của Antigravity**:
->   1. 🩺 **Bệnh ẩu & đoán mò (Blind Guessing / "Blind Lean")**: Antigravity thường ngại đọc tài liệu ở Turn 1 vì sợ tốn token, dẫn đến phán đoán mò mẫm và kéo theo 5–10 lượt chat sửa sai (gây tốn token gấp 5 lần).
->   2. 🩺 **Bệnh trôi ngữ cảnh (Context Drift)**: Antigravity hay quên mất quy tắc kiểm soát và cổng phán quyết khi hội thoại kéo dài.
->   3. 🩺 **Bệnh phình to quy tắc (Rule Bloat)**: Càng tích lũy bài học thì file rule càng dày đặc, khiến AI bị quá tải nhận thức (cognitive overload) và suy luận lú lẫn.
+> - 🏎️ **Tại sao lại cần Lean Teamwork?**  
+>   Gemini 3.7 và 3.8 trên Google Antigravity có tốc độ tư duy và phản hồi cực kỳ nhanh, nhưng cái tật cố hữu là **"quá nhanh quá nguy hiểm"**:
+>   - **Hay làm ẩu**: Lười đọc tài liệu/mã nguồn gốc ở lượt đầu vì sợ tốn token, dẫn đến đoán mò.
+>   - **Gây ức chế**: Đoán mò thì code lỗi, khiến **người dùng phải cãi lộn với AI**, bực bội bắt AI sửa đi sửa lại 5–10 lượt chat.
+>   - **Lean Teamwork chính là chiếc "phanh ABS"**: Buộc AI phải **Inspect First** (đọc kỹ trước khi sửa), xin ý kiến qua modal **🧭 Đề Xuất Kỹ Thuật**, kiểm thử độc lập phải đạt **Exit Code 0**, và chỉ kết thúc khi người dùng bấm **💎 Nghiệm Thu Hoàn Thiện**.
 >
-> - ⛔ **Chống Chỉ Định Nghiêm Ngặt (Contraindicated For)**:
->   - **Codex / Cursor / Claude Code**: Tuyệt đối **KHÔNG** dùng framework này cho Cursor hay Claude Code vì khác biệt hoàn toàn về kiến trúc harness, tool-calling và lifecycle hooks.
->   - **Các Model Thương Mại Tính Tiền Đắt Đỏ (High-Cost Commercial LLMs)**: Lean Teamwork tận dụng tối đa cơ chế PreInvocation Lifecycle Hooks, Subagent Flash routing và Persistent Popups của Antigravity để đạt hiệu năng vô địch mà không tốn kém. Đem nạp vào các mô hình tính phí pay-as-you-go đắt đỏ sẽ không phù hợp về mặt kinh tế!
+> - 💡 **Tại sao không nên dùng cho Cursor, Claude Code hay Codex?**  
+>   Không phải vì có bí mật kỹ thuật gì cao siêu, mà thực tế là: **Chỉ có Gemini 3.7 / 3.8 bị cái tật "hấp tấp, làm ẩu" này nên mới cần lắp nhiều cơ chế hãm vâu như vậy!**  
+>   Các mô hình như Claude 3.7 Sonnet hay OpenAI Codex vốn dĩ đã có sẵn cơ chế suy nghĩ chậm rãi, điềm đạm trong harness của chúng rồi. Đem bộ phanh này lắp sang bên đó chỉ tổ thừa thãi, cồng kềnh và không cần thiết.
 
 ---
 
-## ⚡ Live Terminal Experience (Zero-Scan in 1.5s)
+## ⚡ Trải Nghiệm Thực Tế (Zero-Scan Đồng Bộ Trong 1.5 Giây)
 
 ```shell
 $ py sync_skill.py
@@ -56,174 +56,152 @@ $ py sync_skill.py
 
 ---
 
-## 🏛️ System Architecture
+## 🏛️ Sơ Đồ Kiến Trúc Hệ Thống (Lấy Cảm Hứng Từ Archify Pipeline)
 
 ```mermaid
 flowchart TD
-    subgraph INVOCATION ["1. Zero-Touch Invocation"]
-        A[Agent Turn Starts] --> B[PreInvocation Lifecycle Hook]
-        B -->|Ephemeral Injection| C["⚡ MANDATORY RE-ANCHOR<br/>(Anti-Context Drift)"]
+    subgraph INVOCATION ["1. TỰ ĐỘNG RE-ANCHOR (PRE-INVOCATION HOOK)"]
+        A[Lượt Chat Của Agent Bắt Đầu] --> B[scripts/auto_sync_hook.py]
+        B -->|Tiêm Ngầm Chống Quên Luật| C["⚡ MANDATORY RE-ANCHOR<br/>(Chống trôi ngữ cảnh 100%)"]
     end
 
-    subgraph PROPOSAL ["2. Technical Proposal Gate"]
-        C --> D["🧭 [ĐỀ XUẤT KỸ THUẬT] ⏱️<br/>Modal Dialog (2.5m Timeout)"]
-        D -->|User Selects or Auto-Proceeds| E[Implementation & Verification]
+    subgraph PROPOSAL ["2. CỔNG ĐỀ XUẤT KỸ THUẬT (2.5 PHÚT)"]
+        C --> D["🧭 [CHẾ ĐỘ ĐỀ XUẤT KỸ THUẬT] ⏱️<br/>Modal 2–4 lựa chọn kèm (Recommended)"]
+        D -->|Người Dùng Chọn Hoặc Tự Chạy Sau 2.5m| E["Inspect First: Đọc Kỹ Tài Liệu Gốc<br/>(Triệt tiêu đoán mò ngay Turn 1)"]
     end
 
-    subgraph VERIFICATION ["3. Evidence & Acceptance Gate"]
-        E -->|Run Automated Tests| F["Exit Code 0 Evidence"]
-        F --> G["💎 [NGHIỆM THU HOÀN THIỆN] ✨<br/>Modal Dialog (NO TIMEOUT)"]
+    subgraph VERIFICATION ["3. THI HÀNH & CỔNG NGHIỆM THU TREO"]
+        E -->|Viết Code & Chạy Kiểm Thử| F["Exit Code 0 Thực Nghiệm<br/>(Cấm dùng từ phỏng đoán)"]
+        F --> G["💎 [CHẾ ĐỘ NGHIỆM THU HOÀN THIỆN] ✨<br/>Modal Treo Vĩnh Viễn (KHÔNG TIMEOUT)"]
     end
 
-    subgraph EVOLUTION ["4. Self-Evolution & Pruning"]
-        G -->|100% OK Approved| H["Subagent: Knowledge Synthesizer (Flash)"]
-        H --> I["❓ 5-Point Reflective Inquiry<br/>(Root Cause, First-Time Right, Token, Velocity, Pruning)"]
-        I --> J["✂️ Merge & Prune Patterns<br/>(Max 10 Elite Patterns)"]
-        J --> K["External Store: docs/learned_patterns.md<br/>(SKILL.md Kept Clean <150 Lines)"]
-        K --> L["Two-Way Adaptive Sync (py sync_skill.py)"]
+    subgraph EVOLUTION ["4. TỰ VẤN 5 CHIỀU & KHỬ PHÌNH TRI THỨC"]
+        G -->|Người Dùng Bấm 100% Hoàn Tất| H["Subagent: Knowledge Synthesizer (Flash)"]
+        H --> I["❓ Tự Vấn 5 Chiều<br/>(Root Cause, First-Time Right, Token, Velocity, Pruning)"]
+        I --> J["✂️ Nén & Tỉa Quy Tắc Cũ Thừa<br/>(Khóa trần tối đa 10 Patterns)"]
+        J --> K["Kho Tri Thức Ngoài: docs/learned_patterns.md<br/>(SKILL.md Giữ Sạch <150 Dòng)"]
+        K --> L["Đồng Bộ 2 Chiều: py sync_skill.py"]
     end
+
+    style INVOCATION fill:#1e293b,stroke:#3b82f6,stroke-width:2px,color:#fff
+    style PROPOSAL fill:#1e293b,stroke:#f59e0b,stroke-width:2px,color:#fff
+    style VERIFICATION fill:#1e293b,stroke:#10b981,stroke-width:2px,color:#fff
+    style EVOLUTION fill:#1e293b,stroke:#8b5cf6,stroke-width:2px,color:#fff
 ```
 
 ---
 
-## 💥 Token Waste Annihilation: Benchmark Comparison
+## 💥 So Sánh Hiệu Năng Thực Chiến: Dập Tắt Lãng Phí Token
 
-| Feature / Metric | Vanilla Agent Prompting | LangChain / CrewAI | AutoGPT Style Loops | ⚡ Antigravity Lean Teamwork |
-| :--- | :---: | :---: | :---: | :---: |
-| **Initial Turn Context Overhead** | 35,000 – 60,000 tokens | 25,000 – 45,000 tokens | 50,000+ tokens | **< 2,500 tokens** (Zero-Scan Protocol) |
-| **Context Retention (Turns 5–15)** | High Drift (Rules Forgotten) | Medium Drift | High Drift | **0% Drift** (PreInvocation Hook Re-Anchor) |
-| **Turns Spent on Bug Fixing** | 5 – 10 turns (Guessing) | 3 – 6 turns | 8 – 12 turns | **1 – 2 turns** (First-Time Right / Inspect First) |
-| **Rule Accumulation / Bloat** | Uncontrolled Prompt Growth | Hardcoded Complex Chains | Infinite Log Dumps | **Constant (<10 Patterns, Pruned & Merged)** |
-| **New Machine Setup Time** | 15 – 30 minutes | Complex Python Env | Multiple API Keys | **1.5 seconds (`py sync_skill.py`)** |
-| **Human In The Loop Ergonomics** | Interruptive Plain Text | Clunky CLI Prompts | Continuous Unattended | **Contrasting Native Dual-Modals (🧭 vs 💎)** |
+| Vấn Đề Thường Gặp | Khi Dùng Antigravity Mộc | Khi Dùng Lean Teamwork |
+| :--- | :--- | :--- |
+| **Tâm lý khởi đầu** | Sợ tốn token nên không đọc tài liệu, bắt tay vào đoán mò ngay | **Inspect First**: Đọc chuẩn tài liệu gốc 1 lần, làm trúng đích ngay lần 1 |
+| **Số lượt chat để fix bug** | 5 – 10 lượt (Sửa sai -> Bị chửi -> Sửa tiếp -> Lại sai) | **1 – 2 lượt** (Có test case tái hiện & pass exit code 0 mới báo cáo) |
+| **Cảm xúc người dùng** | Ức chế, cãi cọ với AI, tốn thời gian giải thích lại | Thảnh thơi: Chọn phương án đề xuất 🧭 và test thực tế nghiệm thu 💎 |
+| **Nguy cơ trôi ngữ cảnh** | Sau 10 lượt chat thì AI quên sạch các luật ban đầu | **0% Drift**: Hook ngầm re-anchor liên tục trước mỗi lượt gọi |
+| **Tập quy tắc sau 1 tháng** | Phình to hàng nghìn dòng, AI bị quá tải nhận thức, lú lẫn | **Khóa trần < 10 patterns tinh hoa**: Tự động gộp và tỉa bỏ quy tắc cũ thừa |
+| **Cài lên máy mới / laptop** | Mất 15–30 phút copy paste và cấu hình | **1.5 giây**: Chạy đúng 1 lệnh `py sync_skill.py` là xong |
 
 ---
 
-## ✨ The 5 Core Pillars
+## ✨ 4 Trụ Cột Vận Hành Cốt Lõi
 
 ### 1. ⚡ Zero-Touch PreInvocation Lifecycle Hooks
-- Executes before **every single model call** via `.agents/hooks.json` and `~/.gemini/config/hooks.json`.
-- Injects a lightweight re-anchor directive to freeze operational gates in memory without polluting permanent chat transcripts.
+Chạy tự động ngầm trước **từng lượt gọi model** thông qua `.agents/hooks.json` và `~/.gemini/config/hooks.json`, tiêm chỉ dẫn định vị để AI không bao giờ quên cổng kiểm soát.
 
-### 2. 🧭 Dual-Modal Paradigm (Contrasting UI Modes)
-- **🧭 [CHẾ ĐỘ ĐỀ XUẤT KỸ THUẬT] ⏱️ [HẠN 2.5 PHÚT] 💡**: Used for architecture design and solution choices. Offers 2–4 options with a `(Recommended)` path. Automatically proceeds after 2.5 minutes if the user is busy to keep the pipeline moving.
-- **💎 [CHẾ ĐỘ NGHIỆM THU HOÀN THIỆN] ✨**: Used when code is verified with exit code 0. Exactly two options (`100% Hoàn Tất` vs `Superpowers Debug`). **Permanently suspended with NO TIMEOUT** until the user physically verifies in their local environment.
+### 2. 🧭 Chuẩn Modal Đối Lập Trực Quan (Dual-Modal Paradigm)
+- **🧭 [CHẾ ĐỘ ĐỀ XUẤT KỸ THUẬT] ⏱️ [HẠN 2.5 PHÚT] 💡**: Dành cho khởi đầu bài toán hoặc chọn ngã rẽ giải pháp. Có đếm ngược 2.5 phút tự chọn `(Recommended)` nếu người dùng bận, tránh tắc nghẽn tiến độ.
+- **💎 [CHẾ ĐỘ NGHIỆM THU HOÀN THIỆN] ✨**: Dành cho nghiệm thu khi test đã pass 100%. **Treo cố định vĩnh viễn (KHÔNG ĐẾM NGƯỢC)** để người dùng thong thả đối chứng thực tế trên máy thật.
 
-### 3. 🧠 5-Point Reflective Inquiry & Continuous Knowledge Pruning
-Instead of blindly appending rules after acceptance, the Synthesizer Subagent investigates:
-- **Q1 (Root Cause & Churn)**: *Why did any steps fail or require retries?*
-- **Q2 (First-Time Right)**: *How can Lean Teamwork achieve 100% precision on turn 1?*
-- **Q3 (Token Economy)**: *Which steps burned unnecessary tokens? How to prune context?*
-- **Q4 (Velocity & Automation)**: *Can this rule be automated into a Python script or hook?*
-- **Q5 (Rule Pruning & Anti-Bloat)**: *Which obsolete or duplicate rules should be merged or pruned?*
+### 3. 🧠 Bộ Tự Vấn Phản Tư 5 Chiều & Cơ Chế Khử Phình Tri Thức
+Sau khi nghiệm thu, Subagent không ghi chép bừa bãi mà tự trả lời 5 câu hỏi cốt lõi:
+- **Q1 (Root Cause)**: *Tại sao lần trước phải làm lại?*
+- **Q2 (First-Time Right)**: *Làm sao để lần sau làm chuẩn xác 100% ngay từ lượt 1?*
+- **Q3 (Token Economy)**: *Có bước nào làm lãng phí token không? Cắt giảm ra sao?*
+- **Q4 (Velocity & Automation)**: *Có thể tự động hóa quy tắc này thành code/hook để chạy nhanh hơn không?*
+- **Q5 (Rule Pruning & Anti-Bloat)**: *Có bài học/quy tắc cũ nào thừa hoặc trùng lặp cần GỘP (Merge) hoặc XÓA (Prune) để giữ bộ não AI luôn nhẹ?*
 
-### 4. 🛡️ Knowledge Segregation
-- **`SKILL.md` is strictly orchestration logic (<150 lines)**: Never contaminated with bug logs or domain snippets.
-- **Learned patterns live externally**: Stored in `docs/learned_patterns.md` and indexed by `[Tag]`. Agents retrieve patterns on-demand via targeted grep queries rather than bulk context injection.
-
-### 5. 🔄 Two-Way Adaptive Sync (`sync_skill.py`)
-- Automatically compares versions between Source Repository and Machine Global Core (`~/.gemini/config/skills/lean-teamwork`).
-- Automatically **PULLS** updates to fresh machines or **PUSHES** new learnings back to the source repo.
-- Synchronizes knowledge bidirectionally and enforces 100% test pass rates in under 2 seconds.
+### 4. 🔄 Đồng Bộ Tự Thích Ứng 2 Chiều (`sync_skill.py`)
+Tự động so sánh phiên bản:
+- Nếu Folder gốc mới hơn: Tự động **PULL** vào máy tính.
+- Nếu Máy tính vừa học hỏi kiến thức mới: Tự động **PUSH** ngược về folder gốc để PC dùng ngay.
+- Cân bằng tri thức 2 chiều trong 1.5 giây, đạt 100% PASS kiểm thử toàn vẹn.
 
 ---
 
-## ⚡ Quick Start
+## ⚡ Hướng Dẫn Sử Dụng Nhanh
 
-### 1-Second Setup (New Machine or Existing)
+### Cài Đặt / Cập Nhật Lên Máy Tính Mới (1 Giây)
 ```bash
-# 1. Clone repository
-git clone https://github.com/your-username/antigravity-lean-teamwork.git
+git clone https://github.com/kenshinzx89/antigravity-lean-teamwork.git
 cd antigravity-lean-teamwork
 
-# 2. Run Two-Way Adaptive Sync (Installs core, hooks, and tests in ~1.5s)
-python sync_skill.py
+# Chạy lệnh duy nhất (Cài core, cấu hình hook, chạy 10/10 test)
+py sync_skill.py
 ```
 
-### Run System Integrity Suite (10/10 Tests)
+### Chạy Kiểm Thử Toàn Vẹn Hệ Thống (10/10 Checks)
 ```bash
-python tests/test_skill_integrity.py
+py tests/test_skill_integrity.py
 ```
 
-### Self-Evolution Version Bumping
+### Tự Động Tăng Phiên Bản Khi Có Cải Tiến Mới
 ```bash
-# Bump patch version and sync immediately
-python sync_skill.py --bump patch
+# Tăng bản vá (Patch)
+py sync_skill.py --bump patch
 
-# Bump minor version (major methodology change)
-python sync_skill.py --bump minor
+# Tăng phiên bản phương pháp luận (Minor)
+py sync_skill.py --bump minor
 ```
 
 ---
 
-## ❓ Frequently Asked Questions (FAQ)
-
-<details>
-<summary><b>1. Tại sao Antigravity lại hay mắc "bệnh ẩu" (Blind Lean)?</b></summary>
-<br/>
-Antigravity thường có xu hướng tối ưu hóa chi phí token thái quá bằng cách từ chối đọc tài liệu chi tiết ở Turn 1. Khi không có dữ liệu gốc, mô hình buộc phải "đoán mò". Đoán mò dẫn đến viết code sai, và để sửa một lỗi nhỏ, người dùng phải chat qua lại 5–10 lượt. Lean Teamwork giải quyết bằng nguyên tắc <b>First-Time Right</b>: Thà đọc kỹ 1 lần ở Turn 1 để làm đúng ngay, còn hơn tiết kiệm mù quáng để rồi đốt token gấp 5 lần!
-</details>
-
-<details>
-<summary><b>2. Tại sao lại chống chỉ định dùng cho Codex, Cursor hay Claude Code?</b></summary>
-<br/>
-Mỗi công cụ coding agent có kiến trúc harness riêng: Cursor dựa trên composer diffing, Claude Code có hệ thống permissions và hook riêng. Lean Teamwork được may đo riêng cho <code>hooks.json</code> của Antigravity và tận dụng mô hình subagent <code>flash</code> miễn phí/tiết kiệm quota của Gemini. Áp dụng cho các công cụ khác vừa không tương thích, vừa lãng phí chi phí API không cần thiết.
-</details>
-
-<details>
-<summary><b>3. Làm thế nào để kho tri thức không bị phình to (Rule Bloat) sau 100 dự án?</b></summary>
-<br/>
-Nhờ <b>Bộ Tự Vấn 5 Chiều & Cơ Chế Khử Phình Tri Thức</b>: Sau mỗi lần nghiệm thu, Subagent không chỉ ghi thêm bài học mà bắt buộc phải chạy câu hỏi Q5 để <b>GỘP (Merge)</b> các bài học tương tự và <b>TỈA BỎ (Prune)</b> các quy tắc cũ đã được tự động hóa bằng script. Kho tri thức <code>learned_patterns.md</code> luôn được khóa chặt dưới ngưỡng trần 10 patterns tinh hoa!
-</details>
-
----
-
-## 📁 Repository Structure
+## 📁 Cấu Trúc Dự Án
 
 ```text
 antigravity-lean-teamwork/
 ├── .agents/
-│   ├── hooks.json                     # Workspace PreInvocation lifecycle hook
+│   ├── hooks.json                     # Hook vòng đời PreInvocation cấp dự án
 │   └── skills/
 │       └── lean-teamwork/
-│           ├── SKILL.md               # Clean, immutable orchestration rules (<150 lines)
-│           ├── references/            # Deep architectural and debugging guides
-│           └── templates/             # Execution brief, cycle reflection, and panel templates
+│           ├── SKILL.md               # Bộ luật điều phối tinh gọn (<150 dòng)
+│           ├── references/            # Tài liệu tham chiếu sâu (Superpowers, Debugging)
+│           └── templates/             # Các mẫu brief, cycle audit, evaluation panel
 ├── .github/
-│   ├── ISSUE_TEMPLATE/                # Interactive issue templates (Bug report, Feature request)
+│   ├── ISSUE_TEMPLATE/                # Form tương tác báo lỗi & đề xuất tính năng
 │   ├── workflows/
-│   │   └── ci.yml                     # Multi-OS CI pipeline (Ubuntu, Windows / Python 3.10-3.12)
-│   └── pull_request_template.md       # Standardized PR verification checklist
+│   │   └── ci.yml                     # Pipeline CI tự động test trên Windows & Ubuntu
+│   └── pull_request_template.md       # Checklist kiểm thử bắt buộc trước khi merge
 ├── assets/
-│   └── banner.jpg                     # High-resolution futuristic hero visual banner
+│   └── banner.jpg                     # Ảnh Hero Banner đồ họa chất lượng cao
 ├── docs/
-│   ├── learned_patterns.md            # External consolidated knowledge store (Max 10 patterns)
-│   ├── self-evolution.md              # 5-Point Inquiry, Anti-Survivorship Bias, and Pruning spec
-│   ├── comparative-study.md           # Deep benchmark vs Hermes, Superpowers & OpenClaw
-│   └── architecture.md                # System topology and separation of concerns
+│   ├── learned_patterns.md            # Kho tri thức ngoài (Khóa trần tối đa 10 patterns)
+│   ├── self-evolution.md              # Đặc tả Tự Vấn 5 Chiều & Khử Phình Quy Tắc
+│   ├── comparative-study.md           # Nghiên cứu so sánh chi tiết
+│   └── architecture.md                # Cấu trúc tách biệt Stock Core & Skill
 ├── scripts/
-│   ├── auto_sync_hook.py              # Zero-Touch workspace preinvocation hook
-│   └── setup_global_hook.py           # Installer for global machine lifecycle hook
+│   ├── auto_sync_hook.py              # Script hook tự động tiêm thông điệp Re-Anchor
+│   └── setup_global_hook.py           # Script cài đặt hook toàn cục trên máy tính
 ├── tests/
-│   └── test_skill_integrity.py        # 10/10 Automated system integrity test suite
-├── sync_skill.py                      # Two-Way Adaptive Sync & Zero-Scan controller
-├── AGENTS.md                          # Fast-sync instructions for autonomous agents
-├── CHANGELOG.md                       # Comprehensive version progression history
-├── CONTRIBUTING.md                    # Engineering principles and PR guidelines
-├── GEMINI.md                          # Global operating rules & controller
-├── LICENSE                            # MIT License
-├── SECURITY.md                        # Responsible security vulnerability disclosure policy
-└── VERSION                            # Canonical semantic version file (v1.4.0)
+│   └── test_skill_integrity.py        # Bộ 10 bài test tự động kiểm thử tính toàn vẹn
+├── sync_skill.py                      # Bộ điều khiển Zero-Scan & Đồng bộ 2 chiều
+├── AGENTS.md                          # Chỉ dẫn thi hành nhanh cho AI
+├── CHANGELOG.md                       # Lịch sử nâng cấp phiên bản
+├── CONTRIBUTING.md                    # Nguyên tắc đóng góp First-Time Right
+├── GEMINI.md                          # Operating Rules cấp toàn cục
+├── LICENSE                            # Giấy phép mã nguồn mở MIT
+├── SECURITY.md                        # Chính sách bảo mật có trách nhiệm
+└── VERSION                            # Số hiệu phiên bản hiện hành (v1.4.0)
 ```
 
 ---
 
-## 📜 License
+## 📜 Giấy Phép (License)
 
-Distributed under the **MIT License**. See [`LICENSE`](./LICENSE) for more information.
+Phát hành theo giấy phép **MIT License**. Xem chi tiết tại [`LICENSE`](./LICENSE).
 
 ---
 
 <p align="center">
-  <b>⭐ Star this repo if it saved your tokens and eliminated your AI debugging headaches! ⭐</b>
+  <b>⭐ Gắn Star cho repo nếu nó giúp bạn không còn phải cãi lộn với Gemini 3.7 / 3.8 nữa! ⭐</b>
 </p>
