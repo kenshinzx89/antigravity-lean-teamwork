@@ -1,16 +1,40 @@
-# ⚡ Antigravity Lean Teamwork
-
 <p align="center">
-  <a href="https://github.com"><img src="https://img.shields.io/badge/version-1.4.0-blue.svg?style=flat-square" alt="Version"></a>
-  <a href="https://github.com"><img src="https://img.shields.io/badge/license-MIT-green.svg?style=flat-square" alt="License"></a>
-  <a href="https://github.com"><img src="https://img.shields.io/badge/python-3.10%2B-brightgreen.svg?style=flat-square" alt="Python"></a>
-  <a href="https://github.com"><img src="https://img.shields.io/badge/tests-10%2F10%20passing-success.svg?style=flat-square" alt="Tests"></a>
-  <a href="https://github.com"><img src="https://img.shields.io/badge/protocol-Zero--Scan-purple.svg?style=flat-square" alt="Zero-Scan Protocol"></a>
-  <a href="https://github.com"><img src="https://img.shields.io/badge/anti--bloat-5--Point%20Inquiry-orange.svg?style=flat-square" alt="Anti-Bloat"></a>
+  <pre align="center">
+   ___         _   _                      _ _         
+  / _ \       | | (_)                    (_) |        
+ / /_\ \_ __  | |_ _  __ _ _ __ __ ___   ___ |_ _   _ 
+ |  _  | '_ \ | __| |/ _` | '__/ _` \ \ / / | __| | | |
+ | | | | | | || |_| | (_| | | | (_| |\ V /| | |_| |_| |
+ \_| |_/_| |_| \__|_|\__, |_|  \__,_| \_/ |_|\__|\__, |
+                      __/ |                        __/ |
+                     |___/                        |___/ 
+    ========================================================
+     ⚡  L E A N   T E A M W O R K   P R O T O C O L  ⚡
+    ========================================================
+  </pre>
 </p>
 
-> **An ultra-lean, token-disciplined, autonomous multi-agent orchestration framework for Google Antigravity & Claude Code.**  
-> Eliminates context drift, crushes runaway token consumption, prevents rule bloat, and self-evolves across sessions with zero manual scans.
+<p align="center">
+  <a href="https://github.com"><img src="https://img.shields.io/badge/target-Google%20Antigravity%20Only-4285F4.svg?style=for-the-badge&logo=google" alt="Google Antigravity Only"></a>
+  <a href="https://github.com"><img src="https://img.shields.io/badge/cure-Anti--Blind%20Lean-FF0000.svg?style=for-the-badge" alt="Cure Blind Lean"></a>
+  <a href="https://github.com"><img src="https://img.shields.io/badge/version-1.4.0-00C853.svg?style=for-the-badge" alt="Version"></a>
+  <a href="https://github.com"><img src="https://img.shields.io/badge/tests-10%2F10%20passing-brightgreen.svg?style=for-the-badge" alt="Tests"></a>
+</p>
+
+---
+
+> [!CAUTION]
+> ### 🛑 CHỈ ĐỊNH DUY NHẤT & CHỐNG CHỈ ĐỊNH ĐẶC BIỆT (CONTRAINDICATION NOTICE)
+> 
+> - 🎯 **Chỉ Định Duy Nhất (Exclusively Built For)**: **Google Antigravity**.  
+>   Đây là bộ giáp và phương pháp luận thiết kế riêng nhằm **chữa tận gốc những căn bệnh kinh niên của Antigravity**:
+>   1. 🩺 **Bệnh ẩu & đoán mò (Blind Guessing / Blind Lean)**: Antigravity thường ngại đọc tài liệu ở Turn 1 vì sợ tốn token, dẫn đến phán đoán mò mẫm và kéo theo 5–10 lượt chat sửa sai (gây tốn token gấp 5 lần).
+>   2. 🩺 **Bệnh trôi ngữ cảnh (Context Drift)**: Antigravity hay quên mất quy tắc và cổng kiểm soát khi cuộc trò chuyện kéo dài.
+>   3. 🩺 **Bệnh phình to quy tắc (Rule Bloat)**: Càng học nhiều bài học thì file rule càng dày, khiến AI bị quá tải nhận thức (cognitive overload) và lú lẫn.
+>
+> - ⛔ **Chống Chỉ Định Nghiêm Ngặt (Contraindicated For)**:
+>   - **Codex / Cursor / Claude Code**: Tuyệt đối **KHÔNG** áp dụng framework này cho Cursor hay Claude Code vì khác biệt hoàn toàn về cơ chế tool-calling, context retention và hook architecture.
+>   - **Các Mô Hình Thương Mại Tính Tiền Đắt Đỏ (High-Cost Commercial LLMs)**: Lean Teamwork tận dụng tối đa cơ chế PreInvocation Lifecycle Hooks, Subagent Flash routing và Persistent Popups của Antigravity để đạt hiệu năng vô địch mà không tốn kém. Đem nạp vào các mô hình tính phí pay-as-you-go đắt đỏ sẽ không phù hợp về mặt kinh tế!
 
 ---
 
