@@ -111,7 +111,7 @@ Hệ thống sử dụng công cụ `ask_question` để kích hoạt Popup tư�
   - Main Agent kích hoạt Subagent chuyên trách (`invoke_subagent`, model: `flash`, role: `Superpowers Debugger & Remediation Worker`).
   - Subagent thực thi chuẩn xác quy trình 4 pha từ [Superpowers Systematic Debugging](./references/systematic-debugging.md): (1) Root Cause -> (2) Hypothesis & Red Test -> (3) Minimal Fix -> (4) Green Verification.
   - Sửa xong: Báo cáo ngắn gọn và **BẮT BUỘC BẬT LẠI POPUP NGHIỆM THU NGAY LẬP TỨC**.
-- **Điểm dừng duy nhất**: Vòng lặp chỉ kết thúc khi người dùng bấm `💎 [100% HOÀN TẤT] ✨`. Khi đó kích hoạt Subagent (`flash`, role: `Knowledge & Quota Synthesizer`). Subagent thực thi **Bộ Khung Tự Vấn Phản Tư 5 Chiều** (Root Cause, First-Time Right, Token Economy, Velocity, Rule Pruning) và **Cơ chế Khử Phình Tri Thức** (Merge & Prune) nhằm nén và tinh lọc bài học vào `docs/learned_patterns.md` (hoặc `~/.gemini/config/learned_patterns.md`). Tuyệt đối không nạp vào `SKILL.md`.
+- **Điểm dừng duy nhất**: Vòng lặp chỉ kết thúc khi người dùng bấm `💎 [100% HOÀN TẤT] ✨`. Khi đó kích hoạt Subagent (`flash`, role: `Knowledge & Quota Synthesizer`). Subagent thực thi **Bộ Khung Tự Vấn Phản Tư 6 Chiều** (Root Cause, First-Time Right, Token Economy, Velocity, Rule Pruning, Meta-Questioning & Chronic Bottlenecks) và **Cơ chế Khử Phình Tri Thức** (Merge & Prune) nhằm nén và tinh lọc bài học vào `docs/learned_patterns.md` (hoặc `~/.gemini/config/learned_patterns.md`). Tuyệt đối không nạp vào `SKILL.md`.
 
 ---
 
@@ -137,9 +137,9 @@ Hệ thống sử dụng công cụ `ask_question` để kích hoạt Popup tư�
    - **Cấm chỉ nhìn vào kết quả thành công cuối cùng (Anti-Survivorship Bias)**: Subagent đúc kết khi được kích hoạt KHÔNG ĐƯỢC chỉ nhìn vào Git diff cuối cùng mà bỏ qua chuỗi thử-sai trước đó.
    - **Kiểm toán số lượt hội thoại (Turn Budget Audit)**: Nếu tác vụ tốn >2 lượt chat mới xong, Subagent BẮT BUỘC phải mổ xẻ nguyên nhân gốc: *Tại sao lần đầu làm sai? Có phải do cấm đoán đọc tài liệu chuẩn dẫn đến phỏng đoán mò mẫm không?*
    - **Đúc kết Anti-Pattern song song**: Rút ra cả `[Pattern]` (cách làm đúng) và `[Anti-Pattern]` (những phán đoán/thao tác sai lầm cấm lặp lại) lưu vào `learned_patterns.md`.
-6. **Bộ Khung Tự Vấn Phản Tư 5 Chiều & Khử Phình Quy Tắc (5-Point Reflective Inquiry & Anti-Rule-Bloat)**:
-   - **Chống phình to quy tắc (Anti-Rule-Bloat)**: Không tích lũy vô hạn. Subagent sau nghiệm thu tự vấn 5 câu (Nguyên nhân thử-sai, Làm chuẩn ngay lần 1, Tiết kiệm quota, Tăng tốc tiến trình, Khử quy tắc thừa).
-   - **Nén & Tỉa (Merge & Prune)**: Bắt buộc hợp nhất các mẫu tương tự và tỉa bỏ quy tắc lỗi thời để giữ kho tri thức luôn súc tích, tránh làm AI bị quá tải nhận thức.
+6. **Bộ Khung Tự Vấn Phản Tư 6 Chiều & Khử Phình Quy Tắc (6-Point Reflective Inquiry & Anti-Rule-Bloat)**:
+   - **Chống phình to quy tắc (Anti-Rule-Bloat)**: Không tích lũy vô hạn. Subagent sau nghiệm thu tự vấn 6 câu (Nguyên nhân thử-sai, Làm chuẩn lần 1, Tiết kiệm quota, Tăng tốc tiến trình, Khử quy tắc thừa, Tự vấn đệ quy & Rà soát điểm nghẽn mãn tính).
+   - **Nén, Tỉa & Trị Điểm Nghẽn Mãn Tính (Merge, Prune & Remediate)**: Hợp nhất các mẫu tương tự, tỉa bỏ quy tắc lỗi thời và tự động hành động khắc phục những điểm nghẽn đã cải tiến nhiều lần mà chưa mượt, giữ kho tri thức luôn súc tích và bộ não AI luôn sắc bén.
 
 ---
 

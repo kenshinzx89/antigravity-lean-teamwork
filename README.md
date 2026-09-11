@@ -113,13 +113,14 @@ Chạy tự động ngầm trước **từng lượt gọi model** thông qua `.
 - **🧭 [CHẾ ĐỘ ĐỀ XUẤT KỸ THUẬT] ⏱️ [HẠN 2.5 PHÚT] 💡**: Dành cho khởi đầu bài toán hoặc chọn ngã rẽ giải pháp. Có đếm ngược 2.5 phút tự chọn `(Recommended)` nếu người dùng bận, tránh tắc nghẽn tiến độ.
 - **💎 [CHẾ ĐỘ NGHIỆM THU HOÀN THIỆN] ✨**: Dành cho nghiệm thu khi test đã pass 100%. **Treo cố định vĩnh viễn (KHÔNG ĐẾM NGƯỢC)** để người dùng thong thả đối chứng thực tế trên máy thật.
 
-### 3. 🧠 Bộ Tự Vấn Phản Tư 5 Chiều & Cơ Chế Khử Phình Tri Thức
-Sau khi nghiệm thu, Subagent không ghi chép bừa bãi mà tự trả lời 5 câu hỏi cốt lõi:
+### 3. 🧠 Bộ Tự Vấn Phản Tư 6 Chiều & Cơ Chế Khử Phình Tri Thức
+Sau khi nghiệm thu, Subagent không ghi chép bừa bãi mà tự trả lời 6 câu hỏi cốt lõi:
 - **Q1 (Root Cause)**: *Tại sao lần trước phải làm lại?*
 - **Q2 (First-Time Right)**: *Làm sao để lần sau làm chuẩn xác 100% ngay từ lượt 1?*
 - **Q3 (Token Economy)**: *Có bước nào làm lãng phí token không? Cắt giảm ra sao?*
 - **Q4 (Velocity & Automation)**: *Có thể tự động hóa quy tắc này thành code/hook để chạy nhanh hơn không?*
 - **Q5 (Rule Pruning & Anti-Bloat)**: *Có bài học/quy tắc cũ nào thừa hoặc trùng lặp cần GỘP (Merge) hoặc XÓA (Prune) để giữ bộ não AI luôn nhẹ?*
+- **Q6 (Meta-Questioning & Chronic Bottlenecks)**: *Có cần đặt thêm câu hỏi nào khác để hoàn thiện Lean Teamwork không? Có cơ chế/quy trình nào đã cải tiến nhiều lần mà vẫn chưa thực sự ngon không? -> Tự trả lời và hành động sửa dứt điểm ngay!*
 
 ### 4. 🔄 Đồng Bộ Tự Thích Ứng 2 Chiều (`sync_skill.py`)
 Tự động so sánh phiên bản:

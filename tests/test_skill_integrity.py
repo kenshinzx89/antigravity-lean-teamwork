@@ -202,21 +202,22 @@ def test_reflective_inquiry_and_knowledge_pruning():
     """Verify 5-Point Reflective Inquiry and Knowledge Pruning to prevent rule bloat and cognitive overload."""
     self_evo = REPO_ROOT / "docs" / "self-evolution.md"
     evo_text = self_evo.read_text(encoding="utf-8")
-    assert "5-Point Reflective Inquiry" in evo_text, "Must document 5-Point Reflective Inquiry"
+    assert "6-Point Reflective Inquiry" in evo_text, "Must document 6-Point Reflective Inquiry"
     assert "Knowledge Pruning" in evo_text, "Must document Knowledge Pruning"
     assert "Root Cause & Churn" in evo_text, "Must address Q1 Root Cause & Churn"
     assert "First-Time Right" in evo_text, "Must address Q2 First-Time Right"
     assert "Token Economy" in evo_text, "Must address Q3 Token Economy"
     assert "Velocity & Automation" in evo_text, "Must address Q4 Velocity & Automation"
     assert "Rule Pruning & Anti-Bloat" in evo_text, "Must address Q5 Rule Pruning & Anti-Bloat"
+    assert "Meta-Questioning & Chronic Bottlenecks" in evo_text, "Must address Q6 Meta-Questioning & Chronic Bottlenecks"
 
     skill_file = REPO_ROOT / ".agents" / "skills" / "lean-teamwork" / "SKILL.md"
     skill_text = skill_file.read_text(encoding="utf-8")
-    assert "Bộ Khung Tự Vấn Phản Tư 5 Chiều" in skill_text, "SKILL.md must mandate 5-Point Reflective Inquiry"
+    assert "Bộ Khung Tự Vấn Phản Tư 6 Chiều" in skill_text, "SKILL.md must mandate 6-Point Reflective Inquiry"
     assert "Anti-Rule-Bloat" in skill_text, "SKILL.md must mandate Anti-Rule-Bloat"
     assert "Merge & Prune" in skill_text, "SKILL.md must enforce Merge & Prune"
 
-    print("[PASS] 5-Point Reflective Inquiry and Knowledge Pruning (Anti-Rule-Bloat) are verified.")
+    print("[PASS] 6-Point Reflective Inquiry and Knowledge Pruning (Anti-Rule-Bloat) are verified.")
 
 if __name__ == "__main__":
     test_stock_agi_integrity()

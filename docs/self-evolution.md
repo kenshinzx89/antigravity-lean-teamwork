@@ -85,24 +85,25 @@ Tài liệu thiết kế quy trình khép kín giúp hệ thống Lean Teamwork 
 
 ---
 
-## 9. Bộ Khung Tự Vấn Phản Tư 5 Chiều & Cơ Chế Khử Phình Tri Thức (5-Point Reflective Inquiry & Knowledge Pruning Protocol)
+## 9. Bộ Khung Tự Vấn Phản Tư 6 Chiều & Cơ Chế Khử Phình Tri Thức (6-Point Reflective Inquiry & Knowledge Pruning Protocol)
 
 ### 1. Cái Bẫy "Phình To Quy Tắc" (The Rule Bloat & Cognitive Overload Trap)
 Nếu sau mỗi lần nghiệm thu chỉ đơn thuần tích lũy (append) bài học mới, tập quy tắc và kho tri thức sẽ ngày càng dày đặc:
 - **Tốn Quota Lũy Tiến**: Mỗi lượt gọi model phải cõng thêm hàng nghìn token quy tắc thừa.
 - **Nhiễu Loạn Chỉ Dẫn (Cognitive Confusion)**: Khi có quá nhiều luật lệ chồng chéo, AI mất phương hướng, giảm tốc độ suy luận và dễ mắc lỗi hơn.
 
-### 2. Bộ Câu Hỏi Tự Vấn Phản Tư 5 Chiều (5-Point Reflective Inquiry)
-Sau khi người dùng bấm nghiệm thu hoàn tất (`💎 [100% HOÀN TẤT] ✨`), Subagent đúc kết BẮT BUỘC phải tự vấn và tự trả lời 5 câu hỏi cốt lõi để nâng cấp chính phương pháp luận Lean Teamwork:
+### 2. Bộ Câu Hỏi Tự Vấn Phản Tư 6 Chiều (6-Point Reflective Inquiry)
+Sau khi người dùng bấm nghiệm thu hoàn tất (`💎 [100% HOÀN TẤT] ✨`), Subagent đúc kết BẮT BUỘC phải tự vấn và tự trả lời 6 câu hỏi cốt lõi để nâng cấp chính phương pháp luận Lean Teamwork:
 
 1. ❓ **Q1 [Root Cause & Churn - Nguyên Nhân Gốc Thử-Sai]**: *Tại sao tác vụ này phải làm lại nhiều lần (nếu có)? Đâu là điểm gãy khiến lần đầu chưa đạt?*
 2. ❓ **Q2 [First-Time Right - Năng Lực Làm Chuẩn]**: *Có thể dùng Lean Teamwork làm tốt hơn, chính xác hơn ngay từ lượt đầu tiên bằng cách nào?*
 3. ❓ **Q3 [Token Economy - Tiết Kiệm Quota]**: *Có thao tác nào của Lean Teamwork làm tốn token vô ích không? Có cách nào cắt giảm context và tối ưu hoá quá trình đó không?*
 4. ❓ **Q4 [Velocity & Automation - Tăng Tốc Tiến Trình]**: *Có cách nào để Lean Teamwork thực thi nhanh hơn (tự động hóa qua hook, background script, tối giản câu lệnh)?*
 5. ❓ **Q5 [Rule Pruning & Anti-Bloat - Khử Thừa & Tinh Gọn Tri Thức]**: *Có quy tắc hoặc bài học cũ nào đã lỗi thời, dư thừa hoặc trùng lặp trong kho tri thức cần được GỘP (Merge & Generalize) hoặc XÓA BỎ (Prune) để giữ bộ quy tắc luôn nhẹ và không làm AI bị quá tải không?*
+6. ❓ **Q6 [Meta-Questioning & Chronic Bottlenecks - Tự Vấn Đệ Quy & Điểm Nghẽn Mãn Tính]**: *Subagent tự vấn chính mình: "Có cần đặt thêm câu hỏi nào khác để hoàn thiện Lean Teamwork không? Có cơ chế/quy trình nào đã qua nhiều lần cải tiến mà vẫn chưa đạt độ mượt mà tối ưu không?" -> Subagent tự trả lời câu hỏi đó và hành động xử lý dứt điểm ngay lập tức.*
 
 ### 3. Cơ Chế Tinh Lọc, Nén & Tỉa Bỏ (Pruning & Compaction Mechanism)
 - **Quy Tắc Hợp Nhất (Consolidation Rule)**: Khi xuất hiện một bài học mới có cùng bản chất với bài học cũ, Subagent bắt buộc phải hợp nhất thành một nguyên lý tổng quát (General Pattern), cấm ghi thành các dòng rời rạc.
 - **Giới Hạn Dung Lượng Kho Tri Thức (Knowledge Upper Bound)**: Kho `docs/learned_patterns.md` và toàn cục chỉ lưu giữ tối đa 10 patterns tinh hoa súc tích. Những bài học đã được chuyển hoá thành code logic trong `sync_skill.py` hoặc hook tự động sẽ được tỉa bỏ (pruned) khỏi file text.
-- **Nâng Cấp Ngược Lại Tooling**: Kết quả trả lời của Q3 và Q4 được ưu tiên hiện thực hoá thành các tiện ích tự động hóa trong script thay vì bắt AI phải nhớ trong đầu dưới dạng text rule.
+- **Nâng Cấp Ngược Lại Tooling**: Kết quả trả lời của Q3, Q4 và Q6 được ưu tiên hiện thực hoá thành các tiện ích tự động hóa trong script thay vì bắt AI phải nhớ trong đầu dưới dạng text rule.
 
