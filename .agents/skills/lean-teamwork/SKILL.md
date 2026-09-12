@@ -90,11 +90,17 @@ Hệ thống sử dụng công cụ `ask_question` để kích hoạt Popup tư�
 
 ### 1. 🧭 [CHẾ ĐỘ ĐỀ XUẤT KỸ THUẬT] 💡 (Khởi đầu / Lựa chọn giải pháp kiến trúc)
 - **Khi nào kích hoạt**: Khi vừa nhận yêu cầu mới, phân tích hướng đi, hoặc đứng trước các ngã rẽ kỹ thuật quan trọng.
-- **Quy chuẩn hiển thị**: Tiền tố câu hỏi modal `ask_question` bắt buộc có nhãn `🧭 [ĐỀ XUẤT KỸ THUẬT] ⏱️ [HẠN 2.5 PHÚT] 💡`.
+- **Quy chuẩn hiển thị**: Tiền tố câu hỏi modal `ask_question` bắt buộc có nhãn `🧭 [ĐỀ XUẤT KỸ THUẬT] ⏱️ [HẠN CHỐT: HH:MM:SS — CÒN ĐÚNG 2 PHÚT 30 GIÂY] 💡`.
 - **Cấu trúc tùy chọn**: Cung cấp từ 2 đến 4 giải pháp cụ thể, luôn đánh dấu dòng tối ưu nhất bằng `(Recommended)`.
-- **Đồng hồ đếm ngược & Hạn thời gian (Timeout 2.5 phút)**:
-  - Do modal UI của Antigravity hiển thị văn bản tĩnh (không có widget animation SVG kim đồng hồ chạy trực tiếp), giới hạn đếm ngược được thể hiện rõ nét qua nhãn `⏱️ [HẠN 2.5 PHÚT — TỰ ĐỘNG CHỌN RECOMMENDED NẾU QUÁ GIỜ]`.
-  - Nếu sau 2.5 phút người dùng chưa bấm chọn, hệ thống tự động tiếp tục với hướng `(Recommended)` để giữ mạch công việc không bị đình trệ.
+- **Đồng hồ đếm ngược thời gian thực ngay trên Popup (Wall-Clock Countdown)**:
+  - BẮT BUỘC in khối đồng hồ thời gian thực xác lập ngay trong nội dung modal:
+    ```text
+    ⏳ ĐỒNG HỒ ĐẾM NGƯỢC XÁC LẬP THỜI GIAN THỰC:
+    • 🟢 Mở popup lúc: [Giờ:Phút:Giây hiện tại của máy tính]
+    • 🔴 Hạn tự động chọn [Recommended]: [Giờ:Phút:Giây + 150s]
+    • ⏱️ Quỹ thời gian: Đúng 150 giây (2.5 phút) theo đồng hồ máy tính của bạn.
+    ```
+  - Nếu sau 2.5 phút người dùng chưa chọn, hệ thống tự động tiếp tục với hướng `(Recommended)` để giữ mạch công việc không bị đình trệ.
 
 ### 2. 💎 [CHẾ ĐỘ NGHIỆM THU HOÀN THIỆN] ✨ (Quy Trình Tách Nhịp 2 Bước v1.4.2)
 - **Khi nào kích hoạt**: Khi code đã viết xong, toàn bộ kiểm thử tích hợp đạt 100% PASS (Exit Code 0).
