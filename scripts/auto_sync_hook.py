@@ -52,7 +52,7 @@ def main():
         "2. 💎 [CHẾ ĐỘ NGHIỆM THU HOÀN THIỆN] ✨ (TÁCH NHỊP 2 BƯỚC v1.4.2): Khi code xong và test pass (exit 0): "
         "BƯỚC 1: BẮT BUỘC in toàn văn Báo cáo & Hướng dẫn đối chứng ra màn hình, TUYỆT ĐỐI KHÔNG gọi ask_question cùng lúc làm che mất chữ. "
         "BƯỚC 2: Chờ user đọc xong và phản hồi, sau đó MỚI gọi modal ask_question '💎 [NGHIỆM THU HOÀN THIỆN]' (💎 [100% HOÀN TẤT] ✨ vs ⚡ [SUPERPOWERS DEBUG] 🛠️) để user xác nhận an toàn.\n"
-        "3. FIRST-TIME RIGHT & COHESIVE INSPECTION: Inspect First đọc trọn vẹn khối chức năng liên quan (100–400 dòng trong 1 lần view_file). CẤM đọc vụn 50 dòng (Micro-Peeking), cấm đoán mò vì sợ tốn token."
+        "3. FIRST-TIME RIGHT: Inspect First kỹ lưỡng trước khi sửa, cấm đoán mò vì sợ đọc tài liệu."
     )
     if sync_occurred:
         anchor_msg = f"🔄 [AUTO-SYNC]: Đã đồng bộ 2 chiều ngầm v{active_version}.\n" + anchor_msg

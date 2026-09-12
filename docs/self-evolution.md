@@ -109,19 +109,18 @@ Sau khi người dùng bấm nghiệm thu hoàn tất (`💎 [100% HOÀN TẤT] 
 
 ---
 
-## 10. Giải Phẫu Thực Nghiệm: Vụ Án Serene-Bose & Khai Tử Bệnh "Đọc Vụn 50 Dòng" (Cohesive Block Inspection)
+## 10. Giải Phẫu Thực Nghiệm: Loại Bỏ Ràng Buộc Đếm Dòng Cơ Học & Chuẩn Hóa Context-Aware Inspection (Case Study Serene-Bose & Antigravity Widget)
 
-### 1. Hiện Tượng Thực Tế Từ Case Study Serene-Bose
-Tại dự án `serene-bose` (`C:\Users\tient\Documents\antigravity\serene-bose`, conversation `9cf4a77a-bf73-4e49-81ae-30b2377bb9c2`), hệ thống ghi nhận một chuỗi thử-sai gây lãng phí nghiêm trọng:
-- AI lặp lại liên tục: `grep_search` -> `view_file` 50 dòng (lines 820-870) -> không đủ context -> `grep_search` -> `view_file` 54 dòng (lines 2730-2784) -> `view_file` lines 1-100 -> lines 101-183...
-- **Hậu quả**: Tốn hơn 30 tool calls rời rạc, làm trôi context window với hàng chục nghìn token lịch sử, kéo dài thời gian phản hồi của agent lên gấp 10 lần và khiến người dùng cực kỳ ức chế.
+### 1. Hiện Tượng Thực Tế
+- **Case Serene-Bose**: AI đọc vụn vặt từng đoạn ngắn 50 dòng chắp vá không đủ ngữ cảnh, dẫn đến grep lòng vòng tốn hơn 30 tool calls.
+- **Case Antigravity Widget**: Khi áp đặt quy tắc cứng nhắc đếm dòng ("bắt buộc đọc 100–400 dòng", "cấm đọc dưới 50 dòng"), AI bị rối loạn biên độ đọc trong các session dài, dẫn đến kẹt lặp vô tận đúng 1 đoạn 15 dòng hàng chục lần.
 
-### 2. Nguyên Nhân Gốc: Tật "Đọc Vụn Nhòm Khe" (Micro-Peeking Anti-Pattern)
-- Do hiểu lầm tai hại về khái niệm "Lean" (tinh gọn context), AI ngộ nhận rằng tiết kiệm token là "chỉ được đọc 50 dòng mỗi lần".
-- Thực tế, công cụ `view_file` cho phép đọc tối đa 800 dòng. Việc chỉ đọc 50 dòng cắt đứt hoàn toàn ngữ cảnh bao quanh của hàm/class (biến khởi tạo, scope đóng/mở, imports liên quan). AI buộc phải grep lại và đọc tiếp nhiều mẩu vụn khác nhau để chắp vá.
+### 2. Bài Học Cốt Tử: Khai Tử Ràng Buộc Đếm Dòng Cơ Học (No Rigid Line-Count Constraints)
+- Việc trói buộc AI bằng các con số đếm dòng cơ học (50 dòng hay 100–400 dòng) là một Anti-Pattern tai hại. Mỗi hàm, class hoặc file có cấu trúc và độ dài hoàn toàn khác nhau.
+- Ép buộc con số cơ học biến AI thành công cụ máy móc, gây xung đột nhận thức và triệt tiêu khả năng phán đoán ngữ cảnh linh hoạt.
 
-### 3. Thiết Lập Chuẩn: Cohesive Block Inspection (100–400 Dòng Trọn Vẹn Khối Logic)
-- **Định nghĩa đúng của "Lean"**: Lean là **Trúng Đích & Liền Mạch (Targeted & Cohesive)**, tuyệt đối KHÔNG phải là "cắt vụn 50 dòng".
-- **Chuẩn thực thi First-Time Right**: Khi đã xác định file và hàm cần kiểm tra, BẮT BUỘC đọc trọn vẹn 100–400 dòng bao quát toàn bộ logic của hàm/class trong **1 lần gọi `view_file` duy nhất**.
-- **Cấm Tuyệt Đối**: Chuỗi thao tác grep -> đọc 50 dòng -> grep lại cùng file -> đọc tiếp 50 dòng. Đọc trọn vẹn ngay lần đầu giúp nắm 100% ngữ cảnh, sửa đúng nguyên nhân gốc trong 1 lần diff duy nhất!
+### 3. Thiết Lập Chuẩn: Context-Aware Inspection & First-Time Right
+- **Định nghĩa đúng của "Lean"**: Lean là **Trúng Đích & Đủ Ngữ Cảnh (Targeted & Context-Aware)**, hoàn toàn không phải là đếm số dòng cơ học.
+- **Chuẩn thực thi First-Time Right**: Khi đã xác định file và khu vực logic cần kiểm tra, BẮT BUỘC đọc bao quát trọn vẹn ngữ cảnh hàm/class/block liên quan trong 1 lần gọi công cụ để hiểu rõ nguyên nhân gốc ngay từ đầu, tuyệt đối cấm đoán mò vì sợ đọc code/tài liệu.
+
 

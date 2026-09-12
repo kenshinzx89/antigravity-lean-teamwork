@@ -17,12 +17,11 @@ Mọi agent và phiên làm việc kích hoạt skill này bắt buộc phải t
    > *"NO COMPLETION CLAIMS WITHOUT FRESH VERIFICATION EVIDENCE"*
    - Không được tuyên bố code chạy, bug đã sửa hay test đã pass nếu chưa chạy lệnh kiểm chứng trực tiếp ngay trong lượt làm việc.
    - Cấm tuyệt đối các từ ngữ phỏng đoán: *"should work"*, *"probably"*, *"looks correct"*, *"tôi tin rằng"*.
-2. **Thiết Luật Nguyên Nhân Gốc, Làm Đúng Lần Đầu & Đọc Trọn Vẹn Khối Chức Năng (Iron Law of Root Cause & First-Time Right Protocol — Cohesive Block Inspection)**:
+2. **Thiết Luật Nguyên Nhân Gốc & Làm Đúng Lần Đầu (Iron Law of Root Cause & First-Time Right Protocol)**:
    > *"NO FIXES WITHOUT ROOT CAUSE — FIRST-TIME RIGHT OVER TRIAL-AND-ERROR"*
    - Cấm sửa mò, thử sai hay sửa triệu chứng (symptom fixing). Phải đọc stacktrace, tái hiện lỗi ổn định và khoanh vùng chính xác trước khi chạm vào code.
    - **Khai tử tư duy "Blind Lean" (Tinh gọn mù quáng)**: Lean KHÔNG PHẢI là mù quáng không đọc tài liệu. Khi chạm vào kiến trúc, framework hay tính năng client mới, **BẮT BUỘC phải đọc tài liệu chuẩn (Inspect First đầy đủ)** để hiểu rõ mọi ràng buộc ngầm.
-   - **Cohesive Block Inspection (Đọc trọn vẹn khối logic 100–400 dòng)**: CẤM TUYỆT ĐỐI tật đọc vụn vặt 50 dòng (`Micro-Peeking Anti-Pattern`). Việc nhòm từng đoạn 50 dòng làm đứt gãy ngữ cảnh của hàm/class, khiến AI phải grep đi grep lại 20–30 tool calls lòng vòng, gây tốn token gấp 5 lần và lãng phí thời gian người dùng. Khi inspect code, bắt buộc đọc bao quát trọn vẹn 100–400 dòng trong đúng 1 lần gọi `view_file` duy nhất.
-   - **Cấm đoán mò vì sợ tốn token đọc tài liệu**: Tiết kiệm 1.000 token đọc tài liệu ở đầu phiên mà để phát sinh >2 lượt chat thử-sai do đoán mò là **phạm luật Quota nghiêm trọng** (vì các lượt chat sau mang theo toàn bộ lịch sử khổng lồ làm tốn gấp 5 lần token).
+   - **Cấm đoán mò vì sợ tốn token đọc tài liệu**: Tiết kiệm 1.000 token đọc tài liệu ở đầu phiên mà để phát sinh >2 lượt chat thử-sai do đoán mò là **phạm luật Quota nghiêm trọng** (vì các lượt chat sau mang theo toàn bộ lịch sử khổng lồ làm tốn gấp 5 lần token và lãng phí thời gian của người dùng).
 3. **Thiết Luật Tự Quyết Định & Hướng Đi Tốt Nhất (Ruling & Best-Path Fallback)**:
    > *"A RUNNING PLAN DOES NOT WAIT ON A HUMAN FOR MINOR CHOICES"*
    - Tự ra phán quyết cho các vấn đề vi mô kèm ghi chú rủi ro (`Ruling: <Quyết định> — <Lý do> — <Hệ quả nếu sai>`).

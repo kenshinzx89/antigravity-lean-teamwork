@@ -4,6 +4,12 @@ Tất cả các thay đổi, bài học và tính năng nâng cấp qua từng p
 
 ---
 
+## [1.4.6] — 2026-09-12
+### Changed
+- **Gỡ Bỏ Ràng Buộc Đếm Dòng Cơ Học (Eliminate Rigid Line-Count Constraints)**: Loại bỏ triệt để các con số đếm dòng cứng nhắc ("cấm đọc dưới 50 dòng", "bắt buộc đọc 100–400 dòng") vốn gây rối loạn biên độ đọc trong các session dài (như hiện tượng kẹt lặp đọc 15 dòng ở Antigravity Widget).
+- **Chuẩn Hóa Nguyên Tắc Context-Aware Inspection & First-Time Right**: Thay thế đếm dòng cơ học bằng việc đọc linh hoạt trọn vẹn ngữ cảnh hàm/class/module cần thiết để nắm bắt nguyên nhân gốc ngay từ đầu và làm chuẩn ngay lần đầu, không đoán mò vì sợ đọc code hay tài liệu.
+- **Duy Trì Toàn Vẹn 100% Các Tính Năng Đột Phá**: Bảo tồn nguyên vẹn Đồng hồ đếm ngược đồ họa 7 màu macOS Spectrum (`technical_proposal_timer.svg`) và Cổng nghiệm thu tách nhịp 2 bước (`Two-Beat Acceptance Gate`).
+
 ## [1.4.5] — 2026-09-12
 ### Added
 - **Gắn Chặt Lean Teamwork Mặc Định Vào IDE Antigravity (Builtin Core Integration)**: Đăng ký Lean Teamwork trực tiếp vào `~/.gemini/antigravity/builtin/skills/` thành Builtin Skill chính thức của IDE.

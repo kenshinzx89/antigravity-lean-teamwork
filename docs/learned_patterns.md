@@ -60,9 +60,9 @@ Tài liệu này là nơi lưu trữ các tri thức kỹ thuật, mẫu sửa l
 - **Giải pháp tối thiểu**: Nạp 12 hồ sơ Virtual Player phân cấp rõ rệt (Gà -> Rồng) vào bảng `user`/`game`/`buddylist`; chạy Virtual Client Worker kết nối TCP giữ hiện diện và tự động phản hồi Invite vào phòng thi đấu.
 - **Kiểm chứng**: Danh sách người chơi sảnh hiển thị đầy đủ, nhận lời mời vào phòng thi đấu tức thì.
 
-## Mẫu 10: [Inspection/Quota] Cohesive Block Inspection vs Micro-Peeking Anti-Pattern (Case Study Serene-Bose)
-- **Nguyên nhân gốc**: Hiểu sai tính "Lean" dẫn tới tật đọc vụn vặt 50 dòng (`Micro-Peeking`). Cắt đứt ngữ cảnh của hàm/class làm AI phải grep đi grep lại hơn 30 tool calls chắp vá, gây tốn token gấp 5 lần và người dùng rất ức chế.
-- **Giải pháp tối thiểu**: Thiết lập nguyên tắc **Cohesive Block Inspection** — Đọc trọn vẹn 100–400 dòng của hàm/class liên quan trong **1 lần gọi `view_file` duy nhất**. CẤM chuỗi thao tác lặp: grep -> đọc 50 dòng -> grep lại trong cùng file. Đọc trọn vẹn ngữ cảnh ngay Turn 1 giúp làm đúng ngay lần đầu (First-Time Right) trong 1 diff duy nhất.
+## Mẫu 10: [Inspection/Quota] Context-Aware Inspection vs Rigid Line-Count Anti-Pattern (Case Study Serene-Bose & Antigravity Widget)
+- **Nguyên nhân gốc**: Ép buộc các con số đếm dòng cứng nhắc ("cấm đọc dưới 50 dòng", "bắt đọc 100–400 dòng") làm AI bị rối loạn biên độ đọc trong các session dài, gây kẹt lặp vô tận (như kẹt đọc 1 đoạn 15 dòng ở Widget). Ngược lại, việc chỉ đọc vài dòng chắp vá không nắm ngữ cảnh cũng làm đứt gãy mạch logic.
+- **Giải pháp tối thiểu**: Loại bỏ hoàn toàn mọi ràng buộc đếm dòng cơ học. Áp dụng **Context-Aware Inspection**: Đọc linh hoạt theo trọn vẹn ngữ cảnh hàm/class/module cần thiết để hiểu rõ nguyên nhân gốc ngay từ lượt đầu (First-Time Right), tuyệt đối không đoán mò.
 - **Lệnh test**: `py tests/test_skill_integrity.py` -> 10/10 PASS (Exit code 0).
 
 ## Mẫu 3: [UI/Workflow] Dual-Modal Interactive Paradigm & Persistent Side Panel
@@ -152,3 +152,8 @@ Tài liệu này là nơi lưu trữ các tri thức kỹ thuật, mẫu sửa l
 - **[Protocol] [First-Time Right & Anti-Churn]**: Thiếu cơ chế kiểm soát chất lượng từ đầu gây lãng phí quota -> Phân tích nguyên nhân gốc + kiểm toán vết thực thi (trajectory audit) trước khi chốt nghiệm thu -> `py tests/test_skill_integrity.py` (Exit code 0)
 - **[Gate/Quota] [Global Clarification Gate & Zero-Guesswork]**: Không phỏng vấn làm rõ khi gặp ngã rẽ kỹ thuật dẫn đến phỏng đoán mò mẫm hao phí quota -> Kích hoạt Clarification Gate qua `ask_question` (kèm timeout 2.5m Best-Path Fallback) trong GEMINI.md toàn cục -> `py tests/test_skill_integrity.py` (Exit code 0)
 - **[UI/UX] [Premium 2-State Popup Identity]**: Menu nghiệm thu đơn điệu, thiếu phân định trực quan giữa chốt phiên và debug -> Chuẩn hóa bộ nhận diện icon cao cấp tương phản (`💎 ✨` Hoàn tất vs `⚡ 🛠️` Superpowers Debug) trên modal `ask_question` -> `py tests/test_skill_integrity.py` (Exit code 0)
+
+## Mẫu 10: [Inspection/Quota] Cohesive Block Inspection vs Micro-Peeking Anti-Pattern (Case Study Serene-Bose)
+- **Nguyên nhân gốc**: Hiểu sai tính "Lean" dẫn tới tật đọc vụn vặt 50 dòng (`Micro-Peeking`). Cắt đứt ngữ cảnh của hàm/class làm AI phải grep đi grep lại hơn 30 tool calls chắp vá, gây tốn token gấp 5 lần và người dùng rất ức chế.
+- **Giải pháp tối thiểu**: Thiết lập nguyên tắc **Cohesive Block Inspection** — Đọc trọn vẹn 100–400 dòng của hàm/class liên quan trong **1 lần gọi `view_file` duy nhất**. CẤM chuỗi thao tác lặp: grep -> đọc 50 dòng -> grep lại trong cùng file. Đọc trọn vẹn ngữ cảnh ngay Turn 1 giúp làm đúng ngay lần đầu (First-Time Right) trong 1 diff duy nhất.
+- **Lệnh test**: `py tests/test_skill_integrity.py` -> 10/10 PASS (Exit code 0).
