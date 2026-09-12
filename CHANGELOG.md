@@ -4,6 +4,13 @@ Tất cả các thay đổi, bài học và tính năng nâng cấp qua từng p
 
 ---
 
+## [1.4.4] — 2026-09-12
+### Added
+- **Cơ Chế Tương Thích Tuyệt Đối Mọi Máy Tính (Universal Multi-Machine Parity)**: Khắc phục lỗi hook ngầm chỉ chạy được trong repo mà chết ở các project khác (như antigravity-widget).
+- **Khử Phụ Thuộc PATH Bằng Dynamic `sys.executable`**: Tự động phát hiện đường dẫn thực thi tuyệt đối của Python trên từng máy (`"{sys.executable}" "{hook_script}"`), giúp hook chạy mượt mà ngay cả khi Windows chưa tích chọn "Add Python to PATH".
+- **Khóa Kiểm Thử Đa Thư Mục (Multi-CWD Barrier)**: Thêm assertion vào `tests/test_skill_integrity.py` kiểm tra hook từ thư mục ngoài repo đạt 100% exit code 0.
+- **Neo Chặt Vào Global `GEMINI.md`**: Đảm bảo Lean Teamwork luôn được Antigravity nhận diện trên mọi workspace mà không lo bị kẹt trong giới hạn 303 skills.
+
 ## [1.4.3] — 2026-09-12
 ### Added
 - **Đồng Hồ Đồ Họa Đếm Ngược Động Trực Tiếp Trên Popup (Live Countdown SVG)**: Tích hợp đồ họa `technical_proposal_timer.svg` trực tiếp vào modal `ask_question` với phong cách 7 màu chuyển sắc nhẹ nhàng macOS Spectrum, số SF Mono lùi từng giây thực tế (`02:30 -> 00:00`) và thanh progress capsule mượt mà.

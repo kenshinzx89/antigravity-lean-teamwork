@@ -64,17 +64,18 @@ if __name__ == '__main__':
 hook_py.write_text(hook_content, encoding='utf-8')
 
 hooks_json = GLOBAL_CONFIG_DIR / 'hooks.json'
-hooks_json_content = '''{
-  "lean-teamwork-global-reanchor": {
-    "PreInvocation": [
-      {
-        "type": "command",
-        "command": "py scripts/auto_reanchor_hook.py",
-        "timeout": 10
-      }
-    ]
-  }
+py_exe = Path(sys.executable).as_posix()
+hook_py_str = hook_py.as_posix()
+hooks_json_data = {
+    "lean-teamwork-global-reanchor": {
+        "PreInvocation": [
+            {
+                "type": "command",
+                "command": f'"{py_exe}" "{hook_py_str}"',
+                "timeout": 10
+            }
+        ]
+    }
 }
-'''
-hooks_json.write_text(hooks_json_content, encoding='utf-8')
-print('SUCCESS: Created global hook and script at', GLOBAL_CONFIG_DIR)
+hooks_json.write_text(json.dumps(hooks_json_data, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+print(f'SUCCESS: Created universal global hook pointing to {py_exe} at {GLOBAL_CONFIG_DIR}')

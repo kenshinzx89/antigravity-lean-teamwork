@@ -177,7 +177,14 @@ def test_zero_touch_lifecycle_hooks():
     assert "🧭 [CHẾ ĐỘ ĐỀ XUẤT KỸ THUẬT] 💡" in res_global.stdout, "Global hook must contain Proposal Mode badge"
     assert "💎 [CHẾ ĐỘ NGHIỆM THU HOÀN THIỆN] ✨" in res_global.stdout, "Global hook must contain Acceptance Mode badge"
 
-    print("[PASS] Zero-Touch PreInvocation Lifecycle Hooks (Workspace & Global) are verified.")
+    # Verify that hooks.json command executes successfully from ANY external directory (e.g. user home)
+    global_hook_data = json.loads(global_hook_json.read_text(encoding="utf-8"))
+    ext_cmd = global_hook_data["lean-teamwork-global-reanchor"]["PreInvocation"][0]["command"]
+    res_ext = subprocess.run(ext_cmd, shell=True, cwd=str(user_home), capture_output=True, text=True, encoding="utf-8")
+    assert res_ext.returncode == 0, f"Global hook failed from external directory: {res_ext.stderr}"
+    assert "MANDATORY RE-ANCHOR" in res_ext.stdout, "Global hook from external directory must inject MANDATORY RE-ANCHOR"
+
+    print("[PASS] Zero-Touch PreInvocation Lifecycle Hooks (Workspace & Global, Any CWD) are verified.")
 
 def test_anti_survivorship_and_first_time_right():
     """Verify Anti-Survivorship Bias, Trajectory Churn Audit, and First-Time Right Protocol."""

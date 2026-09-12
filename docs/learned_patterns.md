@@ -82,3 +82,73 @@ Tài liệu này là nơi lưu trữ các tri thức kỹ thuật, mẫu sửa l
   4. *Velocity & Automation*: Tự động hóa tối đa qua hook/scripts.
   5. *Rule Pruning & Anti-Bloat*: Định kỳ Gộp (Merge & Generalize) và Tỉa (Prune) các quy tắc trùng lặp/vụn vặt, duy trì kho tri thức tối đa 10 patterns tinh hoa.
 - **Nguyên tắc cốt lõi**: Tuyệt đối không sửa/ghi vào `SKILL.md`; mọi tri thức tích lũy đều cách ly tại `learned_patterns.md`.
+
+## Mẫu 1: Case Study Gunbound Season 2 - ACID & Inventory Desync
+- **Nguyên nhân gốc**: Cơ chế cập nhật CSDL không gộp giao dịch (Transaction ACID), dẫn đến việc trừ tiền nhưng chưa kịp commit bản ghi item vào `item.chest`.
+- **Mẫu sửa tối ưu**: Sử dụng Transaction Scope bao bọc toàn bộ khối cập nhật số dư ví và chèn rương đồ, rollback ngay lập tức nếu bất kỳ câu lệnh nào thất bại.
+- **Bài học Token**: Sử dụng Gatekeeper chạy `Model: "flash"` kiểm thử độc lập giúp giảm hơn 70% token so với việc spawn hội đồng audit nhiều người.
+
+## Mẫu 2: [UI/Workflow] Persistent Side Panel Gate & Knowledge Segregation
+- **[UI/Workflow] [Persistent Side Panel & Knowledge Segregation]**:
+  - *Nguyên nhân*: Dùng GUI ngoài / file HTML bị hệ thống chạy nền ẩn không hiển thị; nhồi nhét tri thức vào `SKILL.md` làm phình context token mỗi khi nạp agent.
+  - *Giải pháp tối thiểu*: Dùng Artifact Markdown native hiển thị trực tiếp ở Side Panel Antigravity (khung chat bên trái tự do 100%); cách ly toàn bộ tri thức nghiệm thu ra file ngoài `learned_patterns.md` bằng Subagent `flash` sau khi người dùng xác nhận "OK".
+  - *Lệnh test*: `py tests/test_skill_integrity.py` -> 6/6 PASS (Exit code 0).
+
+## Mẫu 3: [Popup/Debugging] Two-State Autonomous Popup & Superpowers Systematic Debugging
+- **[Popup/Debugging] [Two-State Popup & Superpowers Systematic Debugging]**:
+  - *Nguyên nhân*: Menu popup phân mảnh options thừa thãi; sửa lỗi trực tiếp trên main agent làm phình context và hao phí quota token.
+  - *Giải pháp tối thiểu*: Thu gọn popup đúng 2 trạng thái (`ask_question`); ủy quyền Subagent `flash` tự điều tra & sửa lỗi theo 4 pha Superpowers độc lập; cách ly tri thức ra `learned_patterns.md`.
+  - *Lệnh test*: `py tests/test_skill_integrity.py` -> 6/6 PASS (Exit code 0).
+
+## Mẫu 4: [Sync/Automation] Zero-Touch Two-Way Lifecycle Sync Giữa PC & Laptop
+- **[Sync/Automation] [Zero-Touch Two-Way Lifecycle Sync Giữa PC & Laptop]**:
+  - *Nguyên nhân*: Chuyển đổi qua lại giữa PC và Laptop dễ quên đồng bộ thủ công gây lệch phiên bản; quét toàn bộ repo làm phình context và lãng phí token.
+  - *Giải pháp tối thiểu*: Zero-Touch PreInvocation Hook (`hooks.json`) tự động chạy ngầm; thuật toán Two-Way Adaptive Sync so sánh SemVer để tự PULL/PUSH và hợp nhất 2 chiều `learned_patterns.md`.
+  - *Kiểm toán Quota & Barrier*: Zero-Scan tiết kiệm 100% token quét mã; Ratchet Barrier bảo đảm toàn vẹn 8/8 tests PASS (Exit code 0).
+
+## Danh Mục Tri Thức Đã Đúc Kết
+
+- **[Database] [Gunbound Season 2 - ACID / Inventory]**:
+  - *Nguyên nhân*: Thiếu Transaction Scope khi vừa trừ tiền vừa ghi rương đồ.
+  - *Giải pháp tối thiểu*: Gói trong 1 transaction duy nhất, rollback ngay nếu có lỗi. Lệnh test concurrency exit 0.
+  - *Tiết kiệm Quota*: Gatekeeper `flash` độc lập giảm hơn 70% token so với hội đồng audit.
+
+- **[Architecture] [Antigravity Custom Skill & Clean Global Rules]**:
+  - *Nguyên nhân*: Nhúng quy tắc subagent phức tạp vào global rule làm đè và xung đột với `/teamwork-preview` gốc.
+  - *Giải pháp tối thiểu*: Tách kiến trúc nâng cao ra thành Custom Skill độc lập (`lean-teamwork`), khôi phục `/teamwork-preview` về nguyên bản. Ở cấp toàn cục chỉ giữ `Daily Lean Workflow` siêu nhẹ.
+  - *Tiết kiệm Quota*: Progressive disclosure — chỉ nạp chi tiết skill khi thực sự cần.
+
+- **[Workflow] [Self-Evolution & Pattern Retrieval Loop]**:
+  - *Nguyên nhân*: Kiến thức sau khi sửa lỗi không được tái sử dụng, dẫn đến điều tra lại từ đầu ở các phiên sau.
+  - *Giải pháp tối thiểu*: Khép kín vòng lặp: Inspect First liếc nhanh `learned_patterns.md` -> Sửa minimal diff -> Xin xác nhận OK -> Tự động append 2-3 dòng.
+  - *Tiết kiệm Quota*: Tiết kiệm 50-70% token cho các lỗi lặp lại.
+
+- **[Client/Reverse] [Gunbound Season 2 - Crash 0xc0000005 & Windowed Mode]**:
+  - *Nguyên nhân*: `GunBound.gme` đọc ngược 96 ký tự hex từ cuối command line; thừa ký tự làm lệch nibble hỏng AES decrypt gây crash heap. DirectDraw gọi `DDSCL_EXCLUSIVE` ép fullscreen.
+  - *Giải pháp tối thiểu*: Chuẩn hóa chuỗi 96-hex AES (`encUser+encPass+encZero`); dùng wrapper proxy `ddraw.dll` (cnc-ddraw v7.1) ép `windowed=true` (800x600) giữ nguyên tỷ lệ, dọn sạch launcher rác.
+  - *Lệnh test*: Khởi chạy `GunBound.exe` -> Exit code 0, cửa sổ 800x600 hiển thị mượt mà.
+
+- **[Bot AI] [Gunbound Season 2 - Virtual Player Presence & Lobby/Invite]**:
+  - *Nguyên nhân*: GameServer chỉ hiển thị người chơi ở Sảnh và danh sách Mời khi có socket TCP client đang online trong Channel; nạp DB đơn thuần chỉ lưu hồ sơ offline.
+  - *Giải pháp tối thiểu*: Nạp 12 hồ sơ Virtual Player phân cấp rõ rệt (Gà -> Rồng) vào bảng `user`/`game`/`buddylist`; chạy Virtual Client Worker kết nối TCP giữ hiện diện và tự động phản hồi Invite vào phòng thi đấu.
+
+- **[Teamwork/Workflow] [Ambiguity & Decision Checkpoints - Ask First, Suggest Options]**:
+  - *Nguyên nhân*: Khi gặp ngã rẽ kiến trúc (Server vs Client, cấu hình vs code mới) hoặc yêu cầu còn mơ hồ, agent tự phỏng đoán làm lan man gây sai lệch ý đồ người dùng và lãng phí token.
+  - *Giải pháp tối thiểu*: Bắt buộc dừng lại, dùng `ask_question` gợi ý các phương án cụ thể (ưu/nhược điểm, phương án đề xuất `Recommended`) để người dùng chọn trước khi bắt tay thực hiện.
+  - *Tiết kiệm Quota*: Tránh 100% việc viết code mò mẫm, sửa nhầm hướng và phải hoàn tác tốn kém.
+
+- **[UI/Workflow] [Persistent Side Panel & Knowledge Segregation]**:
+  - *Nguyên nhân*: Cố tạo GUI ngoài / file HTML bị hệ thống chạy nền ẩn không hiển thị; nhồi nhét tri thức vào `SKILL.md` làm phình context token mỗi phiên.
+  - *Giải pháp tối thiểu*: Dùng Artifact Markdown native hiển thị trực tiếp ở Side Panel Antigravity (khung chat tự do); cách ly toàn bộ tri thức nghiệm thu ra file ngoài `learned_patterns.md` qua Subagent `flash`.
+  - *Lệnh test*: `py tests/test_skill_integrity.py` -> 6/6 PASS (Exit code 0).
+
+- **[Popup/Debugging] [Two-State Popup & Superpowers Systematic Debugging]**:
+  - *Nguyên nhân*: Menu popup phân mảnh options thừa thãi; sửa lỗi trực tiếp trên main agent làm phình context và hao phí quota token.
+  - *Giải pháp tối thiểu*: Thu gọn popup đúng 2 trạng thái (`ask_question`); ủy quyền Subagent `flash` tự điều tra & sửa lỗi theo 4 pha Superpowers độc lập; cách ly tri thức ra `learned_patterns.md`.
+  - *Lệnh test*: `py tests/test_skill_integrity.py` -> 6/6 PASS (Exit code 0).
+
+- **[Anti-Pattern] [Blind Lean & Trajectory Churn]**: Ngại đọc tài liệu Turn 1 dẫn đến đoán mò, gây ra chuỗi 5-10 lượt chat sửa sai lặp lại -> Bắt buộc First-Time Right Protocol (Inspect First đọc sâu tài liệu/code ngay Turn 1) -> `py tests/test_skill_integrity.py` (Exit code 0)
+- **[Anti-Pattern] [Survivorship Bias in Evaluation]**: Đúc kết chỉ nhìn vào Git Diff thành công cuối cùng mà mù trước chuỗi thất bại -> Trajectory Churn Audit kiểm toán toàn bộ lịch sử turn và tỷ lệ First-Time Right -> `py tests/test_skill_integrity.py` (Exit code 0)
+- **[Protocol] [First-Time Right & Anti-Churn]**: Thiếu cơ chế kiểm soát chất lượng từ đầu gây lãng phí quota -> Phân tích nguyên nhân gốc + kiểm toán vết thực thi (trajectory audit) trước khi chốt nghiệm thu -> `py tests/test_skill_integrity.py` (Exit code 0)
+- **[Gate/Quota] [Global Clarification Gate & Zero-Guesswork]**: Không phỏng vấn làm rõ khi gặp ngã rẽ kỹ thuật dẫn đến phỏng đoán mò mẫm hao phí quota -> Kích hoạt Clarification Gate qua `ask_question` (kèm timeout 2.5m Best-Path Fallback) trong GEMINI.md toàn cục -> `py tests/test_skill_integrity.py` (Exit code 0)
+- **[UI/UX] [Premium 2-State Popup Identity]**: Menu nghiệm thu đơn điệu, thiếu phân định trực quan giữa chốt phiên và debug -> Chuẩn hóa bộ nhận diện icon cao cấp tương phản (`💎 ✨` Hoàn tất vs `⚡ 🛠️` Superpowers Debug) trên modal `ask_question` -> `py tests/test_skill_integrity.py` (Exit code 0)
