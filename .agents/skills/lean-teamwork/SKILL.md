@@ -93,8 +93,8 @@ Hệ thống sử dụng công cụ `ask_question` để kích hoạt Popup tư�
 - **Cấu trúc tùy chọn**: Cung cấp từ 2 đến 4 giải pháp cụ thể, luôn đánh dấu dòng tối ưu nhất bằng `(Recommended)`.
 - **Đồng hồ đếm ngược đồ họa thời gian thực ngay trên Popup (Live Countdown SVG)**:
   - BẮT BUỘC nhúng đồ họa `technical_proposal_timer.svg` (phong cách 7 màu chuyển sắc nhẹ nhàng macOS Spectrum, trong suốt 480x84, thanh capsule co dần 150s, số SF Mono lùi từng giây thực tế):
-    `![🧭 ĐỀ XUẤT KỸ THUẬT 💡](technical_proposal_timer.svg)`
-  - **Tự Động Cấp Sẵn (Zero-Touch Auto-Seeding)**: File SVG chuẩn đã được hook tự động cấp sẵn vào thư mục `<appDataDir>/brain/<conversation-id>/technical_proposal_timer.svg`. **CẤM TUYỆT ĐỐI tự vẽ lại file SVG mới với nền đen thô `#0D1117` hay kích thước to!**
+    `![🧭 ĐỀ XUẤT KỸ THUẬT 💡](C:/Users/tient/.gemini/antigravity/brain/<conv_id>/technical_proposal_timer.svg)`
+  - **Tự Động Cấp Sẵn (Zero-Touch Auto-Seeding)**: File SVG chuẩn đã được hook tự động cấp sẵn vào thư mục `<appDataDir>/brain/<conversation-id>/technical_proposal_timer.svg`. BẮT BUỘC dùng đường dẫn tuyệt đối chuẩn do Hook cấp trong Re-Anchor (CẤM dùng đường dẫn tương đối làm gãy ảnh, CẤM TUYỆT ĐỐI tự vẽ lại file SVG mới với nền đen thô `#0D1117` hay kích thước to!).
   - **Cơ chế Pause Thông Minh (Ô Số 3)**: Khi người dùng bấm hoặc gõ vào ô nhập ý kiến riêng bên dưới (ô số 3), đồng hồ được coi như đã tạm dừng (Paused), AI dừng chờ người dùng 100%, không bao giờ tự ý chọn phương án Recommended.
   - Nếu sau 2.5 phút người dùng không tương tác, hệ thống tự động tiếp tục với hướng `(Recommended)` để giữ mạch công việc không bị đình trệ.
 
