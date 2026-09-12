@@ -46,9 +46,24 @@ def main():
     except Exception as e:
         pass
 
+    # Tự động cấp sẵn đồng hồ macOS Spectrum 480x84 trong suốt vào thư mục brain của session
+    cid = os.environ.get("ANTIGRAVITY_CONVERSATION_ID")
+    if cid:
+        try:
+            brain_dir = Path.home() / ".gemini" / "antigravity" / "brain" / cid
+            brain_dir.mkdir(parents=True, exist_ok=True)
+            dst_svg = brain_dir / "technical_proposal_timer.svg"
+            src_svg = REPO_ROOT / ".agents" / "skills" / "lean-teamwork" / "resources" / "technical_proposal_timer.svg"
+            if src_svg.exists():
+                if not dst_svg.exists() or dst_svg.stat().st_size != src_svg.stat().st_size or 'fill="#0D1117"' in dst_svg.read_text(encoding="utf-8", errors="ignore"):
+                    import shutil
+                    shutil.copyfile(src_svg, dst_svg)
+        except Exception:
+            pass
+
     anchor_msg = (
         f"⚡ [MANDATORY RE-ANCHOR — Lean Teamwork v{active_version}]:\n"
-        "1. 🧭 [CHẾ ĐỘ ĐỀ XUẤT KỸ THUẬT] 💡: Khi mở đầu hoặc chọn giải pháp, dùng modal ask_question có tiền tố tiêu đề '🧭 [ĐỀ XUẤT KỸ THUẬT]' gồm 2–4 lựa chọn kèm (Recommended). Hạn 2.5 phút: nếu user chưa chọn, tự động chọn hướng tối ưu để làm tiếp, tránh đứt đoạn.\n"
+        "1. 🧭 [CHẾ ĐỘ ĐỀ XUẤT KỸ THUẬT] 💡: Khi mở đầu hoặc chọn giải pháp, dùng modal ask_question có tiền tố tiêu đề '🧭 [ĐỀ XUẤT KỸ THUẬT]' gồm 2–4 lựa chọn kèm (Recommended). Hạn 2.5 phút: nếu user chưa chọn, tự động chọn hướng tối ưu. Nhúng ảnh có sẵn ![🧭 ĐỀ XUẤT KỸ THUẬT 💡](technical_proposal_timer.svg) (CẤM tự vẽ lại SVG nền đen).\n"
         "2. 💎 [CHẾ ĐỘ NGHIỆM THU HOÀN THIỆN] ✨ (TÁCH NHỊP 2 BƯỚC v1.4.2): Khi code xong và test pass (exit 0): "
         "BƯỚC 1: BẮT BUỘC in toàn văn Báo cáo & Hướng dẫn đối chứng ra màn hình, TUYỆT ĐỐI KHÔNG gọi ask_question cùng lúc làm che mất chữ. "
         "BƯỚC 2: Chờ user đọc xong và phản hồi, sau đó MỚI gọi modal ask_question '💎 [NGHIỆM THU HOÀN THIỆN]' (💎 [100% HOÀN TẤT] ✨ vs ⚡ [SUPERPOWERS DEBUG] 🛠️) để user xác nhận an toàn.\n"
