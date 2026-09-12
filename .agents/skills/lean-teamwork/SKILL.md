@@ -17,11 +17,12 @@ Mọi agent và phiên làm việc kích hoạt skill này bắt buộc phải t
    > *"NO COMPLETION CLAIMS WITHOUT FRESH VERIFICATION EVIDENCE"*
    - Không được tuyên bố code chạy, bug đã sửa hay test đã pass nếu chưa chạy lệnh kiểm chứng trực tiếp ngay trong lượt làm việc.
    - Cấm tuyệt đối các từ ngữ phỏng đoán: *"should work"*, *"probably"*, *"looks correct"*, *"tôi tin rằng"*.
-2. **Thiết Luật Nguyên Nhân Gốc & Làm Đúng Lần Đầu (Iron Law of Root Cause & First-Time Right Protocol)**:
+2. **Thiết Luật Nguyên Nhân Gốc, Làm Đúng Lần Đầu & Đọc Trọn Vẹn Khối Chức Năng (Iron Law of Root Cause & First-Time Right Protocol — Cohesive Block Inspection)**:
    > *"NO FIXES WITHOUT ROOT CAUSE — FIRST-TIME RIGHT OVER TRIAL-AND-ERROR"*
    - Cấm sửa mò, thử sai hay sửa triệu chứng (symptom fixing). Phải đọc stacktrace, tái hiện lỗi ổn định và khoanh vùng chính xác trước khi chạm vào code.
    - **Khai tử tư duy "Blind Lean" (Tinh gọn mù quáng)**: Lean KHÔNG PHẢI là mù quáng không đọc tài liệu. Khi chạm vào kiến trúc, framework hay tính năng client mới, **BẮT BUỘC phải đọc tài liệu chuẩn (Inspect First đầy đủ)** để hiểu rõ mọi ràng buộc ngầm.
-   - **Cấm đoán mò vì sợ tốn token đọc tài liệu**: Tiết kiệm 1.000 token đọc tài liệu ở đầu phiên mà để phát sinh >2 lượt chat thử-sai do đoán mò là **phạm luật Quota nghiêm trọng** (vì các lượt chat sau mang theo toàn bộ lịch sử khổng lồ làm tốn gấp 5 lần token và lãng phí thời gian của người dùng).
+   - **Cohesive Block Inspection (Đọc trọn vẹn khối logic 100–400 dòng)**: CẤM TUYỆT ĐỐI tật đọc vụn vặt 50 dòng (`Micro-Peeking Anti-Pattern`). Việc nhòm từng đoạn 50 dòng làm đứt gãy ngữ cảnh của hàm/class, khiến AI phải grep đi grep lại 20–30 tool calls lòng vòng, gây tốn token gấp 5 lần và lãng phí thời gian người dùng. Khi inspect code, bắt buộc đọc bao quát trọn vẹn 100–400 dòng trong đúng 1 lần gọi `view_file` duy nhất.
+   - **Cấm đoán mò vì sợ tốn token đọc tài liệu**: Tiết kiệm 1.000 token đọc tài liệu ở đầu phiên mà để phát sinh >2 lượt chat thử-sai do đoán mò là **phạm luật Quota nghiêm trọng** (vì các lượt chat sau mang theo toàn bộ lịch sử khổng lồ làm tốn gấp 5 lần token).
 3. **Thiết Luật Tự Quyết Định & Hướng Đi Tốt Nhất (Ruling & Best-Path Fallback)**:
    > *"A RUNNING PLAN DOES NOT WAIT ON A HUMAN FOR MINOR CHOICES"*
    - Tự ra phán quyết cho các vấn đề vi mô kèm ghi chú rủi ro (`Ruling: <Quyết định> — <Lý do> — <Hệ quả nếu sai>`).
@@ -95,9 +96,11 @@ Hệ thống sử dụng công cụ `ask_question` để kích hoạt Popup tư�
   - Do modal UI của Antigravity hiển thị văn bản tĩnh (không có widget animation SVG kim đồng hồ chạy trực tiếp), giới hạn đếm ngược được thể hiện rõ nét qua nhãn `⏱️ [HẠN 2.5 PHÚT — TỰ ĐỘNG CHỌN RECOMMENDED NẾU QUÁ GIỜ]`.
   - Nếu sau 2.5 phút người dùng chưa bấm chọn, hệ thống tự động tiếp tục với hướng `(Recommended)` để giữ mạch công việc không bị đình trệ.
 
-### 2. 💎 [CHẾ ĐỘ NGHIỆM THU HOÀN THIỆN] ✨ (Popup 2 Trạng Thái Chuẩn Superpowers)
+### 2. 💎 [CHẾ ĐỘ NGHIỆM THU HOÀN THIỆN] ✨ (Quy Trình Tách Nhịp 2 Bước v1.4.2)
 - **Khi nào kích hoạt**: Khi code đã viết xong, toàn bộ kiểm thử tích hợp đạt 100% PASS (Exit Code 0).
-- **Quy chuẩn hiển thị**: Tiền tố câu hỏi modal `ask_question` bắt buộc có nhãn `💎 [NGHIỆM THU HOÀN THIỆN] ✨`.
+- **Quy trình Tách Nhịp 2 Bước (Two-Beat Gate — Không Bao Giờ Che Chữ)**:
+  - **BƯỚC 1 (Báo Cáo & Hướng Dẫn Đối Chứng)**: BẮT BUỘC in toàn văn báo cáo phân tích, kết quả kiểm thử và hướng dẫn đối chứng thực tế ra màn hình chat. **TUYỆT ĐỐI KHÔNG GỌI `ask_question` Ở LƯỢT NÀY** để tránh popup đè kín màn hình che mất nội dung người dùng cần đọc.
+  - **BƯỚC 2 (Kích Hoạt Modal Nghiệm Thu)**: Sau khi người dùng đã đọc xong và phản hồi (hoặc bước kế tiếp), MỚI kích hoạt modal `ask_question` có tiền tố `💎 [NGHIỆM THU HOÀN THIỆN] ✨` để người dùng xác nhận an toàn.
 - **Cấu trúc Popup 2 Trạng Thái kinh điển**:
   1. `(Recommended) 💎 [100% HOÀN TẤT] ✨ Xác nhận nghiệm thu toàn diện & Khóa tri thức tự động`
   2. `⚡ [SUPERPOWERS DEBUG] 🛠️ Mở AI chuyên trách tự truy vết mã lỗi & sửa trúng đích (4 pha chuẩn Superpowers, tiết kiệm quota)`

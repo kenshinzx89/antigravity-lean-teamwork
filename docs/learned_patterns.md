@@ -14,12 +14,11 @@ Tài liệu này là nơi lưu trữ các tri thức kỹ thuật, mẫu sửa l
 - **Giải pháp tối thiểu**: Tách toàn bộ kiến trúc nâng cao ra thành Custom Skill độc lập (`lean-teamwork`), khôi phục GEMINI.md toàn cục về nguyên bản nhẹ nhàng. Áp dụng Progressive Disclosure: chỉ nạp chi tiết skill khi thực sự cần.
 - **Tiết kiệm Quota**: Giảm 80% overhead context nạp khởi đầu trên mọi phiên làm việc mới.
 
-## Mẫu 3: [UI/Workflow] Dual-Modal Interactive Paradigm & Persistent Side Panel
-- **Nguyên nhân gốc**: Dùng GUI ngoài/HTML bị hệ thống chạy nền ẩn; dùng chung timeout làm trôi mất popup nghiệm thu khi người dùng chưa kịp đối chứng thực tế.
+## Mẫu 3: [UI/Workflow] Dual-Modal Interactive Paradigm & Two-Beat Acceptance Gate (v1.4.2)
+- **Nguyên nhân gốc**: Dùng GUI ngoài/HTML bị hệ thống chạy nền ẩn; dùng chung timeout làm trôi mất popup nghiệm thu; gọi modal che mất chữ báo cáo đối chứng thực tế.
 - **Giải pháp tối thiểu**: Chuẩn hóa 2 modal đối lập trực quan qua `ask_question`:
   - 🧭 **Đề Xuất Kỹ Thuật**: Timeout 2.5 phút, tự động chọn `(Recommended)` nếu user vắng mặt để tránh đứt đoạn mạch làm việc.
-  - 💎 **Nghiệm Thu Hoàn Thiện**: Treo cố định vĩnh viễn (NO TIMEOUT) để bảo vệ quyền kiểm chứng tối thượng của người dùng.
-  - Hiển thị kết quả bằng Markdown native trực tiếp trên Side Panel Antigravity; cách ly tri thức ra ngoài `SKILL.md`.
+  - 💎 **Nghiệm Thu Hoàn Thiện (Tách Nhịp 2 Bước)**: Bước 1 in toàn văn báo cáo phân tích ra màn hình, cấm mở modal che chữ. Bước 2 mới mở modal `💎 [NGHIỆM THU HOÀN THIỆN]` treo cố định (NO TIMEOUT) để chờ user đối chứng thực tế.
 - **Lệnh test**: `py tests/test_skill_integrity.py` -> 10/10 PASS (Exit code 0).
 
 ## Mẫu 4: [Debugging] Two-State Autonomous Popup & Superpowers Systematic Debugging
@@ -40,14 +39,15 @@ Tài liệu này là nơi lưu trữ các tri thức kỹ thuật, mẫu sửa l
   - **Trajectory Churn Audit**: Kiểm toán turn budget và tỷ lệ First-Time Right trong báo cáo phản tư chu kỳ.
 - **Lệnh test**: `py tests/test_skill_integrity.py` -> 10/10 PASS (Exit code 0).
 
-## Mẫu 7: [Meta-Learning] 5-Point Reflective Inquiry & Continuous Knowledge Pruning
+## Mẫu 7: [Meta-Learning] 6-Point Reflective Inquiry & Continuous Knowledge Pruning
 - **Nguyên nhân gốc**: Thói quen "gặp lỗi đâu đẻ luật đấy" làm tập quy tắc phình to vô hạn, gây mâu thuẫn chỉ dẫn và quá tải nhận thức cho AI.
-- **Giải pháp tối thiểu**: Áp dụng Bộ Khung Tự Vấn 5 Chiều sau mỗi phiên nghiệm thu:
+- **Giải pháp tối thiểu**: Áp dụng Bộ Khung Tự Vấn 6 Chiều sau mỗi phiên nghiệm thu:
   1. *Root Cause & Churn*: Tìm căn nguyên và phân tích số turn lãng phí.
   2. *First-Time Right*: Biện pháp đảm bảo thành công ngay Turn 1.
   3. *Token Economy*: Cắt giảm triệt để các thao tác lãng phí context.
   4. *Velocity & Automation*: Tự động hóa tối đa qua hook/scripts.
-  5. *Rule Pruning & Anti-Bloat*: Định kỳ Gộp (Merge & Generalize) và Tỉa (Prune) các quy tắc trùng lặp/vụn vặt, duy trì kho tri thức tối đa 10 patterns tinh hoa.
+  5. *Rule Pruning & Anti-Bloat*: Gộp (Merge) và Tỉa (Prune) các quy tắc trùng lặp, giữ kho tri thức tối đa 10 patterns tinh hoa.
+  6. *Meta-Questioning & Chronic Bottlenecks*: Tự vấn đệ quy về điểm nghẽn mãn tính và hành động xử lý dứt điểm.
 - **Nguyên tắc cốt lõi**: Tuyệt đối không sửa/ghi vào `SKILL.md`; mọi tri thức tích lũy đều cách ly tại `learned_patterns.md`.
 
 ## Mẫu 8: [Client/Reverse] Gunbound Season 2 - Crash 0xc0000005 & Windowed Mode
@@ -59,3 +59,26 @@ Tài liệu này là nơi lưu trữ các tri thức kỹ thuật, mẫu sửa l
 - **Nguyên nhân gốc**: GameServer chỉ hiển thị người chơi ở Sảnh và danh sách Mời khi có socket TCP client đang online trong Channel; nạp DB đơn thuần chỉ lưu hồ sơ offline.
 - **Giải pháp tối thiểu**: Nạp 12 hồ sơ Virtual Player phân cấp rõ rệt (Gà -> Rồng) vào bảng `user`/`game`/`buddylist`; chạy Virtual Client Worker kết nối TCP giữ hiện diện và tự động phản hồi Invite vào phòng thi đấu.
 - **Kiểm chứng**: Danh sách người chơi sảnh hiển thị đầy đủ, nhận lời mời vào phòng thi đấu tức thì.
+
+## Mẫu 10: [Inspection/Quota] Cohesive Block Inspection vs Micro-Peeking Anti-Pattern (Case Study Serene-Bose)
+- **Nguyên nhân gốc**: Hiểu sai tính "Lean" dẫn tới tật đọc vụn vặt 50 dòng (`Micro-Peeking`). Cắt đứt ngữ cảnh của hàm/class làm AI phải grep đi grep lại hơn 30 tool calls chắp vá, gây tốn token gấp 5 lần và người dùng rất ức chế.
+- **Giải pháp tối thiểu**: Thiết lập nguyên tắc **Cohesive Block Inspection** — Đọc trọn vẹn 100–400 dòng của hàm/class liên quan trong **1 lần gọi `view_file` duy nhất**. CẤM chuỗi thao tác lặp: grep -> đọc 50 dòng -> grep lại trong cùng file. Đọc trọn vẹn ngữ cảnh ngay Turn 1 giúp làm đúng ngay lần đầu (First-Time Right) trong 1 diff duy nhất.
+- **Lệnh test**: `py tests/test_skill_integrity.py` -> 10/10 PASS (Exit code 0).
+
+## Mẫu 3: [UI/Workflow] Dual-Modal Interactive Paradigm & Persistent Side Panel
+- **Nguyên nhân gốc**: Dùng GUI ngoài/HTML bị hệ thống chạy nền ẩn; dùng chung timeout làm trôi mất popup nghiệm thu khi người dùng chưa kịp đối chứng thực tế.
+- **Giải pháp tối thiểu**: Chuẩn hóa 2 modal đối lập trực quan qua `ask_question`:
+  - 🧭 **Đề Xuất Kỹ Thuật**: Timeout 2.5 phút, tự động chọn `(Recommended)` nếu user vắng mặt để tránh đứt đoạn mạch làm việc.
+  - 💎 **Nghiệm Thu Hoàn Thiện**: Treo cố định vĩnh viễn (NO TIMEOUT) để bảo vệ quyền kiểm chứng tối thượng của người dùng.
+  - Hiển thị kết quả bằng Markdown native trực tiếp trên Side Panel Antigravity; cách ly tri thức ra ngoài `SKILL.md`.
+- **Lệnh test**: `py tests/test_skill_integrity.py` -> 10/10 PASS (Exit code 0).
+
+## Mẫu 7: [Meta-Learning] 5-Point Reflective Inquiry & Continuous Knowledge Pruning
+- **Nguyên nhân gốc**: Thói quen "gặp lỗi đâu đẻ luật đấy" làm tập quy tắc phình to vô hạn, gây mâu thuẫn chỉ dẫn và quá tải nhận thức cho AI.
+- **Giải pháp tối thiểu**: Áp dụng Bộ Khung Tự Vấn 5 Chiều sau mỗi phiên nghiệm thu:
+  1. *Root Cause & Churn*: Tìm căn nguyên và phân tích số turn lãng phí.
+  2. *First-Time Right*: Biện pháp đảm bảo thành công ngay Turn 1.
+  3. *Token Economy*: Cắt giảm triệt để các thao tác lãng phí context.
+  4. *Velocity & Automation*: Tự động hóa tối đa qua hook/scripts.
+  5. *Rule Pruning & Anti-Bloat*: Định kỳ Gộp (Merge & Generalize) và Tỉa (Prune) các quy tắc trùng lặp/vụn vặt, duy trì kho tri thức tối đa 10 patterns tinh hoa.
+- **Nguyên tắc cốt lõi**: Tuyệt đối không sửa/ghi vào `SKILL.md`; mọi tri thức tích lũy đều cách ly tại `learned_patterns.md`.

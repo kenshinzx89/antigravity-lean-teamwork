@@ -4,6 +4,17 @@ Tất cả các thay đổi, bài học và tính năng nâng cấp qua từng p
 
 ---
 
+## [1.4.2] — 2026-09-12
+### Added
+- **Khai Tử Bệnh "Đọc Vụn Nhòm Khe 50 Dòng" (Micro-Peeking Anti-Pattern)**: Rút kinh nghiệm sâu sắc từ thực nghiệm tại dự án `serene-bose`, cấm tuyệt đối việc đọc vụn vặt 50 dòng làm đứt gãy ngữ cảnh của hàm/class gây ra 20–30 tool calls lòng vòng.
+- **Thiết Lập Chuẩn Cohesive Block Inspection**: Đọc trọn vẹn 100–400 dòng liên quan trong đúng 1 lần gọi `view_file` duy nhất để làm đúng ngay lần đầu (First-Time Right).
+- **Cổng Nghiệm Thu Tách Nhịp 2 Bước (Two-Beat Acceptance Gate)**: Bước 1 in toàn văn báo cáo phân tích và hướng dẫn đối chứng ra màn hình, cấm mở modal đè mất chữ. Bước 2 mới mở modal `💎 [NGHIỆM THU HOÀN THIỆN]` sau khi người dùng đã đọc xong.
+
+## [1.4.0] — 2026-09-11
+### Added
+- **Bộ Khung Tự Vấn Phản Tư 6 Chiều (6-Point Reflective Inquiry)**: Subagent đúc kết tự đặt và trả lời 6 câu hỏi cốt lõi để nâng cấp phương pháp luận Lean Teamwork và trị điểm nghẽn mãn tính.
+- **Cơ Chế Khử Phình Tri Thức (Knowledge Pruning & Consolidation)**: Gộp (Merge) và Tỉa (Prune) các quy tắc thừa, duy trì kho tri thức tối đa 10 patterns tinh hoa.
+
 ## [1.3.2] — 2026-09-11
 ### Added
 - **Thiết Luật Tăng Version Bắt Buộc (Mandatory Semantic Version Bump)**: Mọi thay đổi dù nhỏ nhất (cấu hình, rule, template, hook) bắt buộc tăng version (`--bump patch`) để cơ chế Fast-Sync trên Laptop luôn nhận diện phiên bản mới và PULL tự động 100%.

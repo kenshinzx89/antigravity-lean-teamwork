@@ -49,8 +49,10 @@ def main():
     anchor_msg = (
         f"⚡ [MANDATORY RE-ANCHOR — Lean Teamwork v{active_version}]:\n"
         "1. 🧭 [CHẾ ĐỘ ĐỀ XUẤT KỸ THUẬT] 💡: Khi mở đầu hoặc chọn giải pháp, dùng modal ask_question có tiền tố tiêu đề '🧭 [ĐỀ XUẤT KỸ THUẬT]' gồm 2–4 lựa chọn kèm (Recommended). Hạn 2.5 phút: nếu user chưa chọn, tự động chọn hướng tối ưu để làm tiếp, tránh đứt đoạn.\n"
-        "2. 💎 [CHẾ ĐỘ NGHIỆM THU HOÀN THIỆN] ✨: Khi code xong và test pass (exit 0), BẮT BUỘC gọi modal ask_question có tiền tố tiêu đề '💎 [NGHIỆM THU HOÀN THIỆN]' (💎 [100% HOÀN TẤT] ✨ vs ⚡ [SUPERPOWERS DEBUG] 🛠️), TREO CỐ ĐỊNH VĨNH VIỄN (KHÔNG TIMEOUT) để chờ user đối chứng thực tế và rà soát học tập.\n"
-        "3. FIRST-TIME RIGHT: Inspect First kỹ lưỡng trước khi sửa, cấm đoán mò vì sợ đọc tài liệu."
+        "2. 💎 [CHẾ ĐỘ NGHIỆM THU HOÀN THIỆN] ✨ (TÁCH NHỊP 2 BƯỚC v1.4.2): Khi code xong và test pass (exit 0): "
+        "BƯỚC 1: BẮT BUỘC in toàn văn Báo cáo & Hướng dẫn đối chứng ra màn hình, TUYỆT ĐỐI KHÔNG gọi ask_question cùng lúc làm che mất chữ. "
+        "BƯỚC 2: Chờ user đọc xong và phản hồi, sau đó MỚI gọi modal ask_question '💎 [NGHIỆM THU HOÀN THIỆN]' (💎 [100% HOÀN TẤT] ✨ vs ⚡ [SUPERPOWERS DEBUG] 🛠️) để user xác nhận an toàn.\n"
+        "3. FIRST-TIME RIGHT & COHESIVE INSPECTION: Inspect First đọc trọn vẹn khối chức năng liên quan (100–400 dòng trong 1 lần view_file). CẤM đọc vụn 50 dòng (Micro-Peeking), cấm đoán mò vì sợ tốn token."
     )
     if sync_occurred:
         anchor_msg = f"🔄 [AUTO-SYNC]: Đã đồng bộ 2 chiều ngầm v{active_version}.\n" + anchor_msg

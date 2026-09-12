@@ -107,3 +107,21 @@ Sau khi người dùng bấm nghiệm thu hoàn tất (`💎 [100% HOÀN TẤT] 
 - **Giới Hạn Dung Lượng Kho Tri Thức (Knowledge Upper Bound)**: Kho `docs/learned_patterns.md` và toàn cục chỉ lưu giữ tối đa 10 patterns tinh hoa súc tích. Những bài học đã được chuyển hoá thành code logic trong `sync_skill.py` hoặc hook tự động sẽ được tỉa bỏ (pruned) khỏi file text.
 - **Nâng Cấp Ngược Lại Tooling**: Kết quả trả lời của Q3, Q4 và Q6 được ưu tiên hiện thực hoá thành các tiện ích tự động hóa trong script thay vì bắt AI phải nhớ trong đầu dưới dạng text rule.
 
+---
+
+## 10. Giải Phẫu Thực Nghiệm: Vụ Án Serene-Bose & Khai Tử Bệnh "Đọc Vụn 50 Dòng" (Cohesive Block Inspection)
+
+### 1. Hiện Tượng Thực Tế Từ Case Study Serene-Bose
+Tại dự án `serene-bose` (`C:\Users\tient\Documents\antigravity\serene-bose`, conversation `9cf4a77a-bf73-4e49-81ae-30b2377bb9c2`), hệ thống ghi nhận một chuỗi thử-sai gây lãng phí nghiêm trọng:
+- AI lặp lại liên tục: `grep_search` -> `view_file` 50 dòng (lines 820-870) -> không đủ context -> `grep_search` -> `view_file` 54 dòng (lines 2730-2784) -> `view_file` lines 1-100 -> lines 101-183...
+- **Hậu quả**: Tốn hơn 30 tool calls rời rạc, làm trôi context window với hàng chục nghìn token lịch sử, kéo dài thời gian phản hồi của agent lên gấp 10 lần và khiến người dùng cực kỳ ức chế.
+
+### 2. Nguyên Nhân Gốc: Tật "Đọc Vụn Nhòm Khe" (Micro-Peeking Anti-Pattern)
+- Do hiểu lầm tai hại về khái niệm "Lean" (tinh gọn context), AI ngộ nhận rằng tiết kiệm token là "chỉ được đọc 50 dòng mỗi lần".
+- Thực tế, công cụ `view_file` cho phép đọc tối đa 800 dòng. Việc chỉ đọc 50 dòng cắt đứt hoàn toàn ngữ cảnh bao quanh của hàm/class (biến khởi tạo, scope đóng/mở, imports liên quan). AI buộc phải grep lại và đọc tiếp nhiều mẩu vụn khác nhau để chắp vá.
+
+### 3. Thiết Lập Chuẩn: Cohesive Block Inspection (100–400 Dòng Trọn Vẹn Khối Logic)
+- **Định nghĩa đúng của "Lean"**: Lean là **Trúng Đích & Liền Mạch (Targeted & Cohesive)**, tuyệt đối KHÔNG phải là "cắt vụn 50 dòng".
+- **Chuẩn thực thi First-Time Right**: Khi đã xác định file và hàm cần kiểm tra, BẮT BUỘC đọc trọn vẹn 100–400 dòng bao quát toàn bộ logic của hàm/class trong **1 lần gọi `view_file` duy nhất**.
+- **Cấm Tuyệt Đối**: Chuỗi thao tác grep -> đọc 50 dòng -> grep lại cùng file -> đọc tiếp 50 dòng. Đọc trọn vẹn ngay lần đầu giúp nắm 100% ngữ cảnh, sửa đúng nguyên nhân gốc trong 1 lần diff duy nhất!
+
