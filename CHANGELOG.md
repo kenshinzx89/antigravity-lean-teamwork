@@ -4,6 +4,12 @@ Tất cả các thay đổi, bài học và tính năng nâng cấp qua từng p
 
 ---
 
+## [1.4.3] — 2026-09-12
+### Added
+- **Đồng Hồ Đồ Họa Đếm Ngược Động Trực Tiếp Trên Popup (Live Countdown SVG)**: Tích hợp đồ họa `technical_proposal_timer.svg` trực tiếp vào modal `ask_question` với phong cách 7 màu chuyển sắc nhẹ nhàng macOS Spectrum, số SF Mono lùi từng giây thực tế (`02:30 -> 00:00`) và thanh progress capsule mượt mà.
+- **Tiêu Đề Chuẩn Nhận Diện Lean Teamwork**: Chốt tiêu đề `🧭 ĐỀ XUẤT KỸ THUẬT 💡` và mô tả hành động `Tự động chọn [Recommended] sau:`.
+- **Cơ Chế Pause Ô 3 Thông Minh**: Tự động coi đồng hồ như đã tạm dừng khi người dùng bấm/nhập ô số 3 (ý kiến riêng), đảm bảo AI không bao giờ tự ý chọn phương án Recommended.
+
 ## [1.4.2] — 2026-09-12
 ### Added
 - **Khai Tử Bệnh "Đọc Vụn Nhòm Khe 50 Dòng" (Micro-Peeking Anti-Pattern)**: Rút kinh nghiệm sâu sắc từ thực nghiệm tại dự án `serene-bose`, cấm tuyệt đối việc đọc vụn vặt 50 dòng làm đứt gãy ngữ cảnh của hàm/class gây ra 20–30 tool calls lòng vòng.

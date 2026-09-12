@@ -1,0 +1,255 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="84" viewBox="0 0 480 84">
+  <defs>
+    <!-- Đổ bóng mờ dịu nhẹ kiểu macOS -->
+    <filter id="softShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#000000" flood-opacity="0.25"/>
+    </filter>
+
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Gradient 7 Màu Chuyển Sắc Dịu Nhẹ Chuẩn macOS Spectrum -->
+    <linearGradient id="spectrumBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.8"/>    <!-- Cyan -->
+      <stop offset="25%" stop-color="#818cf8" stop-opacity="0.7"/>   <!-- Indigo -->
+      <stop offset="50%" stop-color="#c084fc" stop-opacity="0.8"/>   <!-- Purple -->
+      <stop offset="75%" stop-color="#f472b6" stop-opacity="0.7"/>   <!-- Pink -->
+      <stop offset="100%" stop-color="#fbbf24" stop-opacity="0.8"/>  <!-- Amber -->
+    </linearGradient>
+
+    <!-- Nền Kính Frosted Glass Trong Suốt Nhẹ Nhàng -->
+    <linearGradient id="softGlassBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.14"/>
+      <stop offset="50%" stop-color="#ffffff" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.10"/>
+    </linearGradient>
+
+    <!-- Gradient 7 Màu Cho Icon Đồng Hồ Thanh Mảnh -->
+    <linearGradient id="iconSpectrum" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="35%" stop-color="#a855f7"/>
+      <stop offset="70%" stop-color="#ec4899"/>
+      <stop offset="100%" stop-color="#f59e0b"/>
+    </linearGradient>
+
+    <!-- Gradient 7 Màu Cho Thanh Tiến Trình Dạng Viên Thuốc -->
+    <linearGradient id="progressSpectrum" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="20%" stop-color="#6366f1"/>
+      <stop offset="45%" stop-color="#a855f7"/>
+      <stop offset="70%" stop-color="#ec4899"/>
+      <stop offset="90%" stop-color="#f43f5e"/>
+      <stop offset="100%" stop-color="#fbbf24"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Khung Kính Trong Suốt 7 Màu Chuyển Sắc Dịu Dàng -->
+  <rect x="2" y="2" width="476" height="80" rx="18" fill="url(#softGlassBg)" stroke="url(#spectrumBorder)" stroke-width="1.4" filter="url(#softShadow)"/>
+  <path d="M 22 3 L 458 3" stroke="#ffffff" stroke-opacity="0.3" stroke-width="1" stroke-linecap="round"/>
+
+  <!-- ICON ĐỒNG HỒ 7 MÀU CHUYỂN SẮC MACOS NHẸ NHÀNG THANH LỊCH (TRONG SUỐT 100%) -->
+  <g transform="translate(36, 42)">
+    <!-- Vòng phát sáng dịu nhẹ -->
+    <circle cx="0" cy="0" r="18" fill="none" stroke="url(#iconSpectrum)" stroke-width="1.8" filter="url(#softGlow)"/>
+    <!-- Nền kính trong suốt điểm nhẹ ánh màu mờ -->
+    <circle cx="0" cy="0" r="15" fill="#a855f7" fill-opacity="0.08"/>
+
+    <!-- Núm trên đồng hồ thanh lịch -->
+    <rect x="-2.5" y="-21" width="5" height="3" rx="1" fill="#c084fc" opacity="0.8"/>
+    <rect x="-5" y="-23" width="10" height="2" rx="1" fill="#818cf8" opacity="0.9"/>
+
+    <!-- 12 vạch chia giờ siêu thanh mảnh, tinh tế -->
+    <circle cx="0" cy="-13" r="0.9" fill="#e2e8f0"/>
+    <circle cx="13" cy="0" r="0.9" fill="#e2e8f0"/>
+    <circle cx="0" cy="13" r="0.9" fill="#e2e8f0"/>
+    <circle cx="-13" cy="0" r="0.9" fill="#e2e8f0"/>
+
+    <!-- Kim giờ thanh mảnh màu tím pastel -->
+    <line x1="0" y1="0" x2="0" y2="-7" stroke="#c084fc" stroke-width="1.6" stroke-linecap="round">
+      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="150s" repeatCount="indefinite"/>
+    </line>
+    <!-- Kim phút/giây thanh lịch màu xanh băng tuyết quay êm ái -->
+    <line x1="0" y1="1.5" x2="0" y2="-11.5" stroke="#38bdf8" stroke-width="1.2" stroke-linecap="round">
+      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="60s" repeatCount="indefinite"/>
+    </line>
+    <circle cx="0" cy="0" r="1.8" fill="#ffffff"/>
+  </g>
+
+  <!-- Đèn giao thông Apple Traffic Lights phong cách macOS nguyên bản -->
+  <circle cx="70" cy="19" r="3.5" fill="#FF5F56" opacity="0.85"/>
+  <circle cx="80" cy="19" r="3.5" fill="#FFBD2E" opacity="0.85"/>
+  <circle cx="90" cy="19" r="3.5" fill="#27C93F" opacity="0.85"/>
+
+  <text x="102" y="23" fill="#cbd5e1" font-family="-apple-system, SF Pro Display, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="11.5" font-weight="600" letter-spacing="0.5">MACOS SPECTRUM TIMER</text>
+  <text x="70" y="44" fill="#f1f5f9" font-family="-apple-system, SF Pro Text, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="13.5" font-weight="500">Tự chọn [Recommended] sau:</text>
+
+  <!-- Màn Hình Kỹ Thuật Số SF Mono Nhảy Giây Từng Giây Dịu Mắt -->
+  <g font-family="SF Mono, Consolas, Monaco, monospace" font-size="25" font-weight="700">
+    <text x="260" y="44" fill="#38bdf8" display="none">02:30<set attributeName="display" to="inline" begin="0s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">02:29<set attributeName="display" to="inline" begin="1s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">02:28<set attributeName="display" to="inline" begin="2s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">02:27<set attributeName="display" to="inline" begin="3s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">02:26<set attributeName="display" to="inline" begin="4s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">02:25<set attributeName="display" to="inline" begin="5s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">02:24<set attributeName="display" to="inline" begin="6s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">02:23<set attributeName="display" to="inline" begin="7s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">02:22<set attributeName="display" to="inline" begin="8s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">02:21<set attributeName="display" to="inline" begin="9s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">02:20<set attributeName="display" to="inline" begin="10s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">02:19<set attributeName="display" to="inline" begin="11s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">02:18<set attributeName="display" to="inline" begin="12s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">02:17<set attributeName="display" to="inline" begin="13s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">02:16<set attributeName="display" to="inline" begin="14s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">02:15<set attributeName="display" to="inline" begin="15s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">02:14<set attributeName="display" to="inline" begin="16s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">02:13<set attributeName="display" to="inline" begin="17s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">02:12<set attributeName="display" to="inline" begin="18s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">02:11<set attributeName="display" to="inline" begin="19s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">02:10<set attributeName="display" to="inline" begin="20s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">02:09<set attributeName="display" to="inline" begin="21s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">02:08<set attributeName="display" to="inline" begin="22s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">02:07<set attributeName="display" to="inline" begin="23s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">02:06<set attributeName="display" to="inline" begin="24s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">02:05<set attributeName="display" to="inline" begin="25s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">02:04<set attributeName="display" to="inline" begin="26s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">02:03<set attributeName="display" to="inline" begin="27s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">02:02<set attributeName="display" to="inline" begin="28s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">02:01<set attributeName="display" to="inline" begin="29s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">02:00<set attributeName="display" to="inline" begin="30s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:59<set attributeName="display" to="inline" begin="31s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:58<set attributeName="display" to="inline" begin="32s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:57<set attributeName="display" to="inline" begin="33s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:56<set attributeName="display" to="inline" begin="34s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:55<set attributeName="display" to="inline" begin="35s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:54<set attributeName="display" to="inline" begin="36s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:53<set attributeName="display" to="inline" begin="37s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:52<set attributeName="display" to="inline" begin="38s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:51<set attributeName="display" to="inline" begin="39s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:50<set attributeName="display" to="inline" begin="40s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:49<set attributeName="display" to="inline" begin="41s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:48<set attributeName="display" to="inline" begin="42s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:47<set attributeName="display" to="inline" begin="43s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:46<set attributeName="display" to="inline" begin="44s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:45<set attributeName="display" to="inline" begin="45s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:44<set attributeName="display" to="inline" begin="46s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:43<set attributeName="display" to="inline" begin="47s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:42<set attributeName="display" to="inline" begin="48s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:41<set attributeName="display" to="inline" begin="49s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:40<set attributeName="display" to="inline" begin="50s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:39<set attributeName="display" to="inline" begin="51s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:38<set attributeName="display" to="inline" begin="52s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:37<set attributeName="display" to="inline" begin="53s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:36<set attributeName="display" to="inline" begin="54s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:35<set attributeName="display" to="inline" begin="55s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:34<set attributeName="display" to="inline" begin="56s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:33<set attributeName="display" to="inline" begin="57s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:32<set attributeName="display" to="inline" begin="58s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:31<set attributeName="display" to="inline" begin="59s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:30<set attributeName="display" to="inline" begin="60s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:29<set attributeName="display" to="inline" begin="61s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:28<set attributeName="display" to="inline" begin="62s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:27<set attributeName="display" to="inline" begin="63s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:26<set attributeName="display" to="inline" begin="64s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:25<set attributeName="display" to="inline" begin="65s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:24<set attributeName="display" to="inline" begin="66s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:23<set attributeName="display" to="inline" begin="67s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:22<set attributeName="display" to="inline" begin="68s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:21<set attributeName="display" to="inline" begin="69s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:20<set attributeName="display" to="inline" begin="70s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:19<set attributeName="display" to="inline" begin="71s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:18<set attributeName="display" to="inline" begin="72s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:17<set attributeName="display" to="inline" begin="73s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:16<set attributeName="display" to="inline" begin="74s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:15<set attributeName="display" to="inline" begin="75s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:14<set attributeName="display" to="inline" begin="76s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:13<set attributeName="display" to="inline" begin="77s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:12<set attributeName="display" to="inline" begin="78s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:11<set attributeName="display" to="inline" begin="79s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:10<set attributeName="display" to="inline" begin="80s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:09<set attributeName="display" to="inline" begin="81s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:08<set attributeName="display" to="inline" begin="82s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:07<set attributeName="display" to="inline" begin="83s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:06<set attributeName="display" to="inline" begin="84s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:05<set attributeName="display" to="inline" begin="85s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:04<set attributeName="display" to="inline" begin="86s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:03<set attributeName="display" to="inline" begin="87s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:02<set attributeName="display" to="inline" begin="88s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:01<set attributeName="display" to="inline" begin="89s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">01:00<set attributeName="display" to="inline" begin="90s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">00:59<set attributeName="display" to="inline" begin="91s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">00:58<set attributeName="display" to="inline" begin="92s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">00:57<set attributeName="display" to="inline" begin="93s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">00:56<set attributeName="display" to="inline" begin="94s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">00:55<set attributeName="display" to="inline" begin="95s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">00:54<set attributeName="display" to="inline" begin="96s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">00:53<set attributeName="display" to="inline" begin="97s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">00:52<set attributeName="display" to="inline" begin="98s" dur="1s"/></text>
+    <text x="260" y="44" fill="#38bdf8" display="none">00:51<set attributeName="display" to="inline" begin="99s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fde047" display="none">00:50<set attributeName="display" to="inline" begin="100s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fde047" display="none">00:49<set attributeName="display" to="inline" begin="101s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fde047" display="none">00:48<set attributeName="display" to="inline" begin="102s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fde047" display="none">00:47<set attributeName="display" to="inline" begin="103s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fde047" display="none">00:46<set attributeName="display" to="inline" begin="104s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fde047" display="none">00:45<set attributeName="display" to="inline" begin="105s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fde047" display="none">00:44<set attributeName="display" to="inline" begin="106s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fde047" display="none">00:43<set attributeName="display" to="inline" begin="107s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fde047" display="none">00:42<set attributeName="display" to="inline" begin="108s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fde047" display="none">00:41<set attributeName="display" to="inline" begin="109s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fde047" display="none">00:40<set attributeName="display" to="inline" begin="110s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fde047" display="none">00:39<set attributeName="display" to="inline" begin="111s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fde047" display="none">00:38<set attributeName="display" to="inline" begin="112s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fde047" display="none">00:37<set attributeName="display" to="inline" begin="113s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fde047" display="none">00:36<set attributeName="display" to="inline" begin="114s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fde047" display="none">00:35<set attributeName="display" to="inline" begin="115s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fde047" display="none">00:34<set attributeName="display" to="inline" begin="116s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fde047" display="none">00:33<set attributeName="display" to="inline" begin="117s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fde047" display="none">00:32<set attributeName="display" to="inline" begin="118s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fde047" display="none">00:31<set attributeName="display" to="inline" begin="119s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fde047" display="none">00:30<set attributeName="display" to="inline" begin="120s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fde047" display="none">00:29<set attributeName="display" to="inline" begin="121s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fde047" display="none">00:28<set attributeName="display" to="inline" begin="122s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fde047" display="none">00:27<set attributeName="display" to="inline" begin="123s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fde047" display="none">00:26<set attributeName="display" to="inline" begin="124s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fde047" display="none">00:25<set attributeName="display" to="inline" begin="125s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fde047" display="none">00:24<set attributeName="display" to="inline" begin="126s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fde047" display="none">00:23<set attributeName="display" to="inline" begin="127s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fde047" display="none">00:22<set attributeName="display" to="inline" begin="128s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fde047" display="none">00:21<set attributeName="display" to="inline" begin="129s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fb7185" display="none">00:20<set attributeName="display" to="inline" begin="130s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fb7185" display="none">00:19<set attributeName="display" to="inline" begin="131s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fb7185" display="none">00:18<set attributeName="display" to="inline" begin="132s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fb7185" display="none">00:17<set attributeName="display" to="inline" begin="133s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fb7185" display="none">00:16<set attributeName="display" to="inline" begin="134s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fb7185" display="none">00:15<set attributeName="display" to="inline" begin="135s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fb7185" display="none">00:14<set attributeName="display" to="inline" begin="136s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fb7185" display="none">00:13<set attributeName="display" to="inline" begin="137s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fb7185" display="none">00:12<set attributeName="display" to="inline" begin="138s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fb7185" display="none">00:11<set attributeName="display" to="inline" begin="139s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fb7185" display="none">00:10<set attributeName="display" to="inline" begin="140s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fb7185" display="none">00:09<set attributeName="display" to="inline" begin="141s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fb7185" display="none">00:08<set attributeName="display" to="inline" begin="142s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fb7185" display="none">00:07<set attributeName="display" to="inline" begin="143s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fb7185" display="none">00:06<set attributeName="display" to="inline" begin="144s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fb7185" display="none">00:05<set attributeName="display" to="inline" begin="145s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fb7185" display="none">00:04<set attributeName="display" to="inline" begin="146s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fb7185" display="none">00:03<set attributeName="display" to="inline" begin="147s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fb7185" display="none">00:02<set attributeName="display" to="inline" begin="148s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fb7185" display="none">00:01<set attributeName="display" to="inline" begin="149s" dur="1s"/></text>
+    <text x="260" y="44" fill="#fb7185" display="none">00:00<set attributeName="display" to="inline" begin="150s" dur="1s"/></text>
+  </g>
+
+  <!-- Pill Badge Pause Tím macOS Nhẹ Nhàng -->
+  <rect x="362" y="27" width="104" height="23" rx="11.5" fill="#818cf8" fill-opacity="0.2" stroke="#a5b4fc" stroke-opacity="0.6" stroke-width="1"/>
+  <text x="414" y="42.5" fill="#e0e7ff" font-family="-apple-system, SF Pro Text, BlinkMacSystemFont, sans-serif" font-size="10.5" font-weight="600" text-anchor="middle">⏸️ Gõ ô 3: Pause</text>
+
+  <!-- Thanh Tiến Trình Dạng Viên Thuốc 7 Sắc Cầu Vồng macOS -->
+  <rect x="70" y="58" width="396" height="6.5" rx="3.25" fill="#ffffff" fill-opacity="0.12"/>
+  <rect x="70" y="58" width="396" height="6.5" rx="3.25" fill="url(#progressSpectrum)" filter="url(#softGlow)">
+    <animate attributeName="width" from="396" to="0" dur="150s" fill="freeze"/>
+  </rect>
+</svg>

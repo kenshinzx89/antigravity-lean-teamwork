@@ -92,15 +92,11 @@ Hệ thống sử dụng công cụ `ask_question` để kích hoạt Popup tư�
 - **Khi nào kích hoạt**: Khi vừa nhận yêu cầu mới, phân tích hướng đi, hoặc đứng trước các ngã rẽ kỹ thuật quan trọng.
 - **Quy chuẩn hiển thị**: Tiền tố câu hỏi modal `ask_question` bắt buộc có nhãn `🧭 [ĐỀ XUẤT KỸ THUẬT] ⏱️ [HẠN CHỐT: HH:MM:SS — CÒN ĐÚNG 2 PHÚT 30 GIÂY] 💡`.
 - **Cấu trúc tùy chọn**: Cung cấp từ 2 đến 4 giải pháp cụ thể, luôn đánh dấu dòng tối ưu nhất bằng `(Recommended)`.
-- **Đồng hồ đếm ngược thời gian thực ngay trên Popup (Wall-Clock Countdown)**:
-  - BẮT BUỘC in khối đồng hồ thời gian thực xác lập ngay trong nội dung modal:
-    ```text
-    ⏳ ĐỒNG HỒ ĐẾM NGƯỢC XÁC LẬP THỜI GIAN THỰC:
-    • 🟢 Mở popup lúc: [Giờ:Phút:Giây hiện tại của máy tính]
-    • 🔴 Hạn tự động chọn [Recommended]: [Giờ:Phút:Giây + 150s]
-    • ⏱️ Quỹ thời gian: Đúng 150 giây (2.5 phút) theo đồng hồ máy tính của bạn.
-    ```
-  - Nếu sau 2.5 phút người dùng chưa chọn, hệ thống tự động tiếp tục với hướng `(Recommended)` để giữ mạch công việc không bị đình trệ.
+- **Đồng hồ đếm ngược đồ họa thời gian thực ngay trên Popup (Live Countdown SVG)**:
+  - BẮT BUỘC nhúng đồ họa `technical_proposal_timer.svg` (phong cách 7 màu chuyển sắc nhẹ nhàng macOS Spectrum, thanh capsule co dần 150s, số SF Mono lùi từng giây thực tế):
+    `![🧭 ĐỀ XUẤT KỸ THUẬT 💡](file:///C:/Users/tient/.gemini/antigravity/brain/<conv_id>/technical_proposal_timer.svg)`
+  - **Cơ chế Pause Thông Minh (Ô Số 3)**: Khi người dùng bấm hoặc gõ vào ô nhập ý kiến riêng bên dưới (ô số 3), đồng hồ được coi như đã tạm dừng (Paused), AI dừng chờ người dùng 100%, không bao giờ tự ý chọn phương án Recommended.
+  - Nếu sau 2.5 phút người dùng không tương tác, hệ thống tự động tiếp tục với hướng `(Recommended)` để giữ mạch công việc không bị đình trệ.
 
 ### 2. 💎 [CHẾ ĐỘ NGHIỆM THU HOÀN THIỆN] ✨ (Quy Trình Tách Nhịp 2 Bước v1.4.2)
 - **Khi nào kích hoạt**: Khi code đã viết xong, toàn bộ kiểm thử tích hợp đạt 100% PASS (Exit Code 0).
