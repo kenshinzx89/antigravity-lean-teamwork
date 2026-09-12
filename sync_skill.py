@@ -21,6 +21,7 @@ if sys.platform == "win32":
 REPO_ROOT = Path(__file__).resolve().parent
 GLOBAL_CONFIG_DIR = Path(os.path.expanduser("~")) / ".gemini" / "config"
 GLOBAL_SKILL_DIR = GLOBAL_CONFIG_DIR / "skills" / "lean-teamwork"
+BUILTIN_SKILL_DIR = Path(os.path.expanduser("~")) / ".gemini" / "antigravity" / "builtin" / "skills" / "lean-teamwork"
 
 def parse_semver(v_str: str):
     parts = v_str.strip().split(".")
@@ -121,14 +122,33 @@ def bidirectional_merge_patterns():
     print(f"  ✓ Cân bằng 2 chiều tri thức thành công ({len(merged_blocks)} patterns tại cả 2 nơi).")
 
 def ensure_stock_gemini():
-    target_stock_gemini = GLOBAL_CONFIG_DIR / "GEMINI.md"
-    if not target_stock_gemini.exists():
-        src_gemini_candidate = Path(os.path.expanduser("~")) / ".gemini" / "GEMINI.md"
-        if src_gemini_candidate.exists():
-            gemini_txt = src_gemini_candidate.read_text(encoding="utf-8")
-            if not gemini_txt.startswith("# Antigravity Global Operating Rules"):
-                gemini_txt = "# Antigravity Global Operating Rules (Global Operating Contract v2)\n\n" + gemini_txt.split("\n", 1)[-1]
-            target_stock_gemini.write_text(gemini_txt, encoding="utf-8")
+    gemini_candidates = [
+        Path(os.path.expanduser("~")) / ".gemini" / "antigravity" / "GEMINI.md",
+        Path(os.path.expanduser("~")) / ".gemini" / "GEMINI.md",
+        GLOBAL_CONFIG_DIR / "GEMINI.md"
+    ]
+    lean_gate_ref = "- Lean Teamwork Protocol: `.agents/skills/lean-teamwork/SKILL.md` (kích hoạt 🧭 [ĐỀ XUẤT KỸ THUẬT] và 💎 [NGHIỆM THU HOÀN THIỆN] tách nhịp 2 bước)\n"
+
+    for gf in gemini_candidates:
+        gf.parent.mkdir(parents=True, exist_ok=True)
+        if gf.exists():
+            txt = gf.read_text(encoding="utf-8")
+            if "Lean Teamwork Protocol" not in txt:
+                txt = txt.strip() + "\n" + lean_gate_ref
+                gf.write_text(txt, encoding="utf-8")
+        else:
+            # Khởi tạo mặc định nếu chưa có
+            stock_txt = (
+                "# Antigravity Global Operating Rules (Global Operating Contract v2)\n\n"
+                "Quy chuẩn nạp mặc định cho Antigravity.\n\n"
+                "## 1. Intent and authority gate\n"
+                "- Thực hiện ngay khi outcome, scope đều rõ.\n"
+                "- Kích hoạt Lean Teamwork Protocol: `🧭 [ĐỀ XUẤT KỸ THUẬT]` và `💎 [NGHIỆM THU HOÀN THIỆN]`.\n\n"
+                "## Reference map (load on demand)\n"
+                + lean_gate_ref
+            )
+            gf.write_text(stock_txt, encoding="utf-8")
+    print("  ✓ Đã kiểm tra và duy trì mỏ neo Lean Teamwork tại toàn bộ GEMINI.md hệ thống!")
 def ensure_global_hooks():
     setup_script = REPO_ROOT / "scripts" / "setup_global_hook.py"
     if setup_script.exists():
@@ -156,7 +176,7 @@ def sync_source_to_installed(version: str):
     target_skill_md.write_text(global_skill_content, encoding="utf-8")
     print("  ✓ [PULL] Đã đồng bộ SKILL.md vào Global Config")
 
-    for sub in ["templates", "references"]:
+    for sub in ["templates", "references", "resources"]:
         src_sub = source_skill_dir / sub
         dst_sub = GLOBAL_SKILL_DIR / sub
         if src_sub.exists():
@@ -165,6 +185,15 @@ def sync_source_to_installed(version: str):
 
     (GLOBAL_SKILL_DIR / "VERSION").write_text(version + "\n", encoding="utf-8")
     print(f"  ✓ [PULL] Đã ghi VERSION {version} vào {GLOBAL_SKILL_DIR}")
+
+    # Đồng bộ Lean Teamwork thành BUILTIN SKILL chính thức của IDE Antigravity
+    try:
+        BUILTIN_SKILL_DIR.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copytree(source_skill_dir, BUILTIN_SKILL_DIR, dirs_exist_ok=True)
+        (BUILTIN_SKILL_DIR / "VERSION").write_text(version + "\n", encoding="utf-8")
+        print(f"  ✓ [BUILTIN] Đã gắn chặt Lean Teamwork vào Antigravity IDE Builtin Skills!")
+    except Exception as e:
+        pass
 
     ensure_stock_gemini()
     ensure_global_hooks()
@@ -245,8 +274,35 @@ def auto_smart_sync():
     print(f"• Global Core: {GLOBAL_SKILL_DIR}")
     print("============================================================")
 
+def install_to_project(target_path_str: str):
+    target_dir = Path(target_path_str).resolve()
+    if not target_dir.exists():
+        print(f"[ERROR] Thư mục dự án không tồn tại: {target_dir}")
+        sys.exit(1)
+
+    print(f"\n🚀 [PROJECT INSTALL] Đang cài đặt Lean Teamwork vào dự án: {target_dir}")
+    source_skill = REPO_ROOT / ".agents" / "skills" / "lean-teamwork"
+    dest_skill = target_dir / ".agents" / "skills" / "lean-teamwork"
+    dest_skill.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copytree(source_skill, dest_skill, dirs_exist_ok=True)
+    print(f"  ✓ Đã cài đặt .agents/skills/lean-teamwork/")
+
+    for f in ["GEMINI.md", "AGENTS.md"]:
+        src_f = REPO_ROOT / f
+        if src_f.exists():
+            shutil.copy(src_f, target_dir / f)
+            print(f"  ✓ Đã sao chép {f} vào gốc dự án")
+
+    print(f"[SUCCESS] Dự án {target_dir.name} đã được trang bị Lean Teamwork hoàn chỉnh 100%!")
+
 if __name__ == "__main__":
-    if "--bump" in sys.argv:
+    if "--install-to" in sys.argv:
+        idx = sys.argv.index("--install-to")
+        if len(sys.argv) > idx + 1:
+            install_to_project(sys.argv[idx + 1])
+        else:
+            print("[ERROR] Cần cung cấp đường dẫn dự án: --install-to <path>")
+    elif "--bump" in sys.argv:
         bump_type = "patch"
         idx = sys.argv.index("--bump")
         if len(sys.argv) > idx + 1 and sys.argv[idx + 1] in ["patch", "minor", "major"]:

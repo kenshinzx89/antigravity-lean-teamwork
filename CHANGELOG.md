@@ -4,6 +4,13 @@ Tất cả các thay đổi, bài học và tính năng nâng cấp qua từng p
 
 ---
 
+## [1.4.5] — 2026-09-12
+### Added
+- **Gắn Chặt Lean Teamwork Mặc Định Vào IDE Antigravity (Builtin Core Integration)**: Đăng ký Lean Teamwork trực tiếp vào `~/.gemini/antigravity/builtin/skills/` thành Builtin Skill chính thức của IDE.
+- **Nâng Cấp Thiết Luật Toàn Cục Tối Cao**: Đồng bộ cả 3 file `GEMINI.md` của Antigravity, đưa Lean Teamwork Gate (`🧭 [ĐỀ XUẤT KỸ THUẬT]` & `💎 [NGHIỆM THU HOÀN THIỆN]`) thành Thiết luật bắt buộc mặc định trên mọi workspace.
+- **Tính Năng Cài Đặt Vào Dự Án Nhanh (`--install-to <path>`)**: Hỗ trợ trang bị trọn gói Lean Teamwork vào bất kỳ dự án nào trên máy chỉ với 1 lệnh terminal.
+- **Trang Bị Trực Tiếp Cho Dự Án `AntigravityWidget`**: Cài đặt hoàn chỉnh skill, tài nguyên SVG và controllers vào thư mục `AntigravityWidget`.
+
 ## [1.4.4] — 2026-09-12
 ### Added
 - **Cơ Chế Tương Thích Tuyệt Đối Mọi Máy Tính (Universal Multi-Machine Parity)**: Khắc phục lỗi hook ngầm chỉ chạy được trong repo mà chết ở các project khác (như antigravity-widget).
