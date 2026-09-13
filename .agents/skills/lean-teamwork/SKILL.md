@@ -150,6 +150,13 @@ Hệ thống chuyển hướng toàn bộ khâu Đề xuất Kỹ thuật (🧭)
 6. **Bộ Khung Tự Vấn Phản Tư 6 Chiều & Khử Phình Quy Tắc (6-Point Reflective Inquiry & Anti-Rule-Bloat)**:
    - **Chống phình to quy tắc (Anti-Rule-Bloat)**: Không tích lũy vô hạn. Subagent sau nghiệm thu tự vấn 6 câu (Nguyên nhân thử-sai, Làm chuẩn lần 1, Tiết kiệm quota, Tăng tốc tiến trình, Khử quy tắc thừa, Tự vấn đệ quy & Rà soát điểm nghẽn mãn tính).
    - **Nén, Tỉa & Trị Điểm Nghẽn Mãn Tính (Merge, Prune & Remediate)**: Hợp nhất các mẫu tương tự, tỉa bỏ quy tắc lỗi thời và tự động hành động khắc phục những điểm nghẽn đã cải tiến nhiều lần mà chưa mượt, giữ kho tri thức luôn súc tích và bộ não AI luôn sắc bén.
+7. **Kiểm Toán & Tinh Gọn Kỹ Năng Sẵn Có Qua 3–4 Chu Kỳ Nghiệm Thu (Multi-Cycle Skill Usage Audit & On-Demand Context Pruning)**:
+   - **Rà soát chuỗi 3–4 mốc nghiệm thu gần nhất**: Khi kết thúc nhiệm vụ, Subagent đúc kết (hoặc Agent nghiệm thu) BẮT BUỘC nhìn lại toàn bộ quá trình qua 3–4 chu kỳ nghiệm thu gần đây để đánh giá danh mục các kỹ năng sẵn có trong Antigravity (`~/.gemini/config/skills/`):
+     - *Kỹ năng nòng cốt & đang dùng*: Giữ nguyên các skill thiết yếu (`lean-teamwork`, `git-workflow`, `agentic-engineering`, v.v.) và các skill thuộc tech-stack dự án hiện tại.
+     - *Kỹ năng thừa cần tắt bớt*: Tạm tắt các skill hoàn toàn không đụng tới trong suốt 3–4 chu kỳ vừa qua hoặc không thuộc tech-stack của dự án (ví dụ: `laravel-*`, `django-*`, `quarkus-*`, `blender-*`, `csharp-*`, `fsharp-*`, `homelab-*`...) bằng cách chuyển vào `~/.gemini/config/skills_archive/` (hoặc chạy `py scripts/manage_skills.py --prune`). Việc này giải phóng hàng nghìn token trong system prompt ở mọi lượt gọi model tiếp theo.
+   - **Báo cáo minh bạch & Gọi lại tức thì khi cần (Transparent Report & Instant Recall On-Demand)**:
+     - Báo cáo rõ ràng trong phần đúc kết: Danh sách các skill đã tắt và lý do tắt để tiết kiệm Context Window.
+     - Luôn đính kèm hướng dẫn: Các skill này không hề bị mất. Bất cứ khi nào cần lại skill nào trong tương lai, người dùng hoặc AI chỉ cần yêu cầu: *"Bật lại skill [tên skill]"* (hoặc chạy `py scripts/manage_skills.py --restore <tên_skill>`), kỹ năng sẽ lập tức được kích hoạt trở lại 100%!
 
 ---
 

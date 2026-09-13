@@ -150,5 +150,32 @@ Khi một phiên làm việc diễn ra, không phải lúc nào AI cũng làm đ
 4. **Cơ Chế Lưu Vết Trong Bridge SDK**:
    - `teamwork_bridge.py` và `teamwork_service.py` tự động ghi nhận `last_completed_at` và `completion_history` mỗi khi người dùng bấm duyệt `ACCEPT`. Nhờ đó, AI luôn có mốc thời gian chính xác để truy vết `transcript.jsonl`.
 
+---
+
+## 12. Quy Tắc Kiểm Toán & Tinh Gọn Kỹ Năng Sẵn Có Qua 3–4 Chu Kỳ Nghiệm Thu (Multi-Cycle Skill Usage Audit & On-Demand Context Pruning Protocol)
+
+### 1. Vấn Đề Context Budget Khi Nạp Quá Nhiều Skill (>300 Skills)
+Trong môi trường Google Antigravity, toàn bộ các kỹ năng được cài đặt tại `~/.gemini/config/skills/` sẽ được nạp thông tin tóm tắt vào thẻ `<skills>` của system prompt ở MỖI lượt gọi model.
+- Khi số lượng skill tăng lên hàng trăm (ví dụ: các skill framework khác biệt như Laravel, Django, Quarkus, Blender, F#, Homelab, Visa, v.v.), IDE sẽ chạm trần ngân sách context:
+  `The following items were excluded due to context budget limits: ...`
+- Việc này gây lãng phí hàng nghìn tokens vô ích cho các kỹ năng không liên quan tới dự án hiện tại, làm chậm tốc độ sinh token và đẩy nhanh nguy cơ cạn quota.
+
+### 2. Thiết Luật Kiểm Toán Xuyên Suốt 3–4 Chu Kỳ Nghiệm Thu
+1. **Biên Độ Kiểm Toán Đa Chu Kỳ (3–4 Cycles Lookback)**:
+   - Khi bước vào pha nghiệm thu và đúc kết, Subagent đúc kết (hoặc Agent nghiệm thu) **KHÔNG ĐƯỢC chỉ nhìn vào 1 tác vụ đơn lẻ**.
+   - BẮT BUỘC nhìn lại toàn bộ quá trình qua **3–4 mốc nghiệm thu gần nhất** (được lưu tại `completion_history` trong `teamwork_bridge.json`).
+2. **Phân Loại Kỹ Năng Sẵn Có (Active vs Inactive Tech-Stack)**:
+   - *Retained Active Skills*: Các kỹ năng nòng cốt (`lean-teamwork`, `git-workflow`, `agentic-engineering`...) và các kỹ năng trực tiếp phục vụ tech-stack của dự án hiện tại.
+   - *Pruned / Archived Skills*: Các kỹ năng hoàn toàn không đụng tới trong suốt 3–4 chu kỳ vừa qua hoặc thuộc các tech-stack không liên quan (ví dụ: đang làm việc trên dự án Python/Win32 nhưng trong máy lại nạp `laravel-*`, `quarkus-*`, `blender-*`...).
+3. **Cơ Chế Cất Gọn Tạm Thời (`skills_archive`)**:
+   - Agent sử dụng công cụ `py scripts/manage_skills.py --prune` để di chuyển các skill thừa sang thư mục lưu trữ `~/.gemini/config/skills_archive/`.
+   - Các skill này tạm thời được ẩn khỏi system prompt của Antigravity IDE, giải phóng ngay lập tức hàng nghìn tokens cho các lượt chat tiếp theo.
+4. **Báo Cáo Minh Bạch & Cơ Chế Gọi Lại Tức Thì (Recall-On-Demand)**:
+   - Trong báo cáo hoàn thành, Agent BẮT BUỘC phải thông báo:
+     - Danh sách các kỹ năng đã được cất gọn.
+     - Lý do cất gọn (không dùng trong 3-4 chu kỳ gần nhất, để tiết kiệm context window).
+     - **Hướng dẫn gọi lại**: Các kỹ năng này vẫn được bảo toàn nguyên vẹn 100%. Khi nào người dùng hoặc dự án mới cần dùng lại, chỉ cần bảo AI: *"Bật lại skill [tên skill]"* (hoặc chạy `py scripts/manage_skills.py --restore <tên_skill>`), kỹ năng sẽ lập tức quay trở lại thư mục hoạt động!
+
+
 
 

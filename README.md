@@ -5,7 +5,7 @@
 <p align="center">
   <a href="https://github.com/kenshinzx89/antigravity-lean-teamwork"><img src="https://img.shields.io/badge/target-Google%20Antigravity%20(Gemini%203.7%2F3.8)-4285F4.svg?style=for-the-badge&logo=google" alt="Google Antigravity Only"></a>
   <a href="https://github.com/kenshinzx89/antigravity-lean-teamwork"><img src="https://img.shields.io/badge/role-Phanh%20H%C3%A3m%20%E1%BA%A8u%20ABS-FF6D00.svg?style=for-the-badge" alt="Phanh Hãm Ẩu ABS"></a>
-  <a href="https://github.com/kenshinzx89/antigravity-lean-teamwork"><img src="https://img.shields.io/badge/version-1.5.8-00C853.svg?style=for-the-badge" alt="Version"></a>
+  <a href="https://github.com/kenshinzx89/antigravity-lean-teamwork"><img src="https://img.shields.io/badge/version-1.5.9-00C853.svg?style=for-the-badge" alt="Version"></a>
   <a href="https://github.com/kenshinzx89/antigravity-lean-teamwork"><img src="https://img.shields.io/badge/tests-18%2F18%20passing-brightgreen.svg?style=for-the-badge" alt="Tests"></a>
   <a href="https://github.com/kenshinzx89/antigravity-lean-teamwork"><img src="https://img.shields.io/badge/license-MIT-purple.svg?style=for-the-badge" alt="License"></a>
 </p>

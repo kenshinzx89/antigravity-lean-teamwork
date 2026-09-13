@@ -250,6 +250,31 @@ def test_desktop_widget_bridge():
 
     print("[PASS] Desktop Widget Two-Way Bridge and Interactive Popover are verified.")
 
+def test_multi_cycle_skill_audit_and_pruning():
+    """Verify Multi-Cycle Skill Usage Audit, On-Demand Context Pruning, and manage_skills.py."""
+    manage_script = REPO_ROOT / "scripts" / "manage_skills.py"
+    assert manage_script.exists(), "scripts/manage_skills.py must exist"
+
+    # Check SKILL.md rule
+    skill_file = REPO_ROOT / ".agents" / "skills" / "lean-teamwork" / "SKILL.md"
+    skill_text = skill_file.read_text(encoding="utf-8")
+    assert "Multi-Cycle Skill Usage Audit" in skill_text, "SKILL.md must mandate Multi-Cycle Skill Usage Audit"
+    assert "skills_archive" in skill_text, "SKILL.md must document skills_archive directory"
+
+    # Check docs/self-evolution.md
+    self_evo = REPO_ROOT / "docs" / "self-evolution.md"
+    evo_text = self_evo.read_text(encoding="utf-8")
+    assert "Multi-Cycle Skill Usage Audit" in evo_text, "self-evolution.md must document Multi-Cycle Skill Usage Audit"
+    assert "Context Budget" in evo_text, "self-evolution.md must address Context Budget issue"
+
+    # Check manage_skills script functions
+    sys.path.insert(0, str(REPO_ROOT / "scripts"))
+    import manage_skills
+    candidates = manage_skills.audit_irrelevant_skills_for_repo(REPO_ROOT)
+    assert isinstance(candidates, list), "audit_irrelevant_skills_for_repo must return list"
+
+    print("[PASS] Multi-Cycle Skill Usage Audit, On-Demand Context Pruning & manage_skills.py are verified.")
+
 if __name__ == "__main__":
     test_stock_agi_integrity()
     test_project_skill_integrity()
@@ -262,7 +287,8 @@ if __name__ == "__main__":
     test_anti_survivorship_and_first_time_right()
     test_reflective_inquiry_and_knowledge_pruning()
     test_desktop_widget_bridge()
+    test_multi_cycle_skill_audit_and_pruning()
     print("\n============================================================")
-    print("ALL 11/11 SYSTEM CHECKS PASSED SUCCESSFULLY (Exit Code 0).")
-    print("Zero-Touch Auto Sync, Stock AGI, Lean Teamwork, Desktop Widget Bridge & Anti-Rule-Bloat verified.")
+    print("ALL 12/12 SYSTEM CHECKS PASSED SUCCESSFULLY (Exit Code 0).")
+    print("Zero-Touch Auto Sync, Stock AGI, Lean Teamwork, Skill Pruning & Anti-Rule-Bloat verified.")
     print("============================================================")

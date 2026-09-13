@@ -236,3 +236,12 @@ Tài liệu này là nơi lưu trữ các tri thức kỹ thuật, mẫu sửa l
     1. **Repo-Relative Test Target**: Trong tất cả các file kiểm thử (`tests/`), các tài nguyên mã nguồn và dịch vụ widget phải luôn được định vị tương đối thông qua gốc dự án: `REPO_ROOT / "widget" / "core"`, tuyệt đối không dùng đường dẫn tuyệt đối của máy dev.
     2. **Universal User Home Resolution**: Thay thế toàn bộ các khai báo dự phòng `os.environ.get('USERPROFILE', r'C:\Users\tient')` bằng `Path.home()` tiêu chuẩn (hoặc `Path(os.environ.get('USERPROFILE') or os.path.expanduser('~'))`). Điều này đảm bảo hoạt động chuẩn xác trên cả Windows, Linux và macOS runners mà không bị phụ thuộc vào biến môi trường cục bộ hay tên tài khoản cụ thể.
   - *Lệnh test*: `gh run view 34771122612` -> 6/6 jobs PASS 100% trên cả Ubuntu & Windows runners với Python 3.10, 3.11, 3.12 (Exit code 0).
+
+## Mẫu 20: [Context Quota Optimization] Kiểm Toán Kỹ Năng Đa Chu Kỳ & Cất Gọn Theo Nhu Cầu (Multi-Cycle Skill Usage Audit & On-Demand Context Pruning) (v1.5.9)
+- **[Context Quota Optimization] [Kiểm Toán Kỹ Năng Đa Chu Kỳ & Cất Gọn Theo Nhu Cầu]**:
+  - *Nguyên nhân gốc*: Môi trường Antigravity IDE cài đặt hơn 300 skills khiến thẻ `<skills>` trong system prompt bị quá tải ngân sách context (`context budget limits`), làm tràn hàng nghìn tokens vô ích ở mọi lượt gọi model cho các công nghệ không liên quan (như Laravel, Django, Quarkus, Blender, F#, Homelab...).
+  - *Giải pháp tối thiểu*:
+    1. **Multi-Cycle Skill Usage Audit**: Khi nghiệm thu, Agent nhìn lại toàn bộ hành trình qua 3–4 chu kỳ nghiệm thu gần nhất (dựa trên `completion_history`). Rà soát và phân loại các kỹ năng sẵn có trong `~/.gemini/config/skills/`: giữ nguyên các kỹ năng nòng cốt (`lean-teamwork`, `git-workflow`...) và các kỹ năng thuộc tech-stack của dự án hiện tại.
+    2. **On-Demand Context Pruning (`skills_archive`)**: Sử dụng công cụ `py scripts/manage_skills.py --prune` để tạm cất gọn các skills không dùng tới vào thư mục lưu trữ `~/.gemini/config/skills_archive/`, giải phóng ngay lập tức context window cho Antigravity IDE.
+    3. **Transparent Reporting & Instant Recall**: Báo cáo minh bạch danh sách các skill đã cất và lý do. Bất cứ khi nào cần lại skill nào trong tương lai, người dùng hoặc AI chỉ cần nói: *"Bật lại skill [tên skill]"* (hoặc chạy `py scripts/manage_skills.py --restore <tên_skill>`), kỹ năng sẽ lập tức quay trở lại thư mục active 100%.
+  - *Lệnh test*: `py scripts/manage_skills.py --audit` & `py tests/test_skill_integrity.py` -> 100% PASS (Exit code 0).

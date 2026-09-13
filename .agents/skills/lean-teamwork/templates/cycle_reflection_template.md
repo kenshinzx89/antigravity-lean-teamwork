@@ -21,4 +21,10 @@
 4. **Ruling & Anti-Pattern Log**:
    - Có phát hiện Anti-Pattern (đoán mò, thiếu tài liệu, options rỗng) không?
    - Bài học rút ra để không lặp lại: `<...>`
+
+5. **Multi-Cycle Skill Usage Audit (Rà soát kỹ năng qua 3–4 chu kỳ & Tắt bớt để tiết kiệm Context)**:
+   - Các skill đã dùng thực tế qua 3–4 chu kỳ gần nhất: `<danh sách>`
+   - Các skill thừa / lệch tech-stack đã cất vào `skills_archive`: `<danh sách>`
+   - Lệnh khôi phục khi cần: `py scripts/manage_skills.py --restore <tên_skill>`
 ```
+

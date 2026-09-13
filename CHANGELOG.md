@@ -2,6 +2,15 @@
 
 Tất cả các thay đổi, bài học và tính năng nâng cấp qua từng phiên bản.
 
+## [1.5.9] — 2026-09-14
+### Added
+- **Kiểm Toán Đa Chu Kỳ & Tinh Gọn Kỹ Năng Sẵn Có (Multi-Cycle Skill Usage Audit & On-Demand Context Pruning)**:
+  - Bổ sung quy tắc bắt buộc cho Agent Nghiệm Thu / Subagent Đúc Kết: Khi nhìn lại toàn bộ quá trình, BẮT BUỘC rà soát xuyên suốt 3–4 lần nghiệm thu gần nhất (dựa trên `completion_history`).
+  - Đánh giá danh mục kỹ năng sẵn có trong Antigravity IDE (`~/.gemini/config/skills/`), tự động phát hiện và cất gọn (archive) các kỹ năng hoàn toàn không đụng tới hoặc lệch tech-stack (Laravel, Django, Quarkus, Blender, F#, Homelab...) vào `~/.gemini/config/skills_archive/`.
+  - Giải phóng triệt để context budget limits (tránh tình trạng tràn hàng nghìn tokens vô ích ở mọi lượt gọi model).
+  - Trang bị script `scripts/manage_skills.py` hỗ trợ audit, prune và khôi phục tức thì bất cứ kỹ năng nào khi người dùng cần (`--restore <tên_skill>`).
+  - Tích hợp mục rà soát kỹ năng vào `templates/cycle_reflection_template.md` và kiểm thử toàn vẹn 12/12 checks PASS.
+
 ## [1.5.8] — 2026-09-14
 ### Fixed
 - **Triệt Tiêu Đường Dẫn Cứng & Chuẩn Hóa 100% Cho GitHub Actions CI Runners**:
