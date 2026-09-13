@@ -4,6 +4,18 @@ Tất cả các thay đổi, bài học và tính năng nâng cấp qua từng p
 
 ---
 
+## [1.4.7] — 2026-09-13
+### Changed
+- **Chuyển Đề Xuất Kỹ Thuật (🧭) Sang Chat Stream + Timer Ngầm `schedule` (Non-Blocking Autonomous Fallback)**:
+  - Khắc phục triệt để điểm nghẽn nghiêm trọng: Pop-up modal `ask_question` là lệnh chặn cứng (hard-blocking), khiến IDE đóng băng tiến trình AI, làm timer không thể đánh thức và gây đứt đoạn công việc khi người dùng rời máy.
+  - Chuyển `🧭 [CHẾ ĐỘ ĐỀ XUẤT KỸ THUẬT] 💡` sang in trực tiếp ra khung chat kèm danh sách lựa chọn số `[1] (Recommended)`, `[2]`, ... và kích hoạt `schedule(150s, TimerCondition: "any")`.
+  - Nếu người dùng có mặt: Gõ số chọn trực tiếp (timer tự hủy ngay lập tức).
+  - Nếu vắng mặt quá 2.5 phút: AI tự động thức dậy, kích hoạt phương án `(Recommended)` và tiếp tục thực thi không để đứt đoạn mạch công việc.
+- **Bảo Toàn Pop-up Modal `ask_question` Cho Nghiệm Thu Hoàn Thiện (💎)**:
+  - Giữ nguyên Pop-up Modal `ask_question` 2 trạng thái (`100% HOÀN TẤT` vs `SUPERPOWERS DEBUG`) ở chế độ treo cố định (không timeout) theo quy trình Tách Nhịp 2 Bước v1.4.2 để bảo đảm đối chứng thực tế khách quan trước khi khóa tri thức.
+- **Loại Bỏ Ràng Buộc Nhúng SVG Đếm Ngược Lỗi Thời**:
+  - Gỡ bỏ thẻ ảnh SVG trong tiêu đề modal vốn bị Chromium CSP chặn render và gây vỡ đường dẫn khi đổi conversation ID/máy tính.
+
 ## [1.4.6] — 2026-09-12
 ### Changed
 - **Gỡ Bỏ Ràng Buộc Đếm Dòng Cơ Học (Eliminate Rigid Line-Count Constraints)**: Loại bỏ triệt để các con số đếm dòng cứng nhắc ("cấm đọc dưới 50 dòng", "bắt buộc đọc 100–400 dòng") vốn gây rối loạn biên độ đọc trong các session dài (như hiện tượng kẹt lặp đọc 15 dòng ở Antigravity Widget).

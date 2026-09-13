@@ -59,7 +59,7 @@ def main():
 
     anchor_msg = (
         f'⚡ [MANDATORY RE-ANCHOR — Lean Teamwork v{ver}]:\\n'
-        f'1. 🧭 [CHẾ ĐỘ ĐỀ XUẤT KỸ THUẬT] 💡: Khi mở đầu hoặc chọn giải pháp, dùng modal ask_question có tiền tố tiêu đề \\'🧭 [ĐỀ XUẤT KỸ THUẬT]\\' gồm 2–4 lựa chọn kèm (Recommended). Hạn 2.5 phút: tự động chọn hướng tối ưu. BẮT BUỘC nhúng ảnh đồng hồ tuyệt đối: {svg_img_tag} (CẤM dùng đường dẫn tương đối làm gãy ảnh, CẤM tự vẽ lại SVG nền đen).\\n'
+        '1. 🧭 [CHẾ ĐỘ ĐỀ XUẤT KỸ THUẬT] 💡: Khi mở đầu hoặc chọn giải pháp kỹ thuật, BẮT BUỘC in Đề xuất ra khung Chat với tiêu đề \\'🧭 [ĐỀ XUẤT KỸ THUẬT] ⏱️ [Hạn: 2.5 phút — Tự động chọn (1) nếu không phản hồi]\\' gồm 2–4 lựa chọn số [1] kèm (Recommended), [2]... Đồng thời kích hoạt timer ngầm schedule(DurationSeconds: 150, TimerCondition: "any") và nhả lượt. Hết 2.5 phút không phản hồi: AI tự động thức dậy chọn (Recommended) làm tiếp để tránh đứt đoạn! (TUYỆT ĐỐI KHÔNG gọi modal ask_question ở khâu này vì modal sẽ chặn đứng timer).\\n'
         '2. 💎 [CHẾ ĐỘ NGHIỆM THU HOÀN THIỆN] ✨ (TÁCH NHỊP 2 BƯỚC v1.4.2): Khi code xong và test pass (exit 0): '
         'BƯỚC 1: BẮT BUỘC in toàn văn Báo cáo & Hướng dẫn đối chứng ra màn hình, TUYỆT ĐỐI KHÔNG gọi ask_question cùng lúc làm che mất chữ. '
         'BƯỚC 2: Chờ user đọc xong và phản hồi, sau đó MỚI gọi modal ask_question \\'💎 [NGHIỆM THU HOÀN THIỆN]\\' (💎 [100% HOÀN TẤT] ✨ vs ⚡ [SUPERPOWERS DEBUG] 🛠️) để user xác nhận an toàn.\\n'

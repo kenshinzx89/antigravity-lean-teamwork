@@ -83,20 +83,19 @@ Khi tất cả các tiêu chí trong Execution Brief hoặc mục tiêu sửa bu
 
 ---
 
-## 4.5. Phân Biệt Hai Chế Độ Modal: Đề Xuất Kỹ Thuật (🧭) vs Nghiệm Thu Hoàn Thiện (💎)
+## 4.5. Phân Biệt Hai Chế Độ: Đề Xuất Kỹ Thuật (🧭) vs Nghiệm Thu Hoàn Thiện (💎)
 
-Hệ thống sử dụng công cụ `ask_question` để kích hoạt Popup tương tác với 2 chế độ nhận diện riêng biệt:
+Hệ thống thiết lập 2 cơ chế tương tác tối ưu tách biệt nhằm bảo đảm vừa không đứt đoạn công việc, vừa kiểm soát chất lượng tuyệt đối:
 
-### 1. 🧭 [CHẾ ĐỘ ĐỀ XUẤT KỸ THUẬT] 💡 (Khởi đầu / Lựa chọn giải pháp kiến trúc)
+### 1. 🧭 [CHẾ ĐỘ ĐỀ XUẤT KỸ THUẬT] 💡 (Khởi đầu / Lựa chọn giải pháp — Chat Stream + Hẹn Giờ Ngầm Tự Quyết 2.5 Phút)
 - **Khi nào kích hoạt**: Khi vừa nhận yêu cầu mới, phân tích hướng đi, hoặc đứng trước các ngã rẽ kỹ thuật quan trọng.
-- **Quy chuẩn hiển thị**: Tiền tố câu hỏi modal `ask_question` bắt buộc có nhãn `🧭 [ĐỀ XUẤT KỸ THUẬT] ⏱️ [HẠN CHỐT: HH:MM:SS — CÒN ĐÚNG 2 PHÚT 30 GIÂY] 💡`.
-- **Cấu trúc tùy chọn**: Cung cấp từ 2 đến 4 giải pháp cụ thể, luôn đánh dấu dòng tối ưu nhất bằng `(Recommended)`.
-- **Đồng hồ đếm ngược đồ họa thời gian thực ngay trên Popup (Live Countdown SVG)**:
-  - BẮT BUỘC nhúng đồ họa `technical_proposal_timer.svg` (phong cách 7 màu chuyển sắc nhẹ nhàng macOS Spectrum, trong suốt 480x84, thanh capsule co dần 150s, số SF Mono lùi từng giây thực tế):
-    `![🧭 ĐỀ XUẤT KỸ THUẬT 💡](C:/Users/tient/.gemini/antigravity/brain/<conv_id>/technical_proposal_timer.svg)`
-  - **Tự Động Cấp Sẵn (Zero-Touch Auto-Seeding)**: File SVG chuẩn đã được hook tự động cấp sẵn vào thư mục `<appDataDir>/brain/<conversation-id>/technical_proposal_timer.svg`. BẮT BUỘC dùng đường dẫn tuyệt đối chuẩn do Hook cấp trong Re-Anchor (CẤM dùng đường dẫn tương đối làm gãy ảnh, CẤM TUYỆT ĐỐI tự vẽ lại file SVG mới với nền đen thô `#0D1117` hay kích thước to!).
-  - **Cơ chế Pause Thông Minh (Ô Số 3)**: Khi người dùng bấm hoặc gõ vào ô nhập ý kiến riêng bên dưới (ô số 3), đồng hồ được coi như đã tạm dừng (Paused), AI dừng chờ người dùng 100%, không bao giờ tự ý chọn phương án Recommended.
-  - Nếu sau 2.5 phút người dùng không tương tác, hệ thống tự động tiếp tục với hướng `(Recommended)` để giữ mạch công việc không bị đình trệ.
+- **Quy chuẩn hiển thị**: BẮT BUỘC in Đề xuất kỹ thuật trực tiếp ra khung chat với nhãn `🧭 [ĐỀ XUẤT KỸ THUẬT] ⏱️ [Hạn: 2.5 phút — Tự động chọn (1) nếu không có phản hồi] 💡`.
+- **Cấu trúc tùy chọn**: Liệt kê 2 đến 4 giải pháp cụ thể dạng danh sách số `[1] (Recommended) ...`, `[2] ...`.
+- **Cơ chế Hẹn giờ tự quyết (Non-blocking Ruling & Best-Path Fallback)**:
+  - Đồng thời kích hoạt công cụ ngầm: `schedule(DurationSeconds: 150, TimerCondition: "any", Prompt: "Hết 2.5 phút không có phản hồi: Tự động chọn phương án khuyến nghị (Recommended) và tiếp tục thực thi!")` và kết thúc lượt.
+  - **TUYỆT ĐỐI KHÔNG GỌI modal `ask_question` ở khâu này**: Do modal pop-up là lệnh chặn cứng (hard-blocking), IDE sẽ đóng băng tiến trình AI chờ click chuột, khiến timer không thể đánh thức và làm đứt đoạn công việc nếu người dùng rời máy.
+  - **Khi người dùng có mặt**: Người dùng chỉ cần gõ `1` hoặc `2` vào khung chat -> Timer tự hủy ngay lập tức (`TimerCondition: "any"`), AI triển khai theo chỉ định.
+  - **Khi người dùng vắng mặt**: Sau đúng 150 giây (2.5 phút), timer đánh thức AI -> AI thông báo: *"Đã qua 2.5 phút không có phản hồi mới. Tự động triển khai theo phương án khuyến nghị [1] (Recommended)"* và tiếp tục công việc không để bị gián đoạn.
 
 ### 2. 💎 [CHẾ ĐỘ NGHIỆM THU HOÀN THIỆN] ✨ (Quy Trình Tách Nhịp 2 Bước v1.4.2)
 - **Khi nào kích hoạt**: Khi code đã viết xong, toàn bộ kiểm thử tích hợp đạt 100% PASS (Exit Code 0).
