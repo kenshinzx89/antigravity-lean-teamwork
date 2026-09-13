@@ -1866,15 +1866,6 @@ class CockpitOverlayApp:
                             self.popover.show(chip_rect, btn)
                             self.popover_until = time.monotonic() + 3.5
                             break
-                elif btn == 'teamwork' and self.teamwork_popover and self.s.get('locked'):
-                    wrect = w.RECT()
-                    user32.GetWindowRect(hwnd, c.byref(wrect))
-                    for z_id, zx, zy, zw, zh in self.zones:
-                        if z_id == 'teamwork':
-                            chip_rect = (wrect.left + zx, wrect.top + zy, wrect.left + zx + zw, wrect.top + zy + zh)
-                            self.teamwork_popover.show(chip_rect)
-                            self.popover_until = time.monotonic() + 3.5
-                            break
                 else:
                     if self.popover and self.popover.visible:
                         pt = POINT()

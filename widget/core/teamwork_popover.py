@@ -230,6 +230,9 @@ class TeamworkGlassPopover:
         user32.SetWindowPos(self.hwnd, -1, self.pos_x, self.pos_y, self.w, self.h, 0x0040 | 0x0010)
 
     def show(self, target_rect):
+        now = time.monotonic()
+        if now < getattr(self, 'suppress_until', 0.0) or now < getattr(self, '_action_locked_until', 0.0):
+            return
         self.target_rect = target_rect
         self.hover_btn_id = None
         self.feedback_text = None
@@ -331,11 +334,23 @@ class TeamworkGlassPopover:
         return user32.DefWindowProcW(hwnd, msg, wp, lp)
 
     def handle_click(self, btn_id):
+        # 1. Anti-Spam Debounce Lock: khóa nút 2.5s chống spam click khi máy lag
+        now = time.monotonic()
+        if now < getattr(self, '_action_locked_until', 0.0):
+            return
+        self._action_locked_until = now + 2.5
+        self.suppress_until = now + 3.0
+
         tw_service = getattr(self.parent, 'teamwork_service', None)
         if not tw_service:
             return
 
-        for region in self.clickable_regions:
+        # 2. Xóa clickable_regions và ẩn popover NGAY LẬP TỨC
+        regions = list(self.clickable_regions)
+        self.clickable_regions = []
+        self.hide()
+
+        for region in regions:
             if region['id'] == btn_id:
                 action = region.get('action')
                 opt_id = region.get('opt_id')
@@ -346,17 +361,14 @@ class TeamworkGlassPopover:
                         self.parent._proposal_auto_handled = True
                     tw_service.submit_response('SELECT_OPTION', option_id=opt_id, note=opt_txt)
                     self.send_to_antigravity(str(opt_id))
-                    self.hide()
 
                 elif action == 'ACCEPT':
                     tw_service.submit_response('ACCEPT')
                     self.send_to_antigravity("OK::")
-                    self.hide()
 
                 elif action == 'DEBUG':
                     tw_service.submit_response('DEBUG')
                     self.send_to_antigravity("Debug")
-                    self.hide()
 
                 elif action == 'FOCUS_IDE':
                     from .window_tracker import find_codex_window
@@ -367,7 +379,6 @@ class TeamworkGlassPopover:
                             user32.ShowWindow(hwnd, 9)
                         user32.ShowWindow(hwnd, 5)
                         user32.SetForegroundWindow(hwnd)
-                        self.hide()
                 break
 
     def render(self):
