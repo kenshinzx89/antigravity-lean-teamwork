@@ -119,8 +119,16 @@ class CockpitOverlayApp:
     def sync_dimensions(self):
         vertical = self.s.get('orientation') == 'vertical'
         is_nano = self.s.get('theme') == 'nano'
+        is_compact_tw = not getattr(self, 'has_active_antigravity', True)
 
-        if vertical:
+        if is_compact_tw and not vertical and not is_nano:
+            user_scale = float(self.s.get('scale_percent', 125)) / 100.0
+            tw_info = self.teamwork_service.get_display_info() if hasattr(self, 'teamwork_service') else {'active': False}
+            tw_w = (152.0 if tw_info.get('active') else 84.0) * user_scale
+            pad = 5.0 * user_scale
+            self.base_w = round(tw_w + pad * 2.0)
+            self.base_h = round(BASE_H * user_scale)
+        elif vertical:
             self.base_w, self.base_h = VERTICAL_BASE_W, VERTICAL_BASE_H
         elif is_nano:
             self.base_w, self.base_h = NANO_BASE_W, NANO_BASE_H
@@ -144,29 +152,39 @@ class CockpitOverlayApp:
             user32.SetWindowPos(self.hwnd, 0, 0, 0, self.w, self.h, 0x0002 | 0x0004 | 0x0010)
 
     def _dock_to_visible_antigravity(self):
-        """Follow the live Antigravity window when present, or stay floating on desktop."""
-        host = find_codex_window(include_minimized=False, preferred_hwnd=self.last_codex_hwnd)
-        if not host:
-            if not user32.IsWindowVisible(self.hwnd):
-                user32.ShowWindow(self.hwnd, 8)  # SW_SHOWNA
-            self.is_visible = True
-            return
+        """Follow the live Antigravity window when present, or stay floating on desktop in compact mode."""
+        host = find_codex_window(include_minimized=True, preferred_hwnd=self.last_codex_hwnd)
 
-        if user32.IsIconic(host[0]):
-            if not user32.IsWindowVisible(self.hwnd):
-                user32.ShowWindow(self.hwnd, 8)  # SW_SHOWNA
-            self.is_visible = True
-            return
+        is_active = False
+        if host:
+            hwnd_host, left, top, right, bottom, _ = host
+            is_min = bool(user32.IsIconic(hwnd_host)) or (left <= -10000 and top <= -10000)
+            if user32.IsWindow(hwnd_host) and not is_min:
+                is_active = True
+                self.last_codex_hwnd = hwnd_host
+                self.last_codex_rect = (left, top, right, bottom)
 
-        hwnd_host, left, top, right, bottom, _ = host
-        self.last_codex_hwnd = hwnd_host
-        self.last_codex_rect = (left, top, right, bottom)
-        if not self.s.get('locked'):
-            return
+        old_active = getattr(self, 'has_active_antigravity', None)
+        self.has_active_antigravity = is_active
 
+        # Đảm bảo widget luôn hiển thị trên màn hình
         if not user32.IsWindowVisible(self.hwnd):
             user32.ShowWindow(self.hwnd, 8)  # SW_SHOWNA
         self.is_visible = True
+
+        # Khi chuyển đổi giữa Có Antigravity <-> Không có Antigravity:
+        if is_active != old_active:
+            self.sync_dimensions()
+            self.update_layered_render()
+
+        if not is_active:
+            # Khi KHÔNG CÓ Antigravity hoặc đang dùng app khác: Thu lại về chỉ mỗi chip Nghiệm thu nổi trên desktop
+            return
+
+        # Khi CÓ Antigravity: Dock vào góc trên cửa sổ IDE
+        if not self.s.get('locked'):
+            return
+
         if self.resizing or getattr(self, 'native_drag', False) or getattr(self, 'in_sizemove', False) or self.drag:
             return
         rel_x, rel_y = self.s.get('rel_x'), self.s.get('rel_y')
@@ -389,8 +407,14 @@ class CockpitOverlayApp:
         # labels and action icons grow together, but never past the space the
         content_scale = float(self.s.get('scale_percent', 125)) / 100.0 if self.s.get('orientation') != 'vertical' else 1.0
         tw_info = self.teamwork_service.get_display_info() if hasattr(self, 'teamwork_service') else {'active': False}
+        is_compact_tw = not getattr(self, 'has_active_antigravity', True)
         if self.s['orientation'] == 'horizontal':
-            layout_obj = horizontal_layout(self.w, self.h, self.base_w, self.base_h, self.get_account_display_name(), content_scale, teamwork_active=tw_info.get('active', False))
+            layout_obj = horizontal_layout(
+                self.w, self.h, self.base_w, self.base_h,
+                self.get_account_display_name(), content_scale,
+                teamwork_active=tw_info.get('active', False),
+                compact_teamwork_only=is_compact_tw
+            )
             content_scale = layout_obj.scale
 
         font_main = c.c_void_p()
@@ -1009,41 +1033,50 @@ class CockpitOverlayApp:
             self.zones.append(('lock', x, 237.0, 32.0, 32.0))
 
         else:
-            # All normal horizontal themes use exactly the same rectangles.
-            # Order: account -> 5h -> week -> switch -> refresh -> lock
             layout = layout_obj
-            account = layout.boxes['account']
-            five_hour = layout.boxes['5h']
-            week = layout.boxes['week']
-            switch = layout.boxes['switch']
-            refresh = layout.boxes['refresh']
-            lock = layout.boxes['lock']
+            self.zones = []
 
-            draw_liquid_glass_chip(account.x, account.y, account.w, account.h, 'account', 0, draw_account_content)
-            self.zones.append(('account', account.x, account.y, account.w, account.h))
-            draw_liquid_glass_chip(five_hour.x, five_hour.y, five_hour.w, five_hour.h, '5h', self.data['five_hour_pct'], draw_5h_content)
-            self.zones.append(('5h', five_hour.x, five_hour.y, five_hour.w, five_hour.h))
-            draw_liquid_glass_chip(week.x, week.y, week.w, week.h, 'week', self.data['weekly_pct'], draw_week_content)
-            self.zones.append(('week', week.x, week.y, week.w, week.h))
+            if is_compact_tw:
+                # Chế độ thu gọn: CHỈ VẼ DUY NHẤT CHIP TEAMWORK (NGHIỆM THU / ĐỀ XUẤT)
+                if 'teamwork' in layout.boxes:
+                    teamwork = layout.boxes['teamwork']
+                    draw_liquid_glass_chip(teamwork.x, teamwork.y, teamwork.w, teamwork.h, 'teamwork', 0, draw_teamwork_content)
+                    self.zones.append(('teamwork', teamwork.x, teamwork.y, teamwork.w, teamwork.h))
+            else:
+                # All normal horizontal themes use exactly the same rectangles.
+                # Order: account -> 5h -> week -> switch -> refresh -> lock
+                account = layout.boxes['account']
+                five_hour = layout.boxes['5h']
+                week = layout.boxes['week']
+                switch = layout.boxes['switch']
+                refresh = layout.boxes['refresh']
+                lock = layout.boxes['lock']
 
-            if 'teamwork' in layout.boxes:
-                teamwork = layout.boxes['teamwork']
-                draw_liquid_glass_chip(teamwork.x, teamwork.y, teamwork.w, teamwork.h, 'teamwork', 0, draw_teamwork_content)
-                self.zones.append(('teamwork', teamwork.x, teamwork.y, teamwork.w, teamwork.h))
+                draw_liquid_glass_chip(account.x, account.y, account.w, account.h, 'account', 0, draw_account_content)
+                self.zones.append(('account', account.x, account.y, account.w, account.h))
+                draw_liquid_glass_chip(five_hour.x, five_hour.y, five_hour.w, five_hour.h, '5h', self.data['five_hour_pct'], draw_5h_content)
+                self.zones.append(('5h', five_hour.x, five_hour.y, five_hour.w, five_hour.h))
+                draw_liquid_glass_chip(week.x, week.y, week.w, week.h, 'week', self.data['weekly_pct'], draw_week_content)
+                self.zones.append(('week', week.x, week.y, week.w, week.h))
 
-            draw_liquid_glass_chip(switch.x, switch.y, switch.w, switch.h, 'switch', 0, draw_switch_content)
-            self.zones.append(('switch', switch.x, switch.y, switch.w, switch.h))
+                if 'teamwork' in layout.boxes:
+                    teamwork = layout.boxes['teamwork']
+                    draw_liquid_glass_chip(teamwork.x, teamwork.y, teamwork.w, teamwork.h, 'teamwork', 0, draw_teamwork_content)
+                    self.zones.append(('teamwork', teamwork.x, teamwork.y, teamwork.w, teamwork.h))
 
-            # Actions use a capped visual size even in a tall widget; their
-            # glass column stretches with the bar but the symbols stay clear.
-            for name, rect, painter in (
-                ('refresh', refresh, lambda cx, cy, s: draw_refresh_icon(cx, cy, s)),
-                ('lock', lock, lambda cx, cy, s: draw_lock_icon(cx, cy, self.s['locked'], s)),
-            ):
-                icon_scale = min(1.85, min(rect.w, rect.h) / PILL_H)
-                draw_liquid_glass_chip(rect.x, rect.y, rect.w, rect.h, name, 0,
-                    lambda cx, cy, cw, ch, painter=painter, icon_scale=icon_scale: painter(cx + cw / 2.0, cy + ch / 2.0, icon_scale))
-                self.zones.append((name, rect.x, rect.y, rect.w, rect.h))
+                draw_liquid_glass_chip(switch.x, switch.y, switch.w, switch.h, 'switch', 0, draw_switch_content)
+                self.zones.append(('switch', switch.x, switch.y, switch.w, switch.h))
+
+                # Actions use a capped visual size even in a tall widget; their
+                # glass column stretches with the bar but the symbols stay clear.
+                for name, rect, painter in (
+                    ('refresh', refresh, lambda cx, cy, s: draw_refresh_icon(cx, cy, s)),
+                    ('lock', lock, lambda cx, cy, s: draw_lock_icon(cx, cy, self.s['locked'], s)),
+                ):
+                    icon_scale = min(1.85, min(rect.w, rect.h) / PILL_H)
+                    draw_liquid_glass_chip(rect.x, rect.y, rect.w, rect.h, name, 0,
+                        lambda cx, cy, cw, ch, painter=painter, icon_scale=icon_scale: painter(cx + cw / 2.0, cy + ch / 2.0, icon_scale))
+                    self.zones.append((name, rect.x, rect.y, rect.w, rect.h))
 
         # Viền nét đứt màu xanh cyan bao quanh chính xác cụm chip khi mở khóa
         if not self.s.get('locked') and self.zones:
@@ -1316,22 +1349,11 @@ class CockpitOverlayApp:
             strict_preferred=bool(self.s['locked'] and self.last_codex_hwnd),
         )
         if not codex_info:
-            # Khi Codex bị thu xuống taskbar, EnumWindows đôi khi không trả
-            # cửa sổ packaged-app trong một vài nhịp. Vẫn dùng HWND Codex đã
-            # xác nhận ở lần trước để widget không bật lại lơ lửng.
-            if (self.s['locked'] and self.last_codex_hwnd
-                    and user32.IsWindow(self.last_codex_hwnd)
-                    and user32.IsIconic(self.last_codex_hwnd)):
-                self.codex_minimized_ticks += 1
-                if self.owner_hwnd == self.last_codex_hwnd:
-                    self.owner_hwnd = None
-                user32.ShowWindow(self.hwnd, 4)  # SW_SHOWNOACTIVATE
-                user32.SetWindowPos(self.hwnd, -1, 0, 0, 0, 0, 0x0001 | 0x0002 | 0x0010 | 0x0040)
-                self.is_visible = True
-                return
-            self.codex_minimized_ticks = 0
-            # Antigravity can take a moment to expose its Electron HWND. Keep
-            # a visible waiting widget rather than leaving a silent process.
+            old_active = getattr(self, 'has_active_antigravity', None)
+            self.has_active_antigravity = False
+            if old_active is not False:
+                self.sync_dimensions()
+                self.update_layered_render()
             if not self.is_visible:
                 user32.ShowWindow(self.hwnd, 8)
                 self.is_visible = True
@@ -1342,18 +1364,30 @@ class CockpitOverlayApp:
         self.bind_to_codex_owner(hwnd_c)
         self.last_codex_hwnd = hwnd_c
         if user32.IsIconic(hwnd_c):
+            old_active = getattr(self, 'has_active_antigravity', None)
+            self.has_active_antigravity = False
+            if old_active is not False:
+                self.sync_dimensions()
+                self.update_layered_render()
             self.codex_minimized_ticks += 1
-            # An owned popup hides with a minimized owner.  Detach and retain a
-            # compact waiting card instead, so launching the widget never looks
-            # like it did nothing while the IDE is minimized.
             if self.owner_hwnd == hwnd_c:
                 self.owner_hwnd = None
-            user32.ShowWindow(self.hwnd, 4)  # SW_SHOWNOACTIVATE
+            if not self.is_visible:
+                user32.ShowWindow(self.hwnd, 8)
+                self.is_visible = True
             user32.SetWindowPos(self.hwnd, -1, 0, 0, 0, 0, 0x0001 | 0x0002 | 0x0010 | 0x0040)
-            self.is_visible = True
             return
 
+        old_active = getattr(self, 'has_active_antigravity', None)
+        self.has_active_antigravity = True
+        if old_active is not True:
+            self.sync_dimensions()
+            self.update_layered_render()
+
         self.codex_minimized_ticks = 0
+        if not user32.IsWindowVisible(self.hwnd):
+            user32.ShowWindow(self.hwnd, 8)  # SW_SHOWNA
+        self.is_visible = True
 
         self.has_confirmed_codex = self.has_confirmed_codex or confirmed
         self.last_codex_rect = (cl, ct, cr, cb)
@@ -1721,27 +1755,59 @@ class CockpitOverlayApp:
                 tw_active = tw_info.get('active', False)
                 current_tw_st = tw_info.get('status', 'IDLE')
                 last_tw_st = getattr(self, '_last_tw_status', None)
+                tw_updated_at = tw_info.get('updated_at', 0.0)
+                last_tw_updated_at = getattr(self, '_last_tw_updated_at', 0.0)
 
                 # Auto-popup when a new proposal or acceptance arrives from Antigravity IDE
-                if current_tw_st in ('PROPOSAL', 'ACCEPTANCE') and current_tw_st != last_tw_st:
+                is_new_event = (current_tw_st in ('PROPOSAL', 'ACCEPTANCE')) and (
+                    current_tw_st != last_tw_st or tw_updated_at > last_tw_updated_at
+                )
+                if is_new_event:
                     self._last_tw_status = current_tw_st
-                    if self.teamwork_popover and not self.teamwork_popover.visible:
-                        for z_id, zx, zy, zw, zh in self.zones:
-                            if z_id == 'teamwork':
-                                wrect = w.RECT()
-                                user32.GetWindowRect(hwnd, c.byref(wrect))
-                                chip_rect = (wrect.left + zx, wrect.top + zy, wrect.left + zx + zw, wrect.top + zy + zh)
-                                self.teamwork_popover.show(chip_rect)
-                                self.popover_until = time.monotonic() + 25.0
-                                break
+                    self._last_tw_updated_at = tw_updated_at
+                    self._proposal_auto_handled = False
+                    if self.teamwork_popover:
+                        chip_rect = None
+                        if user32.IsWindowVisible(hwnd):
+                            for z_id, zx, zy, zw, zh in self.zones:
+                                if z_id == 'teamwork':
+                                    wrect = w.RECT()
+                                    user32.GetWindowRect(hwnd, c.byref(wrect))
+                                    chip_rect = (wrect.left + zx, wrect.top + zy, wrect.left + zx + zw, wrect.top + zy + zh)
+                                    break
+                        if not chip_rect:
+                            rc_work = w.RECT()
+                            user32.SystemParametersInfoW(0x0030, 0, c.byref(rc_work), 0)
+                            chip_rect = (rc_work.right - 260, rc_work.top + 40, rc_work.right - 40, rc_work.top + 72)
+
+                        self.teamwork_popover.show(chip_rect)
+                        if current_tw_st == 'PROPOSAL':
+                            rem_sec = max(5, tw_info.get('remaining_seconds', 150))
+                            self.popover_until = time.monotonic() + rem_sec + 5.0
+                        else:
+                            self.popover_until = time.monotonic() + 86400.0
                 elif current_tw_st == 'IDLE' and last_tw_st != 'IDLE':
                     self._last_tw_status = 'IDLE'
+
+                # Auto-fallback: Khi Proposal đếm hết thời gian (rem_sec <= 0), tự động trả số 1 về Antigravity IDE
+                if current_tw_st == 'PROPOSAL':
+                    rem_sec = tw_info.get('remaining_seconds', 0)
+                    if rem_sec <= 0 and not getattr(self, '_proposal_auto_handled', False):
+                        self._proposal_auto_handled = True
+                        if self.teamwork_popover:
+                            self.teamwork_popover.feedback_text = "⏱️ Hết giờ: Đã tự động chọn [1] (Khuyên dùng) & Gửi về IDE!"
+                            self.teamwork_popover.feedback_until = time.monotonic() + 3.0
+                            self.teamwork_popover.render()
+                            self.teamwork_popover.send_to_antigravity("1")
+                            self.teamwork_popover.auto_hide_at = time.monotonic() + 1.8
+                        if hasattr(self, 'teamwork_service'):
+                            self.teamwork_service.submit_response('SELECT_OPTION', option_id=1, note="Auto-selected [1] on countdown timeout")
 
                 if self.teamwork_popover and self.teamwork_popover.visible:
                     pt = POINT()
                     user32.GetCursorPos(c.byref(pt))
                     if self.teamwork_popover.contains_point(pt.x, pt.y):
-                        self.popover_until = max(self.popover_until, time.monotonic() + 2.5)
+                        self.popover_until = max(self.popover_until, time.monotonic() + 3.0)
                         self.teamwork_popover.render()
                     elif time.monotonic() >= self.popover_until:
                         self.teamwork_popover.hide()

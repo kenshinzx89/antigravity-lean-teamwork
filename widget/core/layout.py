@@ -56,14 +56,12 @@ def calculate_account_chip_width(account_name: str, scale: float = 1.0) -> float
     return max(68.0 * scale, (38.0 + text_w) * scale)
 
 
-def horizontal_layout(width: int, height: int, base_w: int, base_h: int, account_name: str = "", scale_factor: float = 1.0, teamwork_active: bool = False) -> HorizontalLayout:
+def horizontal_layout(width: int, height: int, base_w: int, base_h: int, account_name: str = "", scale_factor: float = 1.0, teamwork_active: bool = False, compact_teamwork_only: bool = False) -> HorizontalLayout:
     """Return stable, pixel-perfect layout for horizontal quota monitor.
 
     CRITICAL RULE:
-    Only Chip 1 (Account) dynamically expands/contracts according to account name length.
-    All other chips (5h, Week, Teamwork, Switch, Refresh, Lock) have generous, prominent, fixed widths
-    so they NEVER jump, stretch, shrink or jitter when changing accounts or names!
-    All elements scale proportionately according to scale_factor.
+    - Khi có Antigravity: Hiển thị đầy đủ tất cả các chip (Account, 5h, Week, Teamwork, Actions).
+    - Khi không có Antigravity (compact_teamwork_only=True): Thu gọn lại CHỈ HIỆN DUY NHẤT CHIP TEAMWORK (Nghiệm thu / Đề xuất) để không chiếm màn hình Desktop.
     """
     scale = max(0.5, float(scale_factor))
     pad = 5.0 * scale
@@ -73,9 +71,16 @@ def horizontal_layout(width: int, height: int, base_w: int, base_h: int, account
     card_y = max(1.0, (float(height) - card_h) / 2.0)
 
     # Generous, crystal-clear, readable prominent widths for quota chips and actions
+    w_teamwork = (152.0 if teamwork_active else 84.0) * scale
+
+    if compact_teamwork_only:
+        # Chế độ thu gọn: CHỈ DUY NHẤT CHIP TEAMWORK
+        boxes: dict[str, Rect] = {}
+        boxes["teamwork"] = Rect(pad, card_y, w_teamwork, card_h)
+        return HorizontalLayout(scale=scale, boxes=boxes)
+
     w_5h = 196.0 * scale
     w_week = 190.0 * scale
-    w_teamwork = (152.0 if teamwork_active else 84.0) * scale
     switch_w = 38.0 * scale
     action_w = 34.0 * scale
 

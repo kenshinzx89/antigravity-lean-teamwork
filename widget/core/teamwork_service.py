@@ -63,6 +63,9 @@ class TeamworkService:
                 "title": title,
                 "remaining_seconds": rem,
                 "options": options,
+                "start_time": prop.get("start_time", 0.0),
+                "deadline_ts": deadline,
+                "updated_at": state.get("updated_at", 0.0),
                 "details": f"Hạn chót: {timer_text} - Có {len(options)} lựa chọn"
             }
         elif status == "ACCEPTANCE":
@@ -80,6 +83,7 @@ class TeamworkService:
                 "summary": acc.get("summary", ""),
                 "files_changed": acc.get("files_changed", []),
                 "exit_code": exit_code,
+                "updated_at": state.get("updated_at", 0.0),
                 "details": f"Trạng thái: {test_st} (Exit {exit_code})"
             }
         elif status == "EXECUTING":

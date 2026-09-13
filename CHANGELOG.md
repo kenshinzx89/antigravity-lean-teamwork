@@ -4,6 +4,52 @@ Tất cả các thay đổi, bài học và tính năng nâng cấp qua từng p
 
 ---
 
+## [1.5.7] — 2026-09-13
+### Added
+- **Tinh Gọn Đề Xuất Kỹ Thuật (Zero-Token IDE Proposals) & Độc Quyền Đếm Ngược Trên Widget HUD**:
+  - Loại bỏ hoàn toàn ảnh SVG đồng hồ đếm ngược trong khung chat IDE để tiết kiệm 100% Token và Quota.
+  - Chuyển giao toàn bộ giao diện đồng hồ đếm ngược 150s thời gian thực sang Desktop Widget HUD Popover.
+- **Chuẩn Hóa Biên Giới Hiển Thị Full vs Thu Gọn**:
+  - Khi Antigravity IDE đang mở trên màn hình: Widget **LUÔN HIỂN THỊ FULL 100% (587px - 636px)**, không bao giờ bị co lại bất thường khi có đề xuất hoặc khi tương tác.
+  - Thu nhỏ về viên pill compact (~67px) **CHỈ ÁP DỤNG** khi Antigravity IDE bị Minimize xuống taskbar hoặc hoàn toàn không chạy, giúp giải phóng màn hình Desktop tối đa.
+- **Tối Ưu Hóa Video Demo Nhúng README.md (97.2% Compression)**:
+  - Video quay màn hình 2.5K Retina 52s (131.7 MB) được nén chuẩn H.264 1080p xuống còn **3.65 MB**, nhúng trực tiếp thay thế banner/logo trên đầu `README.md`, hiển thị sắc nét và mượt mà trên GitHub.
+
+## [1.5.6] — 2026-09-13
+### Added
+- **Nhận Biết Cửa Sổ Hoạt Động (Foreground Awareness) & Tự Động Thu Gọn Khi Chuyển App**:
+  - Khắc phục triệt để trường hợp người dùng click chuyển sang ứng dụng khác (Telegram, Chrome, Notepad...) hoặc mở Desktop nhưng Widget vẫn hiển thị thanh dài 636px.
+  - Tích hợp kiểm tra `GetForegroundWindow()` đối chiếu với PID của Antigravity IDE, đồng thời lắng nghe chuột `mouse_over` trên Widget.
+  - Khi người dùng ở app khác hoặc minimize IDE: Widget tự động co lại thành duy nhất viên pill Nghiệm thu siêu nhỏ (**115px**), không còn chiếm diện tích màn hình.
+  - Khi người dùng click lại vào Antigravity IDE hoặc hover chuột vào viên pill: Widget tự động bung to đầy đủ tất cả các chip Quota, Context, Account và dock bám dính chính xác.
+- **Đồng Bộ Hai Chiều Tự Động Với Thư Mục Desktop (`Desktop\Du An\CockpitQuotaWidget`)**:
+  - `sync_skill.py` tự động phát hiện và đồng bộ song song mã nguồn Widget sang thư mục Desktop của người dùng, đảm bảo dù người dùng khởi động từ shortcut nào cũng luôn nhận phiên bản mới nhất 100%.
+
+## [1.5.5] — 2026-09-13
+### Added
+- **Tự Động Thu Gọn Về Duy Nhất Chip Nghiệm Thu Khi Không Có Antigravity (Compact Teamwork Chip Mode)**:
+  - Khi không có Antigravity IDE (hoặc khi IDE bị minimize), thanh Widget HUD tự động co lại kích thước (~160px), **CHỈ HIỆN DUY NHẤT CHIP TEAMWORK (Nghiệm thu / Đề xuất)**.
+  - Toàn bộ các chip khác (Account, 5H, Weekly, Switch, Refresh, Lock) được tự động ẩn đi, giải phóng không gian màn hình Desktop tối đa, tránh gây vướng tầm nhìn và chống click nhầm.
+  - Khi người dùng mở lại Antigravity IDE, Widget tự động bung to trở lại đầy đủ tất cả các chip và gắn vào cửa sổ IDE như bình thường.
+
+## [1.5.4] — 2026-09-13
+### Added
+- **Tự Động Thu Gọn Widget Khi Minimize Antigravity IDE (Auto-Collapse & Standalone Alerts)**:
+  - **Auto-Collapse**: Khi Antigravity IDE bị minimize xuống taskbar, thanh Widget HUD chính tự động ẩn đi (`SW_HIDE`), giải phóng hoàn toàn không gian màn hình Desktop, chống click nhầm và chống xung đột cửa sổ. Khi người dùng mở lại IDE, Widget tự động hiển thị lại (`SW_SHOWNA`) và gắn vào góc IDE như bình thường.
+  - **Chỉ Mở Cửa Sổ Nghiệm Thu / Đề Xuất Khi Có Thông Báo**: Nếu trong lúc IDE đang minimize mà có đề xuất (`PROPOSAL`) hoặc nghiệm thu (`ACCEPTANCE`) mới tới, Popover thông báo vẫn tự động bung lên độc lập ở góc trên bên phải màn hình desktop để người dùng theo dõi và duyệt kịp thời. Sau khi tương tác hoặc hết giờ, Popover tự ẩn.
+
+## [1.5.3] — 2026-09-13
+### Added
+- **Đề Xuất Kỹ Thuật 2 Lối Song Hành (Dual-Track Proposals) & Tự Động Trả Về [1] Khi Hết Giờ**:
+  - **Lối 1 (Khung Chat Antigravity)**: In trực tiếp danh sách phương án ra chat kèm `[1] (Recommended) ⭐`, đồng thời gọi công cụ `schedule` (150s, `TimerCondition: "any"`) làm fallback tự động đánh thức AI chọn phương án 1 nếu người dùng rời máy.
+  - **Lối 2 (Desktop Widget HUD Popover)**: Khắc phục triệt để hiện tượng Widget không bung Popover ở các turn đề xuất liên tiếp bằng cơ chế nhận diện timestamp (`updated_at > last_tw_updated_at`), giữ Popover mở suốt thời gian đếm ngược (`deadline_ts + 5.0s`).
+  - **Tự động trả về phím '1' khi hết 150s**: Khi đồng hồ đếm ngược trên Widget về `00:00` mà người dùng chưa bấm chọn gì, Widget sẽ tự động focus và gửi phím `1` về Antigravity IDE cho gọn, tự động đóng Popover sau khi hoàn tất.
+
+## [1.5.2] — 2026-09-13
+### Added
+- **Chuẩn Hóa Mật Mã Nghiệm Thu (`OK 💎`) & Anti-False-Acceptance Guard**:
+  - Tách bạch hoàn toàn giữa trao đổi thông thường và tín hiệu nghiệm thu chính thức, chống nhầm lẫn các từ "ok" trong giao tiếp hàng ngày.
+
 ## [1.5.1] — 2026-09-13
 ### Added
 - **Quy Tắc Biên Độ Tổng Hợp Từ Lần Hoàn Tất Gần Nhất (From-Last-Completion Retrospective Anchor)**:

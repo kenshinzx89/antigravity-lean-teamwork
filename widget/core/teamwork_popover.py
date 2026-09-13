@@ -342,6 +342,8 @@ class TeamworkGlassPopover:
                 opt_txt = region.get('opt_txt', '')
 
                 if action == 'SELECT_OPTION':
+                    if hasattr(self.parent, '_proposal_auto_handled'):
+                        self.parent._proposal_auto_handled = True
                     tw_service.submit_response('SELECT_OPTION', option_id=opt_id, note=opt_txt)
                     self.feedback_text = f"✓ Đã chọn [{opt_id}] & Gửi xuống Antigravity IDE!"
                     self.feedback_until = time.monotonic() + 3.0
@@ -560,7 +562,10 @@ class TeamworkGlassPopover:
             sub_y = bar_y + bar_h + round(4.0 * scale_box)
             sub_h = round(24.0 * scale_box)
             sub_rect = (c.c_float * 4)(pad_x, sub_y, content_w, sub_h)
-            timer_line = f"⏱️ Hạn chót: {timer_text} — Click chọn phương án để gửi thẳng xuống Antigravity IDE"
+            if rem == 0:
+                timer_line = "⏱️ Hết giờ — Tự động kích hoạt [1] (Khuyên dùng) xuống IDE"
+            else:
+                timer_line = f"⏱️ Hạn chót: {timer_text} — Click chọn phương án để gửi thẳng xuống Antigravity IDE"
             gdiplus.GdipDrawString(gfx, timer_line, -1, font_sub, sub_rect, fmt_left, text_sec)
 
             # Options Boxes (Chiều cao tự co giãn theo text của từng box)

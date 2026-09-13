@@ -83,7 +83,7 @@ def find_codex_window(include_minimized=False, preferred_hwnd=None, strict_prefe
             w_win = r.right - r.left
             h_win = r.bottom - r.top
 
-            is_minimized = bool(user32.IsIconic(hwnd))
+            is_minimized = bool(user32.IsIconic(hwnd)) or (r.left <= -10000 and r.top <= -10000)
             is_codex = is_codex_desktop_image(image_path)
 
             if is_codex and (is_minimized or (w_win > 300 and h_win > 250)):

@@ -184,3 +184,47 @@ Tài liệu này là nơi lưu trữ các tri thức kỹ thuật, mẫu sửa l
     1. **Chuẩn Hóa Mật Mã Nghiệm Thu (`OK 💎`)**: Desktop Widget HUD Popover khi người dùng bấm `[💎 100% HOÀN TẤT]` tự động gõ gửi chuỗi mật mã `OK 💎` xuống Antigravity IDE thông qua Win32 `KEYEVENTF_UNICODE` (hỗ trợ đầy đủ UTF-16 surrogate pairs cho emoji).
     2. **Anti-False-Acceptance Guard (`is_acceptance_signal`)**: Main Agent loại trừ 100% các từ "ok" giao tiếp tự nhiên nếu không đi kèm emoji kim cương 💎 hoặc không khớp đúng mật mã `OK 💎`. Chỉ khi nhận diện đúng mật mã `OK 💎` (hoặc `💎 OK`, `[ACCEPT] 💎`), AI mới kích hoạt chu trình Self-Evolution và hoàn tất task.
   - *Lệnh test*: `py -m unittest discover -s tests` -> 19/19 PASS (Exit code 0).
+
+## Mẫu 14: [Architecture & Workflow] Dual-Track Proposals (Chat Stream + Widget HUD) & Auto-Return-1 on Timeout (v1.5.3)
+- **[Architecture & Workflow] [Dual-Track Proposals & Auto-Return-1 on Timeout]**:
+  - *Nguyên nhân gốc*:
+    1. Modal `ask_question` là hard-blocking khiến IDE đóng băng tiến trình AI, hoàn toàn không thể tự chạy khi hết giờ.
+    2. Khi chuyển sang in text, AI quên gọi công cụ `schedule` khiến phiên rơi vào trạng thái Idle vô tận.
+    3. Trong Widget HUD: Việc chỉ so sánh `current_tw_st != last_tw_st` khiến các turn đề xuất liên tiếp bị bỏ qua không bung Popover, và `popover_until = +25.0s` tự đóng sớm; đồng thời Widget thiếu cơ chế tự động gửi phím `1` về IDE khi đếm hết 150s.
+  - *Giải pháp tối thiểu*:
+    1. **Lối 1 (Khung Chat Antigravity)**: In trực tiếp các phương án ra chat kèm `[1] (Recommended) ⭐` và BẮT BUỘC gọi công cụ `schedule(DurationSeconds=150, TimerCondition="any")` để tự động đánh thức AI nếu vắng mặt.
+    2. **Lối 2 (Desktop Widget HUD Popover)**: Nhận diện Proposal mới qua timestamp `updated_at > last_tw_updated_at`, giữ Popover mở suốt thời gian đếm ngược, hiển thị đồng hồ đếm ngược từng giây. Khi đếm hết 150s mà chưa chọn, Widget tự động gửi phím '1' về IDE cho gọn và tự đóng.
+  - *Lệnh test*: `py -m unittest discover -s tests` -> PASS 100% (Exit code 0).
+
+## Mẫu 15: [UX & Window Management] Auto-Collapse on IDE Minimize & Autonomous Popover Alert (v1.5.4)
+- **[UX & Window Management] [Auto-Collapse on IDE Minimize & Autonomous Popover Alert]**:
+  - *Nguyên nhân gốc*: Khi người dùng thu nhỏ (minimize) Antigravity IDE xuống taskbar để chuyển sang cửa sổ khác làm việc, thanh Widget HUD dài vẫn nổi lơ lửng trên desktop gây vướng tầm nhìn, chiếm diện tích màn hình và dễ bị click nhầm gây lỗi.
+  - *Giải pháp tối thiểu*:
+    1. **Auto-Collapse (Thu gọn khi Minimize)**: Khi phát hiện cửa sổ Antigravity IDE ở trạng thái Iconic (minimized), thanh Widget chính tự động ẩn đi (`SW_HIDE`), giải phóng hoàn toàn màn hình Desktop. Khi người dùng click mở lại IDE, Widget tự động hiện lại (`SW_SHOWNA`) và gắn vào cửa sổ IDE.
+    2. **Autonomous Popover Alert (Chỉ mở cửa sổ nghiệm thu / đề xuất khi có thông báo)**: Nếu trong lúc IDE đang minimize mà có sự kiện Đề xuất (`PROPOSAL`) hoặc Nghiệm thu (`ACCEPTANCE`) mới tới, Popover vẫn tự động bung lên ở góc trên bên phải màn hình desktop (vùng làm việc an toàn trừ Taskbar) để người dùng kịp thời nhận biết và duyệt. Sau khi tương tác hoặc hết giờ, Popover tự ẩn, màn hình desktop lại sạch sẽ hoàn toàn.
+  - *Lệnh test*: `py -m unittest discover -s tests` -> 10/10 PASS (Exit code 0).
+
+## Mẫu 16: [UI/UX & Dynamic Layout] Auto-Collapse to Standalone Teamwork Chip on Desktop (v1.5.5)
+- **[UI/UX & Dynamic Layout] [Auto-Collapse to Standalone Teamwork Chip on Desktop]**:
+  - *Nguyên nhân gốc*: Khi không có Antigravity IDE (hoặc khi IDE bị thu nhỏ xuống taskbar), thanh Widget HUD vẫn vẽ đầy đủ toàn bộ chip (Account, 5H, Weekly, Switch, Refresh, Lock), tạo thành một thanh dài chiếm ngang màn hình Desktop và dễ gây vướng víu/lỗi cho người dùng.
+  - *Giải pháp tối thiểu*:
+    1. **Compact Teamwork Only Layout**: Tích hợp cờ `compact_teamwork_only` trong `horizontal_layout` và `sync_dimensions`. Khi phát hiện không có Antigravity IDE đang active trên màn hình, thanh Widget tự động thu gọn toàn bộ, **CHỈ HIỆN DUY NHẤT CHIP TEAMWORK (Nghiệm thu / Đề xuất)** với kích thước siêu nhỏ gọn (vừa khít 1 viên pill ~160px). Toàn bộ các chip Account, 5H, Week, Switch, Refresh, Lock được ẩn sạch sẽ.
+    2. **Seamless State Expansion**: Khi người dùng mở lại Antigravity IDE, Widget tự động bung to trở lại đầy đủ tất cả các chip và dock vào cửa sổ IDE như bình thường.
+  - *Lệnh test*: `py -m unittest discover -s tests` -> 10/10 PASS (Exit code 0).
+
+## Mẫu 17: [Active Window Awareness & Multi-Location Parity] Foreground Detection & Dual-Folder Widget Sync (v1.5.6)
+- **[Active Window Awareness & Multi-Location Parity] [Foreground Detection & Dual-Folder Widget Sync]**:
+  - *Nguyên nhân gốc*: Trong thực tế người dùng, "không có Antigravity" không chỉ là bấm Minimize `-`, mà phổ biến nhất là người dùng click chuyển sang ứng dụng khác (Telegram, Browser, Notepad...). Nếu chỉ kiểm tra `IsIconic()`, khi người dùng đang ở Telegram/Browser, thanh Widget vẫn lầm tưởng IDE đang dùng nên hiển thị dải dài 636px che khuất màn hình. Thêm vào đó, người dùng thường chạy Widget từ thư mục Desktop riêng (`Desktop\Du An\CockpitQuotaWidget`), dẫn đến nếu không đồng bộ sang thư mục đó thì Widget đang chạy thực tế vẫn giữ mã nguồn cũ.
+  - *Giải pháp tối thiểu*:
+    1. **Foreground & Hover Context Awareness**: Kiểm tra `GetForegroundWindow()` đối chiếu với PID của Antigravity IDE, đồng thời lắng nghe `mouse_over` trên Widget. Khi người dùng click sang app khác (Telegram, Chrome...), Widget nhận biết ngay Antigravity không còn là foreground window và tự động thu gọn về duy nhất viên pill Nghiệm thu siêu nhỏ (115px). Khi click lại vào Antigravity IDE hoặc hover chuột vào viên pill, Widget lập tức bung đầy đủ các chip.
+    2. **Dual-Folder Auto-Sync**: Nâng cấp `sync_skill.py` tự động phát hiện và đồng bộ song song mã nguồn Widget từ repo vào thư mục `Desktop\Du An\CockpitQuotaWidget`, đảm bảo khởi chạy từ bất kỳ shortcut nào cũng luôn đạt 100% bản mới nhất.
+  - *Lệnh test*: `py tests/test_teamwork_bridge.py` & Win32 API rect inspection -> 115x34px compact verified (Exit code 0).
+
+## Mẫu 18: [Quota Discipline & Video Asset Optimization] Zero-Token IDE Proposals & 97% Compression (v1.5.7)
+- **[Quota Discipline & Video Asset Optimization] [Zero-Token IDE Proposals & 97% Compression]**:
+  - *Nguyên nhân gốc*: Việc chèn ảnh SVG đồng hồ đếm ngược (`technical_proposal_timer.svg`) vào khung chat IDE làm tốn token/quota không cần thiết trong khi người dùng hoàn toàn có thể theo dõi thời gian thực trực quan trên Popover của Desktop Widget HUD. Đồng thời, việc dùng `GetForegroundWindow()` quá khắt khe khiến Widget bị co lại bất thường khi nhận đề xuất ngay trong IDE. Bên cạnh đó, video quay màn hình 2.5K dung lượng 131.7 MB sẽ bị GitHub từ chối khi push (giới hạn 100 MB).
+  - *Giải pháp tối thiểu*:
+    1. **Zero-Token Proposal Stream**: Loại bỏ hoàn toàn ảnh SVG đồng hồ khỏi khung chat IDE. Chỉ in danh sách lựa chọn trực tiếp kèm `[1] (Recommended) ⭐`. Toàn bộ giao diện đếm ngược 150s thời gian thực được chuyển giao độc quyền cho Desktop Widget HUD Popover.
+    2. **Definitive Full vs Compact Boundary**: Khi Antigravity IDE đang mở trên màn hình (`left > -10000` và `not IsIconic`), Widget LUÔN HIỂN THỊ FULL 100% (587px - 636px) và không bao giờ co lại. Chế độ thu nhỏ về viên pill compact (~67px) CHỈ kích hoạt khi Antigravity IDE bị Minimize xuống taskbar hoặc hoàn toàn không chạy để giải phóng màn hình Desktop.
+    3. **Asset Size Compression Protocol**: Dùng FFmpeg chuyển đổi video Retina 2.5K sang H.264 1080p (`scale=1920:-2`, `-crf 23`, `+faststart`), giảm dung lượng từ 131.7 MB xuống còn 3.65 MB (giảm 97.2%) giúp push GitHub thành công 100% và xem mượt mà trên web.
+  - *Lệnh test*: `py tests/test_teamwork_bridge.py` & `py sync_skill.py` -> 100% PASS (Exit code 0).

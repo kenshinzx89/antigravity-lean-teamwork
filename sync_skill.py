@@ -195,6 +195,25 @@ def sync_source_to_installed(version: str):
     except Exception as e:
         pass
 
+    # Tự động đồng bộ Widget sang Desktop CockpitQuotaWidget nếu tồn tại
+    desktop_widget_dir = Path(os.path.expanduser("~")) / "Desktop" / "Du An" / "CockpitQuotaWidget"
+    if desktop_widget_dir.exists():
+        src_widget = REPO_ROOT / "widget"
+        for item in src_widget.glob("**/*"):
+            if "__pycache__" in item.parts:
+                continue
+            rel = item.relative_to(src_widget)
+            target = desktop_widget_dir / rel
+            if item.is_dir():
+                target.mkdir(parents=True, exist_ok=True)
+            else:
+                target.parent.mkdir(parents=True, exist_ok=True)
+                try:
+                    shutil.copy2(item, target)
+                except PermissionError:
+                    pass
+        print(f"  ✓ Đã tự động cập nhật Desktop Widget tại {desktop_widget_dir}")
+
     ensure_stock_gemini()
     ensure_global_hooks()
     bidirectional_merge_patterns()

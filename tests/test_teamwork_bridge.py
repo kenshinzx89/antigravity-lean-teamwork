@@ -106,6 +106,17 @@ class TestTeamworkWidgetIntegration(unittest.TestCase):
         tw_box_idle = layout_idle.boxes["teamwork"]
         self.assertEqual(tw_box_idle.w, 84.0)
 
+        # Compact teamwork only (khi không có Antigravity IDE)
+        layout_compact = horizontal_layout(160, 48, 160, 48, scale_factor=1.0, teamwork_active=True, compact_teamwork_only=True)
+        self.assertIn("teamwork", layout_compact.boxes)
+        self.assertEqual(len(layout_compact.boxes), 1)
+        self.assertNotIn("account", layout_compact.boxes)
+        self.assertNotIn("5h", layout_compact.boxes)
+        self.assertNotIn("week", layout_compact.boxes)
+        self.assertNotIn("switch", layout_compact.boxes)
+        self.assertNotIn("refresh", layout_compact.boxes)
+        self.assertNotIn("lock", layout_compact.boxes)
+
     def test_05_native_ide_account_detection(self):
         """Test phát hiện tài khoản native Antigravity IDE từ database state.vscdb."""
         acc = antigravity_service.get_native_antigravity_account()
@@ -210,6 +221,57 @@ class TestTeamworkWidgetIntegration(unittest.TestCase):
         self.assertFalse(teamwork_bridge.is_acceptance_signal(""))
         self.assertFalse(teamwork_bridge.is_acceptance_signal(None))
 
+    def test_09_proposal_timestamp_awareness_and_timeout_response(self):
+        """Test cơ chế nhận diện đề xuất mới qua updated_at và tự động chọn phương án [1] khi hết giờ."""
+        tw_service = get_teamwork_service()
+
+        # 1. Phát đề xuất 1
+        teamwork_bridge.publish_proposal("Đề xuất 1", [{"id": 1, "text": "Phương án 1 (Khuyên dùng)", "recommended": True}])
+        disp1 = tw_service.get_display_info()
+        self.assertEqual(disp1["status"], "PROPOSAL")
+        self.assertIn("updated_at", disp1)
+        self.assertIn("start_time", disp1)
+        t1 = disp1["updated_at"]
+
+        # 2. Phát đề xuất 2 (cùng status PROPOSAL nhưng updated_at mới hơn)
+        time.sleep(0.01)
+        teamwork_bridge.publish_proposal("Đề xuất 2", [{"id": 1, "text": "Phương án A (Khuyên dùng)", "recommended": True}])
+        disp2 = tw_service.get_display_info()
+        t2 = disp2["updated_at"]
+        self.assertGreater(t2, t1)
+        self.assertEqual(disp2["title"], "Đề xuất 2")
+
+        # 3. Giả lập hết giờ và tự động gửi response số 1
+        tw_service.submit_response("SELECT_OPTION", option_id=1, note="Auto-selected [1] on timeout")
+        resp = teamwork_bridge.check_user_response()
+        self.assertIsNotNone(resp)
+        self.assertEqual(resp["action"], "SELECT_OPTION")
+        self.assertEqual(resp["selected_option_id"], 1)
+        self.assertIn("Auto-selected [1]", resp["note"])
+
+    def test_10_widget_auto_collapse_on_minimize_and_popover_presence(self):
+        """Test cơ chế thu gọn widget khi IDE bị minimize và duy trì hiển thị popover thông báo."""
+        tw_service = get_teamwork_service()
+
+        # 1. Trạng thái IDLE: Widget thu lại (ẩn) khi không có thông báo
+        tw_info = tw_service.get_display_info()
+        self.assertFalse(tw_info.get("active", False))
+        self.assertEqual(tw_info.get("status", "IDLE"), "IDLE")
+
+        # 2. Khi có đề xuất mới phát ra, dù IDE đang minimize, bridge vẫn chuyển sang PROPOSAL
+        teamwork_bridge.publish_proposal("Đề xuất khi Minimize", [{"id": 1, "text": "Phương án 1", "recommended": True}])
+        tw_info_active = tw_service.get_display_info()
+        self.assertTrue(tw_info_active.get("active", False))
+        self.assertEqual(tw_info_active.get("status"), "PROPOSAL")
+
+        # 3. Khi nghiệm thu phát ra, status chuyển sang ACCEPTANCE
+        teamwork_bridge.publish_acceptance("Nghiệm thu khi Minimize", "Đã hoàn thành", files_changed=["a.py"], exit_code=0)
+        tw_info_acc = tw_service.get_display_info()
+        self.assertTrue(tw_info_acc.get("active", False))
+        self.assertEqual(tw_info_acc.get("status"), "ACCEPTANCE")
+
 
 if __name__ == "__main__":
     unittest.main()
+
+
