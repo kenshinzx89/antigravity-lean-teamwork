@@ -164,3 +164,15 @@ Tài liệu này là nơi lưu trữ các tri thức kỹ thuật, mẫu sửa l
   - *Giải pháp tối thiểu*: Chuyển hướng 100% Đề xuất Kỹ thuật (🧭) và Bảng Nghiệm Thu (💎) ra ngoài Desktop Widget Popover HUD qua IPC Bridge (teamwork_bridge.py). Khung chat rảnh rang tuyệt đối, chỉ hiển thị báo cáo sạch sẽ. Tương tác 1 chạm trực tiếp từ Desktop Widget tự động focus và gửi lệnh phím xuống IDE.
   - *Khắc phục hiển thị*: Popover tự động co giãn (compute_dynamic_layout), word-wrap toàn diện cho tiêu đề, tự thích ứng vùng làm việc SPI_GETWORKAREA (trừ taskbar) chống cắt cụt nút bấm và mất chữ.
   - *Lệnh test*: py tests/test_skill_integrity.py -> 11/11 PASS (Exit code 0).
+
+## Mẫu 12: [Architecture & Onboarding] Dual Account Detection, Zero-Pip Portability & From-Last-Completion Retrospective Anchor (v1.5.1)
+- **[Architecture & Onboarding] [Dual Account Detection, Zero-Pip Portability & From-Last-Completion Retrospective Anchor]**:
+  - *Nguyên nhân gốc*:
+    1. Khi tải repo sang máy tính mới chưa cài Cockpit Tool, Widget bị lỗi hiển thị `Offline` / `No Acc` do thiếu cơ chế kết nối trực tiếp tài khoản Google trong Antigravity IDE.
+    2. Khi người dùng gặp lỗi tiếp tục chat mà chưa ấn Hoàn tất, nếu agent chỉ nhìn vào lượt cuối cùng sẽ mắc bẫy *Survivorship Bias*, bỏ sót toàn bộ chuỗi lỗi trung gian chưa được rút kinh nghiệm.
+    3. Việc chứa đường dẫn tuyệt đối cứng (`C:\Users\tient...`) hoặc yêu cầu cài thêm thư viện qua pip khiến máy mới không thể chạy ngay lập tức.
+  - *Giải pháp tối thiểu*:
+    1. **Dual Account Detection**: Trích xuất trực tiếp tài khoản Google đang đăng nhập từ SQLite native của Antigravity IDE (`%APPDATA%\Antigravity IDE\User\globalStorage\state.vscdb`) làm fallback khi máy mới chưa có Cockpit Tool, hiển thị đầy đủ tên, email và trạng thái hoạt động 100%.
+    2. **From-Last-Completion Retrospective Anchor**: Lưu mốc thời gian `last_completed_at` trong `teamwork_bridge.py` và `teamwork_service.py`. Khi thực hiện đúc kết bài học (Self-Evolution), bắt buộc rà soát và tổng hợp toàn bộ các lỗi trung gian phát sinh từ lần bấm Hoàn tất gần nhất đến nay.
+    3. **Zero-Pip Portability & 1-Click Zero-Scan**: Toàn bộ hệ sinh thái chạy 100% trên Python Standard Library (`ctypes` GDI+, `sqlite3`, `json`), khử hoàn toàn đường dẫn cứng. Tích hợp chỉ dẫn `AGENTS.md` / `GEMINI.md` để AI trên máy mới chỉ cần chạy DUY NHẤT 1 lệnh `install.ps1` là đạt Full Parity ngay lập tức không tốn token quét mã.
+  - *Lệnh test*: `py -m unittest discover -s tests` -> 18/18 PASS (Exit code 0).
