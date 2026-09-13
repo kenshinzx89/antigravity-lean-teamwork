@@ -25,5 +25,12 @@ def snapshot():
         lines = ANTI_STATE.read_text(encoding="utf-8").splitlines()
         model_line = next((line for line in lines if "last_selected_agent_model" in line), "")
         model = model_line.split(":", 1)[-1].strip().strip('"') or "MODEL_UNKNOWN"
-    except OSError: model = "MODEL_UNKNOWN"
+    if not accounts:
+        try:
+            from core.antigravity_service import get_native_antigravity_account
+            native = get_native_antigravity_account()
+            if native and native.get("email"):
+                return {"active": _mask(native.get("email")), "pool": 1, "anti": 1, "model": model.replace("MODEL_PLACEHOLDER_", "")}
+        except Exception:
+            pass
     return {"active": _mask(active.get("email") or active.get("name")), "pool": len(accounts), "anti": len(anti) if isinstance(anti, list) else 0, "model": model.replace("MODEL_PLACEHOLDER_", "")}

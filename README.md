@@ -214,17 +214,26 @@ antigravity-lean-teamwork/
 │   └── architecture.md                # Cấu trúc tách biệt Stock Core & Skill
 ├── scripts/
 │   ├── auto_sync_hook.py              # Script hook tự động tiêm thông điệp Re-Anchor
-│   └── setup_global_hook.py           # Script cài đặt hook toàn cục trên máy tính
+│   ├── setup_global_hook.py           # Script cài đặt hook toàn cục trên máy tính
+│   └── teamwork_bridge.py             # Cầu nối 2 chiều Lean Teamwork <-> Desktop Widget
 ├── tests/
-│   └── test_skill_integrity.py        # Bộ 10 bài test tự động kiểm thử tính toàn vẹn
+│   ├── test_skill_integrity.py        # 11 bài test kiểm thử tính toàn vẹn hệ thống
+│   └── test_teamwork_bridge.py        # 6 bài test kiểm thử cầu nối & fallback Native IDE
+├── widget/                            # Mã nguồn Desktop Widget HUD kính mờ ngoài màn hình
+│   ├── core/                          # Windows API GDI+, Popover, Service, Layout
+│   ├── assets/                        # Icons, hình ảnh đồ họa chất lượng cao
+│   ├── main.py                        # Điểm khởi chạy Widget
+│   └── KHOI_DONG_WIDGET.vbs           # Lối tắt khởi động ngầm không hiện console
 ├── sync_skill.py                      # Bộ điều khiển Zero-Scan & Đồng bộ 2 chiều
+├── install.ps1                        # Script cài đặt 1-click tự động toàn diện
+├── INSTALL.md                         # Hướng dẫn cài đặt A-Z cho máy mới
 ├── AGENTS.md                          # Chỉ dẫn thi hành nhanh cho AI
 ├── CHANGELOG.md                       # Lịch sử nâng cấp phiên bản
 ├── CONTRIBUTING.md                    # Nguyên tắc đóng góp First-Time Right
 ├── GEMINI.md                          # Operating Rules cấp toàn cục
 ├── LICENSE                            # Giấy phép mã nguồn mở MIT
 ├── SECURITY.md                        # Chính sách bảo mật có trách nhiệm
-└── VERSION                            # Số hiệu phiên bản hiện hành (v1.4.0)
+└── VERSION                            # Số hiệu phiên bản hiện hành (v1.5.0)
 ```
 
 ---

@@ -12,7 +12,7 @@ from pathlib import Path
 
 # Paths
 REPO_ROOT = Path(__file__).resolve().parent.parent
-WIDGET_ROOT = Path(r"c:\Users\tient\Desktop\Du An\AntigravityWidget")
+WIDGET_ROOT = REPO_ROOT / "widget" if (REPO_ROOT / "widget").exists() else Path(r"c:\Users\tient\Desktop\Du An\AntigravityWidget")
 
 sys.path.insert(0, str(REPO_ROOT / "scripts"))
 sys.path.insert(0, str(WIDGET_ROOT))
@@ -20,6 +20,7 @@ sys.path.insert(0, str(WIDGET_ROOT))
 import teamwork_bridge
 from core.teamwork_service import get_teamwork_service
 from core.layout import horizontal_layout, calculate_account_chip_width
+from core import antigravity_service
 
 
 class TestTeamworkWidgetIntegration(unittest.TestCase):
@@ -104,6 +105,52 @@ class TestTeamworkWidgetIntegration(unittest.TestCase):
         self.assertIn("teamwork", layout_idle.boxes)
         tw_box_idle = layout_idle.boxes["teamwork"]
         self.assertEqual(tw_box_idle.w, 84.0)
+
+    def test_05_native_ide_account_detection(self):
+        """Test phát hiện tài khoản native Antigravity IDE từ database state.vscdb."""
+        acc = antigravity_service.get_native_antigravity_account()
+        # Trên môi trường phát triển này, có Antigravity IDE đang đăng nhập
+        self.assertIsNotNone(acc)
+        self.assertIn("@", acc["email"])
+        self.assertTrue(acc["name"])
+        self.assertIn("Antigravity", acc["source"])
+
+    def test_06_fallback_without_cockpit(self):
+        """Test cơ chế tự động fallback về Native IDE khi máy không có Cockpit Tool."""
+        old_root = antigravity_service.ROOT
+        try:
+            # Giả lập môi trường máy mới không hề có thư mục .antigravity_cockpit
+            antigravity_service.ROOT = Path("C:/nonexistent_cockpit_env_test")
+            antigravity_service.ACCOUNTS_FILE = antigravity_service.ROOT / "accounts.json"
+            antigravity_service.IDE_ACCOUNTS_FILE = antigravity_service.ROOT / "codex_accounts.json"
+            antigravity_service.CURRENT_FILE = antigravity_service.ROOT / "current_account.json"
+            antigravity_service.INSTANCES_FILE = antigravity_service.ROOT / "instances.json"
+            antigravity_service.IDE_INSTANCES_FILE = antigravity_service.ROOT / "codex_instances.json"
+            antigravity_service.ACCOUNT_FILES = antigravity_service.ROOT / "accounts"
+            antigravity_service.QUOTA_CACHE = antigravity_service.ROOT / "cache"
+
+            data = antigravity_service.query_antigravity_data()
+            self.assertTrue(data.get("healthy"))
+            self.assertEqual(data.get("source"), "native-antigravity-ide")
+            self.assertNotEqual(data.get("active_email"), "")
+            self.assertNotEqual(data.get("active_email"), "Offline")
+
+            # Kiểm tra danh sách tài khoản popup
+            accs = antigravity_service.get_cockpit_accounts_with_quota()
+            self.assertGreaterEqual(len(accs.get("all", [])), 1)
+            active_acc = accs["all"][0]
+            self.assertTrue(active_acc.get("is_active"))
+            self.assertEqual(active_acc.get("id"), "native_ide")
+        finally:
+            # Khôi phục trạng thái
+            antigravity_service.ROOT = old_root
+            antigravity_service.ACCOUNTS_FILE = old_root / "accounts.json"
+            antigravity_service.IDE_ACCOUNTS_FILE = old_root / "codex_accounts.json"
+            antigravity_service.CURRENT_FILE = old_root / "current_account.json"
+            antigravity_service.INSTANCES_FILE = old_root / "instances.json"
+            antigravity_service.IDE_INSTANCES_FILE = old_root / "codex_instances.json"
+            antigravity_service.ACCOUNT_FILES = old_root / "accounts"
+            antigravity_service.QUOTA_CACHE = old_root / "cache" / "quota_api_v1_desktop" / "authorized"
 
 
 if __name__ == "__main__":

@@ -11,6 +11,9 @@ import os
 import time
 from datetime import datetime, timezone
 from pathlib import Path
+import sqlite3
+import base64
+import re
 
 
 ROOT = Path(os.environ.get('USERPROFILE', r'C:\\Users\\tient')) / '.antigravity_cockpit'
@@ -22,6 +25,8 @@ IDE_INSTANCES_FILE = ROOT / 'codex_instances.json'
 ACCOUNT_FILES = ROOT / 'accounts'
 QUOTA_CACHE = ROOT / 'cache' / 'quota_api_v1_desktop' / 'authorized'
 _last_good = None
+_native_acc_cache = None
+_native_acc_time = 0.0
 
 
 def _read_json(path, fallback=None):
@@ -40,6 +45,100 @@ def mask_email(value):
     return local if local else 'Chưa rõ'
 
 
+def get_native_antigravity_account():
+    """Discover native logged-in Antigravity / Antigravity IDE account when Cockpit is absent.
+    Reads directly from Antigravity IDE state database (state.vscdb) or state config.
+    Cached for 10 seconds to avoid unnecessary disk I/O.
+    """
+    global _native_acc_cache, _native_acc_time
+    now = time.monotonic()
+    if _native_acc_cache is not None and (now - _native_acc_time) < 10.0:
+        return _native_acc_cache
+
+    candidates = []
+    # Windows paths
+    appdata = os.environ.get('APPDATA')
+    if appdata:
+        p_appdata = Path(appdata)
+        candidates.extend([
+            p_appdata / 'Antigravity IDE' / 'User' / 'globalStorage' / 'state.vscdb',
+            p_appdata / 'Antigravity' / 'User' / 'globalStorage' / 'state.vscdb',
+            p_appdata / 'Code' / 'User' / 'globalStorage' / 'state.vscdb',
+        ])
+    # macOS paths
+    home = Path.home()
+    mac_appsupport = home / 'Library' / 'Application Support'
+    if mac_appsupport.exists():
+        candidates.extend([
+            mac_appsupport / 'Antigravity IDE' / 'User' / 'globalStorage' / 'state.vscdb',
+            mac_appsupport / 'Antigravity' / 'User' / 'globalStorage' / 'state.vscdb',
+        ])
+    # Linux paths
+    linux_config = home / '.config'
+    if linux_config.exists():
+        candidates.extend([
+            linux_config / 'Antigravity IDE' / 'User' / 'globalStorage' / 'state.vscdb',
+            linux_config / 'Antigravity' / 'User' / 'globalStorage' / 'state.vscdb',
+        ])
+
+    for db_path in candidates:
+        if not db_path.exists():
+            continue
+        try:
+            conn = sqlite3.connect(f'file:{db_path}?mode=ro', uri=True)
+            c = conn.cursor()
+            c.execute('SELECT value FROM ItemTable WHERE key = ?', ('antigravityUnifiedStateSync.userStatus',))
+            row = c.fetchone()
+            conn.close()
+            if not row or not row[0]:
+                continue
+            val = row[0]
+            email = None
+            name = None
+            plan = None
+            try:
+                dec = base64.b64decode(val)
+                for sub in re.findall(rb'[A-Za-z0-9+/=]{16,}', dec):
+                    try:
+                        sdec = base64.b64decode(sub)
+                        m = re.findall(rb'[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+', sdec)
+                        if m and not email:
+                            email = m[0].decode('latin1')
+                        sdec_text = sdec.decode('utf-8', errors='ignore')
+                        if 'Google AI Pro' in sdec_text:
+                            plan = 'Google AI Pro'
+                        elif 'Google AI Ultra' in sdec_text:
+                            plan = 'Google AI Ultra'
+                    except Exception:
+                        pass
+                if not email:
+                    m = re.findall(rb'[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+', dec)
+                    if m:
+                        email = m[0].decode('latin1')
+            except Exception:
+                pass
+            if not email:
+                m = re.findall(r'[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+', str(val))
+                if m:
+                    email = m[0]
+            if email:
+                result = {
+                    'email': email,
+                    'name': name or mask_email(email),
+                    'plan': plan or 'Antigravity IDE',
+                    'source': str(db_path.parent.parent.parent.name),
+                }
+                _native_acc_cache = result
+                _native_acc_time = now
+                return result
+        except Exception:
+            continue
+
+    _native_acc_cache = None
+    _native_acc_time = now
+    return None
+
+
 def _current_account_id():
     """Return active Antigravity account ID prioritized from Cockpit IDE instance settings."""
     inst = _read_json(INSTANCES_FILE, {}) or {}
@@ -47,13 +146,19 @@ def _current_account_id():
     if bind_id and bind_id != '__api_service__':
         return str(bind_id)
     doc = _read_json(ACCOUNTS_FILE, {}) or {}
-    return str(doc.get('current_account_id') or '')
+    cid = str(doc.get('current_account_id') or '')
+    if cid:
+        return cid
+    native = get_native_antigravity_account()
+    if native and native.get('email'):
+        return 'native_ide'
+    return ''
 
 
 def _current_email():
-    """Resolve email for currently active account in Cockpit Antigravity IDE."""
+    """Resolve email for currently active account in Cockpit Antigravity IDE or Native IDE."""
     curr_id = _current_account_id()
-    if curr_id:
+    if curr_id and curr_id != 'native_ide':
         acc_payload = _read_json(ACCOUNTS_FILE, {}) or {}
         for acc in acc_payload.get('accounts') or []:
             if str(acc.get('id') or '') == curr_id:
@@ -61,7 +166,13 @@ def _current_email():
                 if em:
                     return em
     record = _read_json(CURRENT_FILE, {}) or {}
-    return str(record.get('email') or '').strip().lower()
+    em = str(record.get('email') or '').strip().lower()
+    if em:
+        return em
+    native = get_native_antigravity_account()
+    if native and native.get('email'):
+        return str(native['email']).strip().lower()
+    return ''
 
 
 def get_cockpit_accounts_with_quota():
@@ -160,6 +271,30 @@ def get_cockpit_accounts_with_quota():
                 'status_text': "[Chưa có cache quota]",
                 'score': -1,
             })
+
+    # Fallback to native Antigravity IDE account if no Cockpit accounts found
+    if not results:
+        native = get_native_antigravity_account()
+        if native and native.get('email'):
+            native_res = {
+                'id': 'native_ide',
+                'email': native['email'],
+                'clean_name': mask_email(native['email']),
+                'is_active': True,
+                'has_cache': True,
+                'g_5h': 100,
+                'c_5h': 100,
+                'g_w': 100,
+                'c_w': 100,
+                'status_text': f"[{native.get('plan') or 'Native IDE'}]",
+                'score': 100,
+            }
+            return {
+                'active': [native_res],
+                'ready': [],
+                'empty': [],
+                'all': [native_res],
+            }
 
     # Sort accounts:
     # 1. Active account first
@@ -489,10 +624,19 @@ def get_cockpit_account_groups():
             })
         return rows
 
-    return {
+    res = {
         'antigravity': rows_for(ACCOUNTS_FILE),
         'ide': rows_for(IDE_ACCOUNTS_FILE),
     }
+    if not res['antigravity'] and not res['ide']:
+        native = get_native_antigravity_account()
+        if native and native.get('email'):
+            res['ide'] = [{
+                'id': 'native_ide',
+                'label': mask_email(native['email']),
+                'active': True,
+            }]
+    return res
 
 
 def _antigravity_ids():
@@ -504,12 +648,11 @@ def _antigravity_ids():
                 ids.add(path.stem)
     except OSError:
         pass
+    if not ids:
+        native = get_native_antigravity_account()
+        if native and native.get('email'):
+            ids.add('native_ide')
     return ids
-
-
-def _current_email():
-    record = _read_json(CURRENT_FILE, {})
-    return str(record.get('email') or '').strip().lower()
 
 
 def _latest_cache(email):
@@ -593,6 +736,33 @@ def query_antigravity_data():
     active = next((row for row in account_rows if str(row.get('email') or '').lower() == current), {})
     cache = _latest_cache(current)
     if not cache:
+        # Fallback to Native Antigravity IDE when Cockpit cache is missing or Cockpit is not installed
+        native = get_native_antigravity_account()
+        if native and native.get('email'):
+            result = {
+                'accounts': max(len(ids), 1),
+                'available_count': 1,
+                'cooldown_count': 0,
+                'missing_count': 0,
+                'five_hour_pct': 100,
+                'weekly_pct': 100,
+                'claude_five_hour_pct': 100,
+                'claude_weekly_pct': 100,
+                'five_hour_reset': 'Native IDE',
+                'weekly_reset': 'Active',
+                'active_email': mask_email(native['email']),
+                'active_account_id': 'native_ide',
+                'active_account_name': native.get('name') or mask_email(native['email']),
+                'healthy': True,
+                'error': '',
+                'timestamp': time.time(),
+                'cache_updated_at': datetime.now(timezone.utc).isoformat(),
+                'source': 'native-antigravity-ide',
+                'plan': native.get('plan') or 'Antigravity IDE',
+            }
+            _last_good = result
+            return result
+
         return dict(_last_good or {}, healthy=False, accounts=len(ids), error='Cockpit chưa có cache quota Antigravity cho tài khoản đang chọn')
 
     payload = cache.get('payload') or {}

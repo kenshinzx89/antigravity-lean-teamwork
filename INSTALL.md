@@ -105,3 +105,15 @@ py tests\test_teamwork_bridge.py
 ```
 
 *Tiêu chuẩn: Toàn bộ 100% tests phải PASS (Exit Code 0).*
+
+---
+
+## 🌐 7. Cơ Chế Nhận Diện Tài Khoản Đa Năng (Dual Account Detection)
+
+- **Khi máy CÓ Cockpit Tool**:
+  - Widget tự động đồng bộ danh sách tài khoản từ Cockpit Tool, phân nhóm gia đình (tags), trạng thái Quota Gemini 5h / weekly, hỗ trợ hover xem chi tiết và click chuyển đổi tài khoản 1 chạm.
+- **Khi máy KHÔNG CÓ Cockpit Tool (Máy mới hoàn toàn)**:
+  - Widget tự động kích hoạt **Native Antigravity IDE Mode**: Trích xuất trực tiếp tài khoản Google đang đăng nhập trong Google Antigravity IDE (`state.vscdb`).
+  - Hiển thị tên người dùng và email thật, trạng thái sẵn sàng 100%, **tuyệt đối không bị lỗi "Offline" hay "No Acc"**.
+  - Toàn bộ cây cầu tương tác **Lean Teamwork HUD** (Đề xuất kỹ thuật & Nghiệm thu hoàn thiện) vận hành trơn tru độc lập 100%, không phụ thuộc vào Cockpit Tool!
+
