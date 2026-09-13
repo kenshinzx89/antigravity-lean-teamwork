@@ -36,6 +36,10 @@ def is_acceptance_signal(text: str) -> bool:
     if t == ACCEPTANCE_PASSCODE or t == "💎 OK" or t == "OK💎":
         return True
 
+    # Mật mã tắt siêu tốc thuần bàn phím (không cần mở bảng emoji Windows)
+    if t.lower() == "ok::" or t.lower().startswith("ok::") or t.lower() == "ok:gem:":
+        return True
+
     # Có emoji kim cương đi kèm chữ ok / accept / hoàn tất
     if "💎" in t:
         lower = t.lower()

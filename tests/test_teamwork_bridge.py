@@ -189,7 +189,7 @@ class TestTeamworkWidgetIntegration(unittest.TestCase):
 
     def test_08_acceptance_passcode_and_anti_false_acceptance(self):
         """Test mật mã nghiệm thu hoàn tất 'OK 💎' và quy tắc chống nhầm lẫn từ 'ok' giao tiếp thông thường."""
-        # 1. Các tín hiệu nghiệm thu hợp lệ (có mật mã / emoji kim cương)
+        # 1. Các tín hiệu nghiệm thu hợp lệ (có mật mã / emoji kim cương / phím tắt ok::)
         self.assertTrue(teamwork_bridge.is_acceptance_signal("OK 💎"))
         self.assertTrue(teamwork_bridge.is_acceptance_signal("💎 OK"))
         self.assertTrue(teamwork_bridge.is_acceptance_signal("OK💎"))
@@ -197,6 +197,8 @@ class TestTeamworkWidgetIntegration(unittest.TestCase):
         self.assertTrue(teamwork_bridge.is_acceptance_signal("ok 💎"))
         self.assertTrue(teamwork_bridge.is_acceptance_signal("Đã hoàn tất 💎"))
         self.assertTrue(teamwork_bridge.is_acceptance_signal("[100% HOÀN TẤT]"))
+        self.assertTrue(teamwork_bridge.is_acceptance_signal("ok::"))
+        self.assertTrue(teamwork_bridge.is_acceptance_signal("OK::"))
 
         # 2. Các trao đổi thông thường có từ 'ok' tuyệt đối KHÔNG phải là tín hiệu nghiệm thu
         self.assertFalse(teamwork_bridge.is_acceptance_signal("ok"))

@@ -111,10 +111,10 @@ Hệ thống chuyển hướng toàn bộ khâu Đề xuất Kỹ thuật (🧭)
 - **Khi người dùng chọn nút 2 (`⚡ [SUPERPOWERS DEBUG] 🛠️`) trên Widget**:
   - Main Agent kích hoạt Subagent chuyên trách (`invoke_subagent`, model: `flash`, role: `Superpowers Debugger & Remediation Worker`).
   - Subagent thực thi chuẩn xác quy trình 4 pha từ [Superpowers Systematic Debugging](./references/systematic-debugging.md): (1) Root Cause -> (2) Hypothesis & Red Test -> (3) Minimal Fix -> (4) Green Verification.
-- **Điểm dừng duy nhất & Chuẩn Hóa Mật Mã Nghiệm Thu (`OK 💎`)**:
-  - Tín hiệu nghiệm thu hoàn tất duy nhất là mật mã **`OK 💎`** (được Desktop Widget tự động gửi khi bấm nút `💎 [100% HOÀN TẤT] ✨` hoặc do người dùng gõ `OK 💎`).
-  - **Quy tắc Chống Nhầm Lẫn (Anti-False-Acceptance)**: Các trao đổi thông thường chứa chữ "ok" (ví dụ: *"ok làm tiếp đi", "ok bạn", "ok nhé", "ok để mình xem"...*) TUYỆT ĐỐI KHÔNG phải là lệnh nghiệm thu hoàn tất. AI chỉ kích hoạt Self-Evolution khi nhận được mật mã có kèm emoji kim cương `OK 💎` (hoặc `💎 OK`, `[ACCEPT] 💎`).
-  - Khi bắt được mật mã `OK 💎`, AI hiểu ngay 100% người dùng đã nghiệm thu chấp thuận và kích hoạt Subagent (`flash`, role: `Knowledge & Quota Synthesizer`) thực thi **Bộ Khung Tự Vấn Phản Tư 6 Chiều** và **Cơ chế Khử Phình Tri Thức** (Merge & Prune), rà soát lỗi trung gian từ mốc hoàn tất gần nhất vào `docs/learned_patterns.md` (hoặc `~/.gemini/config/learned_patterns.md`). Tuyệt đối không nạp vào `SKILL.md`.
+- **Điểm dừng duy nhất & Chuẩn Hóa Mật Mã Nghiệm Thu (`OK 💎` / `ok::`)**:
+  - Tín hiệu nghiệm thu hoàn tất duy nhất là mật mã **`OK 💎`** (được Desktop Widget tự động gửi khi bấm nút `💎 [100% HOÀN TẤT] ✨` hoặc do người dùng gõ `OK 💎`, hoặc phím tắt siêu tốc **`ok::`**).
+  - **Quy tắc Chống Nhầm Lẫn (Anti-False-Acceptance)**: Các trao đổi thông thường chứa chữ "ok" (ví dụ: *"ok làm tiếp đi", "ok bạn", "ok nhé", "ok để mình xem"...*) TUYỆT ĐỐI KHÔNG phải là lệnh nghiệm thu hoàn tất. AI chỉ kích hoạt Self-Evolution khi nhận được mật mã có kèm emoji kim cương `OK 💎` (hoặc `💎 OK`, `[ACCEPT] 💎`, hoặc phím tắt siêu tốc `ok::`).
+  - Khi bắt được mật mã `OK 💎` hoặc `ok::`, AI hiểu ngay 100% người dùng đã nghiệm thu chấp thuận và kích hoạt Subagent (`flash`, role: `Knowledge & Quota Synthesizer`) thực thi **Bộ Khung Tự Vấn Phản Tư 6 Chiều** và **Cơ chế Khử Phình Tri Thức** (Merge & Prune), rà soát lỗi trung gian từ mốc hoàn tất gần nhất vào `docs/learned_patterns.md` (hoặc `~/.gemini/config/learned_patterns.md`). Tuyệt đối không nạp vào `SKILL.md`.
 
 ---
 
