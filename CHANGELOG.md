@@ -4,6 +4,23 @@ Tất cả các thay đổi, bài học và tính năng nâng cấp qua từng p
 
 ---
 
+## [1.5.1] — 2026-09-13
+### Added
+- **Quy Tắc Biên Độ Tổng Hợp Từ Lần Hoàn Tất Gần Nhất (From-Last-Completion Retrospective Anchor)**:
+  - Khi trong một phiên làm việc người dùng chưa bấm Hoàn tất vì còn lỗi và tiếp tục trao đổi qua nhiều lượt chat trung gian:
+  - Đến khi người dùng bấm `💎 [100% HOÀN TẤT] ✨`, việc đúc kết tri thức (Self-Evolution / Retrospective) **BẮT BUỘC rà soát toàn bộ chuỗi lỗi, các giả định sai và các lần sửa TỪ LẦN BẤM HOÀN TẤT GẦN NHẤT ĐẾN NAY**.
+  - **Zero Error Dropping**: Tuyệt đối không được bỏ sót bất kỳ lỗi trung gian nào phát sinh giữa 2 mốc hoàn tất; cấm chỉ nhìn vào git diff cuối cùng hay lượt chat chót.
+  - **Cơ chế lưu mốc trong Bridge SDK**: Bổ sung `last_completed_at`, `completion_history`, `record_intermediate_issue()` và `get_intermediate_issues()` vào `teamwork_bridge.py` và `teamwork_service.py` để ghi nhớ mốc thời gian chính xác cho việc rà soát `transcript.jsonl`.
+- **Dual Account Detection (Native IDE Fallback)**:
+  - Widget tự động kết nối trực tiếp với tài khoản Google Antigravity IDE cục bộ (`state.vscdb`) khi máy mới không cài Cockpit Tool, loại bỏ hoàn toàn lỗi `Offline` / `No Acc`.
+
+## [1.5.0] — 2026-09-13
+### Added
+- **Gộp Dự Án Monorepo (Lean Teamwork + Desktop Widget HUD)**:
+  - Hợp nhất toàn diện mã nguồn Desktop Widget vào monorepo tại `widget/`.
+  - Bổ sung `install.ps1` và `INSTALL.md` cho máy mới trong 5 giây.
+  - Tách nhịp nghiệm thu độc lập ra Widget Popover HUD, giải phóng 100% khung chat.
+
 ## [1.4.7] — 2026-09-13
 ### Changed
 - **Chuyển Đề Xuất Kỹ Thuật (🧭) Sang Chat Stream + Timer Ngầm `schedule` (Non-Blocking Autonomous Fallback)**:

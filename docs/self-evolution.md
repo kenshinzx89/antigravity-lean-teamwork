@@ -123,4 +123,32 @@ Sau khi người dùng bấm nghiệm thu hoàn tất (`💎 [100% HOÀN TẤT] 
 - **Định nghĩa đúng của "Lean"**: Lean là **Trúng Đích & Đủ Ngữ Cảnh (Targeted & Context-Aware)**, hoàn toàn không phải là đếm số dòng cơ học.
 - **Chuẩn thực thi First-Time Right**: Khi đã xác định file và khu vực logic cần kiểm tra, BẮT BUỘC đọc bao quát trọn vẹn ngữ cảnh hàm/class/block liên quan trong 1 lần gọi công cụ để hiểu rõ nguyên nhân gốc ngay từ đầu, tuyệt đối cấm đoán mò vì sợ đọc code/tài liệu.
 
+---
+
+## 11. Quy Tắc Biên Độ Tổng Hợp Từ Lần Hoàn Tất Gần Nhất (From-Last-Completion Retrospective Anchor) & Không Bỏ Sót Lỗi Trung Gian
+
+### 1. Bối Cảnh Thực Tế & Lỗ Hổng Bỏ Sót Lỗi
+Khi một phiên làm việc diễn ra, không phải lúc nào AI cũng làm đúng 100% ở lần báo cáo nghiệm thu đầu tiên.
+- Khi người dùng phát hiện mã nguồn vẫn còn bug, giao diện chưa khớp hoặc còn thiếu sót: Người dùng **KHÔNG ẤN HOÀN TẤT**, mà tiếp tục chat trao đổi ("vẫn còn lỗi A", "chưa chạy được B", "sao bị crash C").
+- Vòng lặp debug và sửa đổi có thể kéo dài thêm 2, 3, thậm chí 5 lượt chat nữa.
+- Trong chuỗi lượt chat trung gian này, rất nhiều lỗi thực tế, giả định sai lầm và phương án chắp vá đã xảy ra.
+- Nếu khi người dùng bấm `💎 [100% HOÀN TẤT] ✨` mà AI chỉ nhìn vào lượt chat cuối cùng hoặc git diff gần nhất, **TOÀN BỘ CÁC LỖI VÀ BÀI HỌC Ở CÁC LƯỢT CHAT TRUNG GIAN SẼ BỊ BỎ RƠI HOÀN TOÀN**.
+
+### 2. Thiết Luật Bất Biến: Last-Completion Anchor
+1. **Mốc Bắt Đầu Rà Soát (The Retrospective Anchor)**:
+   - Khi kích hoạt chu trình đúc kết tri thức (Self-Evolution), Subagent đúc kết BẮT BUỘC phải xác định **Mốc hoàn tất gần nhất (Last Completion Anchor)**:
+     - Nếu trong phiên này chưa từng bấm hoàn tất: Mốc bắt đầu là **Điểm khởi đầu phiên làm việc**.
+     - Nếu trước đó đã từng có lần bấm hoàn tất (tại thời điểm $T_{last}$): Mốc bắt đầu là **$T_{last}$**.
+2. **Không Bỏ Sót Bất Kỳ Lỗi Trung Gian Nào (Zero Error Dropping)**:
+   - Quét toàn bộ lịch sử trao đổi từ $T_{last}$ đến hiện tại.
+   - Nhận diện và lập danh mục toàn bộ các lỗi trung gian:
+     - *Lỗi 1*: Nguyên nhân người dùng phản hồi chưa đạt -> Phán đoán sai ban đầu của AI -> Giải pháp khắc phục.
+     - *Lỗi 2*: Biến cố runtime / crash / test fail phát sinh khi sửa lỗi 1 -> Giải pháp xử lý triệt để.
+3. **Đúc Kết Anti-Pattern Song Song**:
+   - Mọi phán đoán sai lầm trong các lượt trung gian phải được trích xuất thành `[Anti-Pattern]` để ngăn ngừa tái diễn.
+   - Giải pháp chuẩn xác cuối cùng được ghi nhận thành `[Pattern]`.
+4. **Cơ Chế Lưu Vết Trong Bridge SDK**:
+   - `teamwork_bridge.py` và `teamwork_service.py` tự động ghi nhận `last_completed_at` và `completion_history` mỗi khi người dùng bấm duyệt `ACCEPT`. Nhờ đó, AI luôn có mốc thời gian chính xác để truy vết `transcript.jsonl`.
+
+
 

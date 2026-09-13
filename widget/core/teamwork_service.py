@@ -107,14 +107,24 @@ class TeamworkService:
         """Gửi phản hồi của người dùng từ Widget."""
         try:
             state = self.get_state(force=True)
+            now_ts = time.time()
             state["response"] = {
                 "action": action,
                 "selected_option_id": option_id,
                 "note": note,
-                "timestamp": time.time(),
+                "timestamp": now_ts,
                 "handled": False
             }
-            state["updated_at"] = time.time()
+            if action == "ACCEPT":
+                state["last_completed_at"] = now_ts
+                hist = state.get("completion_history") or []
+                hist.append({
+                    "completed_at": now_ts,
+                    "session_id": state.get("session_id", ""),
+                    "acceptance": state.get("acceptance", {})
+                })
+                state["completion_history"] = hist[-20:]
+            state["updated_at"] = now_ts
             BRIDGE_DIR.mkdir(parents=True, exist_ok=True)
             BRIDGE_FILE.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding='utf-8')
             return True

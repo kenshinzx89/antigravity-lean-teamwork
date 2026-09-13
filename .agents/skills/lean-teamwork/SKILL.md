@@ -134,8 +134,9 @@ Hệ thống chuyển hướng toàn bộ khâu Đề xuất Kỹ thuật (🧭)
      - **PUSH**: Nếu máy tính vừa học hỏi kiến thức mới (`ver_installed > ver_source`) -> Tự động đẩy ngược về folder gốc để PC/thiết bị khác dùng ngay.
      - **SYNC 2 CHIỀU**: Cân bằng 2 chiều tri thức `learned_patterns.md` (bảo toàn 100% bài học ở cả 2 nơi).
    - Tuyệt đối tuân thủ Zero-Scan Protocol: Không đọc quét lan man các file mã nguồn, tiết kiệm 100% quota token.
-5. **Phá Bỏ Thiên Lệch Kẻ Sống Sót & Kiểm Toán Thử-Sai (Anti-Survivorship Bias & Trajectory Churn Audit)**:
-   - **Cấm chỉ nhìn vào kết quả thành công cuối cùng (Anti-Survivorship Bias)**: Subagent đúc kết khi được kích hoạt KHÔNG ĐƯỢC chỉ nhìn vào Git diff cuối cùng mà bỏ qua chuỗi thử-sai trước đó.
+5. **Phá Bỏ Thiên Lệch Kẻ Sống Sót & Kiểm Toán Thử-Sai Từ Lần Hoàn Tất Gần Nhất (Anti-Survivorship Bias, Trajectory Churn Audit & From-Last-Completion Retrospective Anchor)**:
+   - **Biên độ tổng hợp bắt buộc từ lần bấm Hoàn tất gần nhất (From-Last-Completion Anchor)**: Nếu người dùng chưa bấm Hoàn tất vì còn lỗi và tiếp tục trao đổi qua nhiều lượt chat trung gian, khi người dùng bấm `💎 [100% HOÀN TẤT] ✨`, Subagent đúc kết BẮT BUỘC phải rà soát và tổng hợp TOÀN BỘ chuỗi lỗi, các giả định sai và các lần sửa **TỪ LẦN BẤM HOÀN TẤT GẦN NHẤT ĐẾN NAY**, tuyệt đối không được bỏ sót bất kỳ lỗi trung gian nào.
+   - **Cấm chỉ nhìn vào kết quả thành công cuối cùng (Anti-Survivorship Bias)**: Tuyệt đối không chỉ nhìn vào Git diff cuối cùng hay lượt chat chót mà bỏ qua các lần test đỏ, exception hay phản hồi chỉnh sửa của người dùng ở các lượt giữa.
    - **Kiểm toán số lượt hội thoại (Turn Budget Audit)**: Nếu tác vụ tốn >2 lượt chat mới xong, Subagent BẮT BUỘC phải mổ xẻ nguyên nhân gốc: *Tại sao lần đầu làm sai? Có phải do cấm đoán đọc tài liệu chuẩn dẫn đến phỏng đoán mò mẫm không?*
    - **Đúc kết Anti-Pattern song song**: Rút ra cả `[Pattern]` (cách làm đúng) và `[Anti-Pattern]` (những phán đoán/thao tác sai lầm cấm lặp lại) lưu vào `learned_patterns.md`.
 6. **Bộ Khung Tự Vấn Phản Tư 6 Chiều & Khử Phình Quy Tắc (6-Point Reflective Inquiry & Anti-Rule-Bloat)**:

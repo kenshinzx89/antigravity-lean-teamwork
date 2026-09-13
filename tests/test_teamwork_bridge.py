@@ -152,6 +152,41 @@ class TestTeamworkWidgetIntegration(unittest.TestCase):
             antigravity_service.ACCOUNT_FILES = old_root / "accounts"
             antigravity_service.QUOTA_CACHE = old_root / "cache" / "quota_api_v1_desktop" / "authorized"
 
+    def test_07_completion_anchor_tracking(self):
+        """Test cơ chế ghi nhớ mốc hoàn tất gần nhất và theo dõi lỗi trung gian."""
+        # 1. Phát acceptance lần 1 và người dùng bấm ACCEPT
+        teamwork_bridge.publish_acceptance("Task Milestone 1", "Xong phan 1", files_changed=[], exit_code=0)
+        tw_service = get_teamwork_service()
+        tw_service.submit_response("ACCEPT")
+        resp1 = teamwork_bridge.check_user_response(mark_handled=True)
+        self.assertIsNotNone(resp1)
+
+        t1 = teamwork_bridge.get_last_completed_timestamp()
+        self.assertGreater(t1, 0.0)
+
+        # 2. Người dùng chat tiếp vì phát hiện lỗi trung gian
+        teamwork_bridge.record_intermediate_issue("Lỗi chưa sync accounts", error_type="BUG")
+        teamwork_bridge.record_intermediate_issue("Crash khi đọc state", error_type="CRASH")
+
+        issues = teamwork_bridge.get_intermediate_issues()
+        self.assertEqual(len(issues), 2)
+        self.assertEqual(issues[0]["description"], "Lỗi chưa sync accounts")
+        self.assertEqual(issues[1]["error_type"], "CRASH")
+
+        # 3. Sau khi sửa xong, nghiệm thu lần 2
+        time.sleep(0.01)
+        teamwork_bridge.publish_acceptance("Task Milestone 2", "Xong phan 2", files_changed=[], exit_code=0)
+        tw_service.submit_response("ACCEPT")
+        resp2 = teamwork_bridge.check_user_response(mark_handled=True)
+        self.assertIsNotNone(resp2)
+
+        t2 = teamwork_bridge.get_last_completed_timestamp()
+        self.assertGreaterEqual(t2, t1)
+
+        # 4. Clear bridge vẫn giữ lại mốc hoàn tất gần nhất
+        teamwork_bridge.clear_bridge()
+        self.assertEqual(teamwork_bridge.get_last_completed_timestamp(), t2)
+
 
 if __name__ == "__main__":
     unittest.main()
