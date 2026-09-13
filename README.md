@@ -1,7 +1,5 @@
 <p align="center">
-  <video src="assets/demo.mp4" controls autoplay loop muted playsinline width="100%">
-    <source src="assets/demo.mp4" type="video/mp4">
-  </video>
+  <img src="assets/demo.gif" alt="Antigravity Lean Teamwork Live Demo" width="100%">
 </p>
 
 <p align="center">
