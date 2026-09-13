@@ -38,3 +38,8 @@ tmp/
 .pytest_cache/
 .coverage
 htmlcov/
+
+# Widget local logs and captures
+widget/artifacts/
+widget/*.log
+widget/*.tmp

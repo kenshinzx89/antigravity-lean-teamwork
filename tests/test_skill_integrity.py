@@ -233,6 +233,23 @@ def test_reflective_inquiry_and_knowledge_pruning():
 
     print("[PASS] 6-Point Reflective Inquiry and Knowledge Pruning (Anti-Rule-Bloat) are verified.")
 
+def test_desktop_widget_bridge():
+    """Verify Antigravity Desktop Widget Two-Way Bridge and SDK."""
+    bridge_script = REPO_ROOT / "scripts" / "teamwork_bridge.py"
+    assert bridge_script.exists(), "teamwork_bridge.py must exist in scripts"
+
+    sys.path.insert(0, str(REPO_ROOT / "scripts"))
+    import teamwork_bridge
+    teamwork_bridge.clear_bridge()
+    state = teamwork_bridge.get_bridge_state()
+    assert state["status"] == "IDLE", "Initial bridge state must be IDLE"
+
+    widget_core = Path(r"c:\Users\tient\Desktop\Du An\AntigravityWidget\core")
+    assert (widget_core / "teamwork_service.py").exists(), "teamwork_service.py must exist in Widget core"
+    assert (widget_core / "teamwork_popover.py").exists(), "teamwork_popover.py must exist in Widget core"
+
+    print("[PASS] Desktop Widget Two-Way Bridge and Interactive Popover are verified.")
+
 if __name__ == "__main__":
     test_stock_agi_integrity()
     test_project_skill_integrity()
@@ -244,7 +261,8 @@ if __name__ == "__main__":
     test_zero_touch_lifecycle_hooks()
     test_anti_survivorship_and_first_time_right()
     test_reflective_inquiry_and_knowledge_pruning()
+    test_desktop_widget_bridge()
     print("\n============================================================")
-    print("ALL 10/10 SYSTEM CHECKS PASSED SUCCESSFULLY (Exit Code 0).")
-    print("Zero-Touch Auto Sync, Stock AGI, Lean Teamwork, Anti-Survivorship Bias & Anti-Rule-Bloat verified.")
+    print("ALL 11/11 SYSTEM CHECKS PASSED SUCCESSFULLY (Exit Code 0).")
+    print("Zero-Touch Auto Sync, Stock AGI, Lean Teamwork, Desktop Widget Bridge & Anti-Rule-Bloat verified.")
     print("============================================================")

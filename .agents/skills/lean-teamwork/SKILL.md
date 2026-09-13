@@ -83,39 +83,36 @@ Khi tất cả các tiêu chí trong Execution Brief hoặc mục tiêu sửa bu
 
 ---
 
-## 4.5. Phân Biệt Hai Chế Độ: Đề Xuất Kỹ Thuật (🧭) vs Nghiệm Thu Hoàn Thiện (💎)
+## 4.5. Chuyển Hướng Toàn Bộ Đề Xuất & Nghiệm Thu Về Desktop Widget Popover HUD (Widget HUD Decoupled — Rảnh Khung Chat 100%)
 
-Hệ thống thiết lập 2 cơ chế tương tác tối ưu tách biệt nhằm bảo đảm vừa không đứt đoạn công việc, vừa kiểm soát chất lượng tuyệt đối:
+Hệ thống chuyển hướng toàn bộ khâu Đề xuất Kỹ thuật (🧭) và Nghiệm thu Hoàn thiện (💎) sang **Desktop Widget Popover HUD** thông qua IPC Bridge (`scripts/teamwork_bridge.py`), **BỎ HOÀN TOÀN modal `ask_question` cũ trong khung chat**:
 
-### 1. 🧭 [CHẾ ĐỘ ĐỀ XUẤT KỸ THUẬT] 💡 (Khởi đầu / Lựa chọn giải pháp — Chat Stream + Hẹn Giờ Ngầm Tự Quyết 2.5 Phút)
+### 1. 🧭 [CHẾ ĐỘ ĐỀ XUẤT KỸ THUẬT] 💡 (Widget HUD Decoupled — Không Dùng Modal Chat)
 - **Khi nào kích hoạt**: Khi vừa nhận yêu cầu mới, phân tích hướng đi, hoặc đứng trước các ngã rẽ kỹ thuật quan trọng.
-- **Quy chuẩn hiển thị**: BẮT BUỘC in Đề xuất kỹ thuật trực tiếp ra khung chat với nhãn `🧭 [ĐỀ XUẤT KỸ THUẬT] ⏱️ [Hạn: 2.5 phút — Tự động chọn (1) nếu không có phản hồi] 💡`.
-- **Cấu trúc tùy chọn**: Liệt kê 2 đến 4 giải pháp cụ thể dạng danh sách số `[1] (Recommended) ...`, `[2] ...`.
-- **Cơ chế Hẹn giờ tự quyết (Non-blocking Ruling & Best-Path Fallback)**:
-  - Đồng thời kích hoạt công cụ ngầm: `schedule(DurationSeconds: 150, TimerCondition: "any", Prompt: "Hết 2.5 phút không có phản hồi: Tự động chọn phương án khuyến nghị (Recommended) và tiếp tục thực thi!")` và kết thúc lượt.
-  - **TUYỆT ĐỐI KHÔNG GỌI modal `ask_question` ở khâu này**: Do modal pop-up là lệnh chặn cứng (hard-blocking), IDE sẽ đóng băng tiến trình AI chờ click chuột, khiến timer không thể đánh thức và làm đứt đoạn công việc nếu người dùng rời máy.
-  - **Khi người dùng có mặt**: Người dùng chỉ cần gõ `1` hoặc `2` vào khung chat -> Timer tự hủy ngay lập tức (`TimerCondition: "any"`), AI triển khai theo chỉ định.
-  - **Khi người dùng vắng mặt**: Sau đúng 150 giây (2.5 phút), timer đánh thức AI -> AI thông báo: *"Đã qua 2.5 phút không có phản hồi mới. Tự động triển khai theo phương án khuyến nghị [1] (Recommended)"* và tiếp tục công việc không để bị gián đoạn.
+- **Quy chuẩn thực thi**:
+  1. Agent gọi `teamwork_bridge.publish_proposal(title, options, duration_seconds=150)` để đẩy đề xuất lên Desktop Widget Popover HUD.
+  2. Popover trên Widget tự động bung ra (hoặc hiển thị trên chip Teamwork) với đồng hồ đếm ngược Spectrum 2.5 phút và danh sách phương án to rõ, sắc nét.
+  3. In tóm tắt các phương án ngắn gọn ra khung chat để theo dõi tiến trình.
+  4. **TUYỆT ĐỐI KHÔNG GỌI modal `ask_question`**: Khung chat hoàn toàn rảnh rang, không bị modal pop-up chiếm chỗ hay đóng băng tiến trình.
+  5. **Tương tác**: Người dùng có thể click chọn trực tiếp trên Desktop Widget (Widget tự động focus và gửi phím xuống IDE) hoặc gõ số phương án vào chat. Hết 2.5 phút, hệ thống tự động chọn phương án khuyến nghị `(Recommended)` để tiếp tục.
 
-### 2. 💎 [CHẾ ĐỘ NGHIỆM THU HOÀN THIỆN] ✨ (Quy Trình Tách Nhịp 2 Bước v1.4.2)
+### 2. 💎 [CHẾ ĐỘ NGHIỆM THU HOÀN THIỆN] ✨ (Widget HUD Decoupled — Treo Cố Định Widget)
 - **Khi nào kích hoạt**: Khi code đã viết xong, toàn bộ kiểm thử tích hợp đạt 100% PASS (Exit Code 0).
-- **Quy trình Tách Nhịp 2 Bước (Two-Beat Gate — Không Bao Giờ Che Chữ)**:
-  - **BƯỚC 1 (Báo Cáo & Hướng Dẫn Đối Chứng)**: BẮT BUỘC in toàn văn báo cáo phân tích, kết quả kiểm thử và hướng dẫn đối chứng thực tế ra màn hình chat. **TUYỆT ĐỐI KHÔNG GỌI `ask_question` Ở LƯỢT NÀY** để tránh popup đè kín màn hình che mất nội dung người dùng cần đọc.
-  - **BƯỚC 2 (Kích Hoạt Modal Nghiệm Thu)**: Sau khi người dùng đã đọc xong và phản hồi (hoặc bước kế tiếp), MỚI kích hoạt modal `ask_question` có tiền tố `💎 [NGHIỆM THU HOÀN THIỆN] ✨` để người dùng xác nhận an toàn.
-- **Cấu trúc Popup 2 Trạng Thái kinh điển**:
-  1. `(Recommended) 💎 [100% HOÀN TẤT] ✨ Xác nhận nghiệm thu toàn diện & Khóa tri thức tự động`
-  2. `⚡ [SUPERPOWERS DEBUG] 🛠️ Mở AI chuyên trách tự truy vết mã lỗi & sửa trúng đích (4 pha chuẩn Superpowers, tiết kiệm quota)`
-  *(Kèm ô nhập liệu bên dưới để người dùng có thể gõ chỉ định lỗi cụ thể nếu muốn).*
-- **Cơ chế thời gian (Treo cố định vĩnh viễn - KHÔNG TIMEOUT / KHÔNG ĐẾM NGƯỢC)**:
-  - BẮT BUỘC treo chờ người dùng trực tiếp kiểm tra và đối chứng thực tế trên môi trường thật.
-  - Tuyệt đối KHÔNG đếm ngược, KHÔNG tự động chọn, KHÔNG tự ý đóng phiên.
+- **Quy trình Nghiệm Thu Tách Nhịp 2 Bước Rảnh Khung Chat (Two-Beat Decoupled Acceptance)**:
+  - **BƯỚC 1 (In Báo Cáo Ra Chat)**: In toàn văn Báo cáo phân tích, kết quả kiểm thử và hướng dẫn đối chứng thực tế ra màn hình chat. Khung chat hiển thị sạch sẽ, minh bạch.
+  - **BƯỚC 2 (Treo Nghiệm Thu Trên Desktop Widget)**:
+    - Agent gọi `teamwork_bridge.publish_acceptance(title, summary, exit_code=0, files_changed=[...])` để đẩy trạng thái Nghiệm Thu lên Desktop Widget.
+    - Popover trên Desktop Widget tự động bung ra và **TREO CỐ ĐỊNH VĨNH VIỄN TRÊN WIDGET** theo **Cấu trúc Popup 2 Trạng Thái** kinh điển:
+      1. `💎 [100% HOÀN TẤT] ✨` (Chấp thuận & Khóa tri thức tự động)
+      2. `⚡ [SUPERPOWERS DEBUG] 🛠️` (Yêu cầu AI chuyên trách truy vết sâu)
+    - **TUYỆT ĐỐI KHÔNG GỌI modal `ask_question`**: Loại bỏ hoàn toàn modal popup cũ trong khung chat. Người dùng kiểm tra đối chứng xong có thể bấm trực tiếp từ Desktop Widget bất kỳ lúc nào mà không lo bị che mất chữ trong khung chat.
 
 ### 3. Quy Trình Sửa Lỗi 4 Pha & Điểm Dừng Duy Nhất
-- **Khi người dùng chọn dòng 2 (`⚡ [SUPERPOWERS DEBUG] 🛠️`)**:
+- **Khi người dùng chọn nút 2 (`⚡ [SUPERPOWERS DEBUG] 🛠️`) trên Widget**:
   - Main Agent kích hoạt Subagent chuyên trách (`invoke_subagent`, model: `flash`, role: `Superpowers Debugger & Remediation Worker`).
   - Subagent thực thi chuẩn xác quy trình 4 pha từ [Superpowers Systematic Debugging](./references/systematic-debugging.md): (1) Root Cause -> (2) Hypothesis & Red Test -> (3) Minimal Fix -> (4) Green Verification.
-  - Sửa xong: Báo cáo ngắn gọn và **BẮT BUỘC BẬT LẠI POPUP NGHIỆM THU NGAY LẬP TỨC**.
-- **Điểm dừng duy nhất**: Vòng lặp chỉ kết thúc khi người dùng bấm `💎 [100% HOÀN TẤT] ✨`. Khi đó kích hoạt Subagent (`flash`, role: `Knowledge & Quota Synthesizer`). Subagent thực thi **Bộ Khung Tự Vấn Phản Tư 6 Chiều** (Root Cause, First-Time Right, Token Economy, Velocity, Rule Pruning, Meta-Questioning & Chronic Bottlenecks) và **Cơ chế Khử Phình Tri Thức** (Merge & Prune) nhằm nén và tinh lọc bài học vào `docs/learned_patterns.md` (hoặc `~/.gemini/config/learned_patterns.md`). Tuyệt đối không nạp vào `SKILL.md`.
+  - Sửa xong: Báo cáo kết quả ra chat và **BẮT BUỘC ĐẨY LẠI BẢNG NGHIỆM THU LÊN WIDGET HUD NGAY LẬP TỨC**.
+- **Điểm dừng duy nhất**: Vòng lặp chỉ kết thúc khi người dùng bấm `💎 [100% HOÀN TẤT] ✨` trên Widget (hoặc gõ OK). Khi đó kích hoạt Subagent (`flash`, role: `Knowledge & Quota Synthesizer`) thực thi **Bộ Khung Tự Vấn Phản Tư 6 Chiều** và **Cơ chế Khử Phình Tri Thức** (Merge & Prune) vào `docs/learned_patterns.md` (hoặc `~/.gemini/config/learned_patterns.md`). Tuyệt đối không nạp vào `SKILL.md`.
 
 ---
 

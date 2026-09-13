@@ -176,7 +176,7 @@ def sync_source_to_installed(version: str):
     target_skill_md.write_text(global_skill_content, encoding="utf-8")
     print("  ✓ [PULL] Đã đồng bộ SKILL.md vào Global Config")
 
-    for sub in ["templates", "references", "resources"]:
+    for sub in ["templates", "references", "resources", "scripts"]:
         src_sub = source_skill_dir / sub
         dst_sub = GLOBAL_SKILL_DIR / sub
         if src_sub.exists():
@@ -215,7 +215,7 @@ def sync_installed_to_source(version: str):
         (target_skill_dir / "SKILL.md").write_text(repo_skill_content, encoding="utf-8")
         print("  ✓ [PUSH] Đã đồng bộ ngược SKILL.md về folder gốc")
 
-    for sub in ["templates", "references"]:
+    for sub in ["templates", "references", "resources", "scripts"]:
         src_sub = GLOBAL_SKILL_DIR / sub
         dst_sub = target_skill_dir / sub
         if src_sub.exists():

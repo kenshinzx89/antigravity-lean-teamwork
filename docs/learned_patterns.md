@@ -157,3 +157,10 @@ Tài liệu này là nơi lưu trữ các tri thức kỹ thuật, mẫu sửa l
 - **Nguyên nhân gốc**: Hiểu sai tính "Lean" dẫn tới tật đọc vụn vặt 50 dòng (`Micro-Peeking`). Cắt đứt ngữ cảnh của hàm/class làm AI phải grep đi grep lại hơn 30 tool calls chắp vá, gây tốn token gấp 5 lần và người dùng rất ức chế.
 - **Giải pháp tối thiểu**: Thiết lập nguyên tắc **Cohesive Block Inspection** — Đọc trọn vẹn 100–400 dòng của hàm/class liên quan trong **1 lần gọi `view_file` duy nhất**. CẤM chuỗi thao tác lặp: grep -> đọc 50 dòng -> grep lại trong cùng file. Đọc trọn vẹn ngữ cảnh ngay Turn 1 giúp làm đúng ngay lần đầu (First-Time Right) trong 1 diff duy nhất.
 - **Lệnh test**: `py tests/test_skill_integrity.py` -> 10/10 PASS (Exit code 0).
+
+## Mẫu 11: [UI/UX & Architecture] Desktop Widget HUD Decoupled & Chat Freedom (Lean Teamwork v1.5.0)
+- **[UI/UX & Architecture] [Desktop Widget HUD Decoupled & Chat Freedom]**:
+  - *Nguyên nhân gốc*: Modal popup cũ (ask_question) là lệnh chặn cứng (hard-blocking) chiếm trọn khung chat, che mất nội dung phân tích/code và đóng băng tiến trình AI, làm người dùng rất vướng víu và ức chế.
+  - *Giải pháp tối thiểu*: Chuyển hướng 100% Đề xuất Kỹ thuật (🧭) và Bảng Nghiệm Thu (💎) ra ngoài Desktop Widget Popover HUD qua IPC Bridge (teamwork_bridge.py). Khung chat rảnh rang tuyệt đối, chỉ hiển thị báo cáo sạch sẽ. Tương tác 1 chạm trực tiếp từ Desktop Widget tự động focus và gửi lệnh phím xuống IDE.
+  - *Khắc phục hiển thị*: Popover tự động co giãn (compute_dynamic_layout), word-wrap toàn diện cho tiêu đề, tự thích ứng vùng làm việc SPI_GETWORKAREA (trừ taskbar) chống cắt cụt nút bấm và mất chữ.
+  - *Lệnh test*: py tests/test_skill_integrity.py -> 11/11 PASS (Exit code 0).

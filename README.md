@@ -5,15 +5,25 @@
 <p align="center">
   <a href="https://github.com/kenshinzx89/antigravity-lean-teamwork"><img src="https://img.shields.io/badge/target-Google%20Antigravity%20(Gemini%203.7%2F3.8)-4285F4.svg?style=for-the-badge&logo=google" alt="Google Antigravity Only"></a>
   <a href="https://github.com/kenshinzx89/antigravity-lean-teamwork"><img src="https://img.shields.io/badge/role-Phanh%20H%C3%A3m%20%E1%BA%A8u%20ABS-FF6D00.svg?style=for-the-badge" alt="Phanh Hãm Ẩu ABS"></a>
-  <a href="https://github.com/kenshinzx89/antigravity-lean-teamwork"><img src="https://img.shields.io/badge/version-1.4.0-00C853.svg?style=for-the-badge" alt="Version"></a>
-  <a href="https://github.com/kenshinzx89/antigravity-lean-teamwork"><img src="https://img.shields.io/badge/tests-10%2F10%20passing-brightgreen.svg?style=for-the-badge" alt="Tests"></a>
+  <a href="https://github.com/kenshinzx89/antigravity-lean-teamwork"><img src="https://img.shields.io/badge/version-1.5.0-00C853.svg?style=for-the-badge" alt="Version"></a>
+  <a href="https://github.com/kenshinzx89/antigravity-lean-teamwork"><img src="https://img.shields.io/badge/tests-11%2F11%20passing-brightgreen.svg?style=for-the-badge" alt="Tests"></a>
   <a href="https://github.com/kenshinzx89/antigravity-lean-teamwork"><img src="https://img.shields.io/badge/license-MIT-purple.svg?style=for-the-badge" alt="License"></a>
 </p>
 
 <p align="center">
-  <b>⚡ Bộ Kỹ Năng "Hãm Phanh ABS" Dành Riêng Cho Google Antigravity (Gemini 3.7 / 3.8).</b><br/>
-  <i>Chữa dứt điểm tật "quá nhanh quá nguy hiểm", triệt tiêu cãi cọ với AI, chấm dứt vòng lặp làm đi làm lại gây ức chế.</i>
+  <b>⚡ Bộ Đôi Kỹ Năng Tinh Gọn + Desktop Widget HUD Dành Riêng Cho Google Antigravity.</b><br/>
+  <i>Giải phóng 100% khung chat, đưa đề xuất & nghiệm thu ra thanh kính mờ HUD ngoài màn hình. Chữa dứt điểm tật làm ẩu và cãi cọ với AI.</i>
 </p>
+
+---
+
+## ⚡ Cài Đặt Cho Máy Mới Trong 5 Giây (1-Click Install)
+
+```powershell
+# Chạy duy nhất lệnh này sau khi tải về để cài đặt toàn bộ:
+.\install.ps1
+```
+*Xem hướng dẫn đầy đủ từ A -> Z tại [INSTALL.md](INSTALL.md).*
 
 ---
 
@@ -24,7 +34,7 @@
 >   Gemini 3.7 và 3.8 trên Google Antigravity có tốc độ tư duy và phản hồi cực kỳ nhanh, nhưng cái tật cố hữu là **"quá nhanh quá nguy hiểm"**:
 >   - **Hay làm ẩu**: Lười đọc tài liệu/mã nguồn gốc ở lượt đầu vì sợ tốn token, dẫn đến đoán mò.
 >   - **Gây ức chế**: Đoán mò thì code lỗi, khiến **người dùng phải cãi lộn với AI**, bực bội bắt AI sửa đi sửa lại 5–10 lượt chat.
->   - **Lean Teamwork chính là chiếc "phanh ABS"**: Buộc AI phải **Inspect First** (đọc kỹ trước khi sửa), xin ý kiến qua modal **🧭 Đề Xuất Kỹ Thuật**, kiểm thử độc lập phải đạt **Exit Code 0**, và chỉ kết thúc khi người dùng bấm **💎 Nghiệm Thu Hoàn Thiện**.
+>   - **Lean Teamwork chính là chiếc "phanh ABS"**: Buộc AI phải **Inspect First** (đọc kỹ trước khi sửa), đưa đề xuất ra **Desktop Widget Popover HUD**, kiểm thử độc lập phải đạt **Exit Code 0**, và chỉ kết thúc khi người dùng bấm **💎 Nghiệm Thu Hoàn Thiện**.
 >
 > - 💡 **Tại sao không nên dùng cho Cursor, Claude Code hay Codex?**  
 >   Không phải vì có bí mật kỹ thuật gì cao siêu, mà thực tế là: **Chỉ có Gemini 3.7 / 3.8 bị cái tật "hấp tấp, làm ẩu" này nên mới cần lắp nhiều cơ chế hãm vâu như vậy!**  
@@ -37,20 +47,20 @@
 ```shell
 $ py sync_skill.py
 [SMART-SYNC] Kiểm tra phiên bản:
-  • Folder gốc (Source):   v1.4.0
-  • Máy tính (Installed):  v1.4.0
+  • Folder gốc (Source):   v1.5.0
+  • Máy tính (Installed):  v1.5.0
 
-⚡ [HƯỚNG: SYNC 2 CHIỀU] Hai bên đồng phiên bản (v1.4.0). Kiểm tra và cân bằng tri thức...
+⚡ [HƯỚNG: SYNC 2 CHIỀU] Hai bên đồng phiên bản (v1.5.0). Kiểm tra và cân bằng tri thức...
   ✓ [PULL] Đã đồng bộ SKILL.md vào Global Config
   ✓ [PULL] Đã đồng bộ templates/ & references/
-  ✓ [PULL] Đã ghi VERSION 1.4.0 vào ~/.gemini/config/skills/lean-teamwork
+  ✓ [PULL] Đã ghi VERSION 1.5.0 vào ~/.gemini/config/skills/lean-teamwork
   ✓ Đã thiết lập Global PreInvocation Hook tại ~/.gemini/config/hooks.json
-  ✓ Cân bằng 2 chiều tri thức thành công (9 patterns tại cả 2 nơi).
+  ✓ Cân bằng 2 chiều tri thức thành công (19 patterns tại cả 2 nơi).
   ⏳ Đang chạy kiểm thử toàn vẹn hệ thống...
-  ✓ Toàn bộ 10/10 kiểm thử hệ thống đạt 100% PASS (Exit Code 0).
+  ✓ Toàn bộ 11/11 kiểm thử hệ thống đạt 100% PASS (Exit Code 0).
 
 ============================================================
-[SUCCESS] Lean Teamwork v1.4.0 đã đồng bộ 2 chiều hoàn hảo!
+[SUCCESS] Lean Teamwork v1.5.0 đã đồng bộ 2 chiều hoàn hảo!
 ============================================================
 ```
 

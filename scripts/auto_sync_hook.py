@@ -65,11 +65,9 @@ def main():
             pass
 
     anchor_msg = (
-        f"⚡ [MANDATORY RE-ANCHOR — Lean Teamwork v{active_version}]:\n"
-        "1. 🧭 [CHẾ ĐỘ ĐỀ XUẤT KỸ THUẬT] 💡: Khi mở đầu hoặc chọn giải pháp kỹ thuật, BẮT BUỘC in Đề xuất ra khung Chat với tiêu đề '🧭 [ĐỀ XUẤT KỸ THUẬT] ⏱️ [Hạn: 2.5 phút — Tự động chọn (1) nếu không phản hồi]' gồm 2–4 lựa chọn số [1] kèm (Recommended), [2]... Đồng thời kích hoạt timer ngầm schedule(DurationSeconds: 150, TimerCondition: \"any\") và nhả lượt. Hết 2.5 phút không phản hồi: AI tự động thức dậy chọn (Recommended) làm tiếp để tránh đứt đoạn! (TUYỆT ĐỐI KHÔNG gọi modal ask_question ở khâu này vì modal sẽ chặn đứng timer).\n"
-        "2. 💎 [CHẾ ĐỘ NGHIỆM THU HOÀN THIỆN] ✨ (TÁCH NHỊP 2 BƯỚC v1.4.2): Khi code xong và test pass (exit 0): "
-        "BƯỚC 1: BẮT BUỘC in toàn văn Báo cáo & Hướng dẫn đối chứng ra màn hình, TUYỆT ĐỐI KHÔNG gọi ask_question cùng lúc làm che mất chữ. "
-        "BƯỚC 2: Chờ user đọc xong và phản hồi, sau đó MỚI gọi modal ask_question '💎 [NGHIỆM THU HOÀN THIỆN]' (💎 [100% HOÀN TẤT] ✨ vs ⚡ [SUPERPOWERS DEBUG] 🛠️) để user xác nhận an toàn.\n"
+        f"⚡ [MANDATORY RE-ANCHOR — Lean Teamwork v{active_version} (Widget HUD Decoupled)]:\n"
+        "1. 🧭 [CHẾ ĐỘ ĐỀ XUẤT KỸ THUẬT] 💡 (Widget HUD): Khi mở đầu hoặc chọn giải pháp kỹ thuật, BẮT BUỘC gọi teamwork_bridge.publish_proposal(title, options, 150) để hiển thị bộ chọn trên Desktop Widget Popover. In tóm tắt ra chat, TUYỆT ĐỐI KHÔNG gọi modal ask_question (giải phóng khung chat 100%).\n"
+        "2. 💎 [CHẾ ĐỘ NGHIỆM THU HOÀN THIỆN] ✨ (Widget HUD): Khi code xong và test pass (exit 0): BƯỚC 1 in toàn văn Báo cáo & Hướng dẫn đối chứng ra màn hình chat; BƯỚC 2 gọi teamwork_bridge.publish_acceptance(...) để treo bảng nghiệm thu cố định trên Desktop Widget Popover. TUYỆT ĐỐI KHÔNG gọi modal ask_question làm che khung chat, user sẽ bấm trực tiếp từ Desktop Widget.\n"
         "3. FIRST-TIME RIGHT: Inspect First kỹ lưỡng trước khi sửa, cấm đoán mò vì sợ đọc tài liệu."
     )
     if sync_occurred:
