@@ -15,6 +15,41 @@ from typing import Optional, List, Dict, Any
 BRIDGE_DIR = Path(os.environ.get('USERPROFILE', r'C:\Users\tient')) / '.antigravity_cockpit'
 BRIDGE_FILE = BRIDGE_DIR / 'teamwork_bridge.json'
 
+# Mật mã chuẩn hóa để nghiệm thu hoàn tất, phân biệt tuyệt đối với trao đổi "ok" thông thường
+ACCEPTANCE_PASSCODE = "OK 💎"
+
+
+def is_acceptance_signal(text: str) -> bool:
+    """
+    Kiểm tra xem chuỗi đầu vào có phải là tín hiệu nghiệm thu hoàn tất chính thức hay không.
+    Mật mã chuẩn hóa: 'OK 💎' (hoặc '💎 OK', '[ACCEPT] 💎', '[100% HOÀN TẤT]').
+    Loại trừ tuyệt đối các từ 'ok' trao đổi thông thường (ví dụ: 'ok', 'ok bạn', 'ok làm tiếp'...)
+    nếu không có mật mã hoặc emoji kim cương 💎 đi kèm, tránh nhầm lẫn ngắt quãng công việc.
+    """
+    if not text or not isinstance(text, str):
+        return False
+    t = text.strip()
+    if not t:
+        return False
+
+    # Khớp chính xác mật mã chuẩn hóa
+    if t == ACCEPTANCE_PASSCODE or t == "💎 OK" or t == "OK💎":
+        return True
+
+    # Có emoji kim cương đi kèm chữ ok / accept / hoàn tất
+    if "💎" in t:
+        lower = t.lower()
+        if "ok" in lower or "accept" in lower or "hoàn tất" in lower or "hoan tat" in lower:
+            return True
+        if t == "💎":
+            return True
+
+    # Tag nghiệm thu đặc biệt
+    if "[100% HOÀN TẤT]" in t or "[ACCEPT]" in t:
+        return True
+
+    return False
+
 
 def _ensure_dir():
     try:

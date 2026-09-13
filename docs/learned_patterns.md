@@ -176,3 +176,11 @@ Tài liệu này là nơi lưu trữ các tri thức kỹ thuật, mẫu sửa l
     2. **From-Last-Completion Retrospective Anchor**: Lưu mốc thời gian `last_completed_at` trong `teamwork_bridge.py` và `teamwork_service.py`. Khi thực hiện đúc kết bài học (Self-Evolution), bắt buộc rà soát và tổng hợp toàn bộ các lỗi trung gian phát sinh từ lần bấm Hoàn tất gần nhất đến nay.
     3. **Zero-Pip Portability & 1-Click Zero-Scan**: Toàn bộ hệ sinh thái chạy 100% trên Python Standard Library (`ctypes` GDI+, `sqlite3`, `json`), khử hoàn toàn đường dẫn cứng. Tích hợp chỉ dẫn `AGENTS.md` / `GEMINI.md` để AI trên máy mới chỉ cần chạy DUY NHẤT 1 lệnh `install.ps1` là đạt Full Parity ngay lập tức không tốn token quét mã.
   - *Lệnh test*: `py -m unittest discover -s tests` -> 18/18 PASS (Exit code 0).
+
+## Mẫu 13: [Protocol & UI] Acceptance Passcode ("OK 💎") & Anti-False-Acceptance Guard (v1.5.2)
+- **[Protocol & UI] [Acceptance Passcode ("OK 💎") & Anti-False-Acceptance Guard]**:
+  - *Nguyên nhân gốc*: Sử dụng chuỗi nghiệm thu "OK" trơn quá đơn giản và thông dụng trong văn phong trò chuyện hàng ngày. Khi người dùng trao đổi ("ok bạn", "ok làm tiếp đi", "ok để mình xem"...), AI rất dễ phán đoán sai là người dùng đã nghiệm thu chấp thuận và vội vàng đóng phiên đúc kết tri thức.
+  - *Giải pháp tối thiểu*:
+    1. **Chuẩn Hóa Mật Mã Nghiệm Thu (`OK 💎`)**: Desktop Widget HUD Popover khi người dùng bấm `[💎 100% HOÀN TẤT]` tự động gõ gửi chuỗi mật mã `OK 💎` xuống Antigravity IDE thông qua Win32 `KEYEVENTF_UNICODE` (hỗ trợ đầy đủ UTF-16 surrogate pairs cho emoji).
+    2. **Anti-False-Acceptance Guard (`is_acceptance_signal`)**: Main Agent loại trừ 100% các từ "ok" giao tiếp tự nhiên nếu không đi kèm emoji kim cương 💎 hoặc không khớp đúng mật mã `OK 💎`. Chỉ khi nhận diện đúng mật mã `OK 💎` (hoặc `💎 OK`, `[ACCEPT] 💎`), AI mới kích hoạt chu trình Self-Evolution và hoàn tất task.
+  - *Lệnh test*: `py -m unittest discover -s tests` -> 19/19 PASS (Exit code 0).

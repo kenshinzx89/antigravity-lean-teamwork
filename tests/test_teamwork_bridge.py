@@ -187,6 +187,27 @@ class TestTeamworkWidgetIntegration(unittest.TestCase):
         teamwork_bridge.clear_bridge()
         self.assertEqual(teamwork_bridge.get_last_completed_timestamp(), t2)
 
+    def test_08_acceptance_passcode_and_anti_false_acceptance(self):
+        """Test mật mã nghiệm thu hoàn tất 'OK 💎' và quy tắc chống nhầm lẫn từ 'ok' giao tiếp thông thường."""
+        # 1. Các tín hiệu nghiệm thu hợp lệ (có mật mã / emoji kim cương)
+        self.assertTrue(teamwork_bridge.is_acceptance_signal("OK 💎"))
+        self.assertTrue(teamwork_bridge.is_acceptance_signal("💎 OK"))
+        self.assertTrue(teamwork_bridge.is_acceptance_signal("OK💎"))
+        self.assertTrue(teamwork_bridge.is_acceptance_signal("[ACCEPT] 💎"))
+        self.assertTrue(teamwork_bridge.is_acceptance_signal("ok 💎"))
+        self.assertTrue(teamwork_bridge.is_acceptance_signal("Đã hoàn tất 💎"))
+        self.assertTrue(teamwork_bridge.is_acceptance_signal("[100% HOÀN TẤT]"))
+
+        # 2. Các trao đổi thông thường có từ 'ok' tuyệt đối KHÔNG phải là tín hiệu nghiệm thu
+        self.assertFalse(teamwork_bridge.is_acceptance_signal("ok"))
+        self.assertFalse(teamwork_bridge.is_acceptance_signal("OK"))
+        self.assertFalse(teamwork_bridge.is_acceptance_signal("ok làm tiếp đi"))
+        self.assertFalse(teamwork_bridge.is_acceptance_signal("ok bạn ơi"))
+        self.assertFalse(teamwork_bridge.is_acceptance_signal("ok để mình xem xét"))
+        self.assertFalse(teamwork_bridge.is_acceptance_signal("chuẩn bị ok chưa"))
+        self.assertFalse(teamwork_bridge.is_acceptance_signal(""))
+        self.assertFalse(teamwork_bridge.is_acceptance_signal(None))
+
 
 if __name__ == "__main__":
     unittest.main()

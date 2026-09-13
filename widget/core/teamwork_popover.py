@@ -253,8 +253,9 @@ class TeamworkGlassPopover:
             user32.ShowWindow(self.hwnd, 0)
 
     def send_to_antigravity(self, text_to_send):
-        """Focus Antigravity IDE và gõ phím gửi trực tiếp xuống cửa sổ đang làm việc."""
+        """Focus Antigravity IDE và gõ phím gửi trực tiếp xuống cửa sổ đang làm việc (hỗ trợ Unicode UTF-16 surrogate pair cho emoji)."""
         try:
+            import struct
             from .window_tracker import find_codex_window
             hdesk = user32.OpenInputDesktop(0, False, 0x01FF) or user32.OpenDesktopW("Default", 0, False, 0x01FF)
             if hdesk:
@@ -271,9 +272,11 @@ class TeamworkGlassPopover:
             user32.SetForegroundWindow(hwnd)
             time.sleep(0.12)
 
-            for ch in str(text_to_send):
-                user32.keybd_event(0, ord(ch), 0x0004, 0)
-                user32.keybd_event(0, ord(ch), 0x0004 | 0x0002, 0)
+            utf16_bytes = str(text_to_send).encode('utf-16-le')
+            words = struct.unpack(f'<{len(utf16_bytes)//2}H', utf16_bytes)
+            for wScan in words:
+                user32.keybd_event(0, wScan, 0x0004, 0)
+                user32.keybd_event(0, wScan, 0x0004 | 0x0002, 0)
                 time.sleep(0.006)
 
             time.sleep(0.05)
@@ -349,11 +352,11 @@ class TeamworkGlassPopover:
 
                 elif action == 'ACCEPT':
                     tw_service.submit_response('ACCEPT')
-                    self.feedback_text = "💎 Đã xác nhận [100% HOÀN TẤT] xuống Antigravity!"
+                    self.feedback_text = "💎 Đã xác nhận [100% HOÀN TẤT: OK 💎] xuống Antigravity!"
                     self.feedback_until = time.monotonic() + 3.0
                     self.render()
 
-                    self.send_to_antigravity("OK")
+                    self.send_to_antigravity("OK 💎")
                     self.auto_hide_at = time.monotonic() + 1.2
 
                 elif action == 'DEBUG':
