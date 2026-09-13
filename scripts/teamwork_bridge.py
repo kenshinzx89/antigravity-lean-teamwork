@@ -12,7 +12,7 @@ import json
 from pathlib import Path
 from typing import Optional, List, Dict, Any
 
-BRIDGE_DIR = Path(os.environ.get('USERPROFILE', r'C:\Users\tient')) / '.antigravity_cockpit'
+BRIDGE_DIR = Path.home() / '.antigravity_cockpit'
 BRIDGE_FILE = BRIDGE_DIR / 'teamwork_bridge.json'
 
 # Mật mã chuẩn hóa để nghiệm thu hoàn tất, phân biệt tuyệt đối với trao đổi "ok" thông thường

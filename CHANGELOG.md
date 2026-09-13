@@ -2,7 +2,12 @@
 
 Tất cả các thay đổi, bài học và tính năng nâng cấp qua từng phiên bản.
 
----
+## [1.5.8] — 2026-09-14
+### Fixed
+- **Triệt Tiêu Đường Dẫn Cứng & Chuẩn Hóa 100% Cho GitHub Actions CI Runners**:
+  - Loại bỏ hoàn toàn đường dẫn cứng cục bộ `c:\Users\tient...` trong `tests/test_skill_integrity.py` và `tests/test_teamwork_bridge.py`.
+  - Thay thế bằng đường dẫn động `REPO_ROOT / "widget" / "core"` và `Path.home() / ".antigravity_cockpit"`, tương thích hoàn hảo trên mọi môi trường chạy (Windows Runner, Ubuntu Linux Runner).
+  - Khắc phục triệt để lỗi làm fail 6/6 checks trên GitHub Actions CI, đảm bảo toàn bộ ma trận kiểm thử đạt chuẩn 100% PASS (Green).
 
 ## [1.5.7] — 2026-09-13
 ### Added

@@ -16,7 +16,7 @@ import base64
 import re
 
 
-ROOT = Path(os.environ.get('USERPROFILE', r'C:\\Users\\tient')) / '.antigravity_cockpit'
+ROOT = Path.home() / '.antigravity_cockpit'
 ACCOUNTS_FILE = ROOT / 'accounts.json'
 IDE_ACCOUNTS_FILE = ROOT / 'codex_accounts.json'
 CURRENT_FILE = ROOT / 'current_account.json'
@@ -348,7 +348,8 @@ def get_cockpit_tags_map():
                 pass
 
     # 2. Augment / override with live LevelDB updates if any exist
-    base_dir = Path(os.environ.get('LOCALAPPDATA', r'C:\Users\tient\AppData\Local')) / 'com.jlcodes.cockpit-tools' / 'EBWebView' / 'Default' / 'Local Storage' / 'leveldb'
+    local_app_data = Path(os.environ['LOCALAPPDATA']) if os.environ.get('LOCALAPPDATA') else Path.home() / 'AppData' / 'Local'
+    base_dir = local_app_data / 'com.jlcodes.cockpit-tools' / 'EBWebView' / 'Default' / 'Local Storage' / 'leveldb'
     if base_dir.exists():
         paths = sorted(
             [p for p in base_dir.glob('*.*') if p.suffix in ('.log', '.ldb')],

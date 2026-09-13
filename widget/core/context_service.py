@@ -2,7 +2,7 @@
 import os
 from pathlib import Path
 
-STATE_FILE = Path(os.environ.get('USERPROFILE', r'C:\Users\tient')) / '.gemini' / 'antigravity' / 'antigravity_state.pbtxt'
+STATE_FILE = Path.home() / '.gemini' / 'antigravity' / 'antigravity_state.pbtxt'
 
 
 def get_context_status():

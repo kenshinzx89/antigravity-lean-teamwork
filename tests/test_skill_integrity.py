@@ -244,7 +244,7 @@ def test_desktop_widget_bridge():
     state = teamwork_bridge.get_bridge_state()
     assert state["status"] == "IDLE", "Initial bridge state must be IDLE"
 
-    widget_core = Path(r"c:\Users\tient\Desktop\Du An\AntigravityWidget\core")
+    widget_core = REPO_ROOT / "widget" / "core"
     assert (widget_core / "teamwork_service.py").exists(), "teamwork_service.py must exist in Widget core"
     assert (widget_core / "teamwork_popover.py").exists(), "teamwork_popover.py must exist in Widget core"
 

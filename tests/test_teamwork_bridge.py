@@ -12,7 +12,7 @@ from pathlib import Path
 
 # Paths
 REPO_ROOT = Path(__file__).resolve().parent.parent
-WIDGET_ROOT = REPO_ROOT / "widget" if (REPO_ROOT / "widget").exists() else Path(r"c:\Users\tient\Desktop\Du An\AntigravityWidget")
+WIDGET_ROOT = REPO_ROOT / "widget" if (REPO_ROOT / "widget").exists() else Path.home() / "Desktop" / "Du An" / "AntigravityWidget"
 
 sys.path.insert(0, str(REPO_ROOT / "scripts"))
 sys.path.insert(0, str(WIDGET_ROOT))

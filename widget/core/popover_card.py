@@ -27,7 +27,7 @@ from .win32_types import (
     kernel32, user32, gdi32, gdiplus
 )
 
-USER_PROFILE = Path(os.environ.get('USERPROFILE', r'C:\Users\tient'))
+USER_PROFILE = Path.home()
 ROOT_COCKPIT = USER_PROFILE / '.antigravity_cockpit'
 LOG_PATH = Path(__file__).resolve().parent.parent / 'widget_crash.log'
 

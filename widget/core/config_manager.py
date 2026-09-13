@@ -12,7 +12,7 @@ from pathlib import Path
 from .glass_materials import GLASS_MODES, GLASS_NAMES
 
 # Base Paths
-USER_PROFILE = Path(os.environ.get('USERPROFILE', r'C:\Users\tient'))
+USER_PROFILE = Path.home()
 ROOT_COCKPIT = USER_PROFILE / '.antigravity_cockpit'
 STATE_FILE = ROOT_COCKPIT / 'antigravity_widget_state.json'
 COCKPIT_DIR = Path(r'C:\Program Files\Cockpit Tools')

@@ -10,7 +10,7 @@ import json
 from pathlib import Path
 from typing import Dict, Any, Optional
 
-BRIDGE_DIR = Path(os.environ.get('USERPROFILE', r'C:\Users\tient')) / '.antigravity_cockpit'
+BRIDGE_DIR = Path.home() / '.antigravity_cockpit'
 BRIDGE_FILE = BRIDGE_DIR / 'teamwork_bridge.json'
 
 

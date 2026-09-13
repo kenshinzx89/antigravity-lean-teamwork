@@ -12,8 +12,47 @@ import json
 from pathlib import Path
 from typing import Optional, List, Dict, Any
 
-BRIDGE_DIR = Path(os.environ.get('USERPROFILE', r'C:\Users\tient')) / '.antigravity_cockpit'
+BRIDGE_DIR = Path.home() / '.antigravity_cockpit'
 BRIDGE_FILE = BRIDGE_DIR / 'teamwork_bridge.json'
+
+# Mật mã chuẩn hóa để nghiệm thu hoàn tất, phân biệt tuyệt đối với trao đổi "ok" thông thường
+ACCEPTANCE_PASSCODE = "OK 💎"
+
+
+def is_acceptance_signal(text: str) -> bool:
+    """
+    Kiểm tra xem chuỗi đầu vào có phải là tín hiệu nghiệm thu hoàn tất chính thức hay không.
+    Mật mã chuẩn hóa: 'OK 💎' (hoặc '💎 OK', '[ACCEPT] 💎', '[100% HOÀN TẤT]').
+    Loại trừ tuyệt đối các từ 'ok' trao đổi thông thường (ví dụ: 'ok', 'ok bạn', 'ok làm tiếp'...)
+    nếu không có mật mã hoặc emoji kim cương 💎 đi kèm, tránh nhầm lẫn ngắt quãng công việc.
+    """
+    if not text or not isinstance(text, str):
+        return False
+    t = text.strip()
+    if not t:
+        return False
+
+    # Khớp chính xác mật mã chuẩn hóa
+    if t == ACCEPTANCE_PASSCODE or t == "💎 OK" or t == "OK💎":
+        return True
+
+    # Mật mã tắt siêu tốc thuần bàn phím (không cần mở bảng emoji Windows)
+    if t.lower() == "ok::" or t.lower().startswith("ok::") or t.lower() == "ok:gem:":
+        return True
+
+    # Có emoji kim cương đi kèm chữ ok / accept / hoàn tất
+    if "💎" in t:
+        lower = t.lower()
+        if "ok" in lower or "accept" in lower or "hoàn tất" in lower or "hoan tat" in lower:
+            return True
+        if t == "💎":
+            return True
+
+    # Tag nghiệm thu đặc biệt
+    if "[100% HOÀN TẤT]" in t or "[ACCEPT]" in t:
+        return True
+
+    return False
 
 
 def _ensure_dir():
@@ -157,6 +196,7 @@ def submit_user_response(
 def check_user_response(mark_handled: bool = True) -> Optional[Dict[str, Any]]:
     """
     Kiểm tra xem người dùng đã tương tác bấm nút trên Widget hay chưa.
+    Tự động ghi nhận mốc thời gian hoàn tất (last_completed_at) khi người dùng bấm ACCEPT.
     """
     state = get_bridge_state()
     resp = state.get("response")
@@ -164,13 +204,53 @@ def check_user_response(mark_handled: bool = True) -> Optional[Dict[str, Any]]:
         if mark_handled:
             resp["handled"] = True
             state["response"] = resp
+            if resp.get("action") == "ACCEPT":
+                now_ts = resp.get("timestamp") or time.time()
+                state["last_completed_at"] = now_ts
+                hist = state.get("completion_history") or []
+                hist.append({
+                    "completed_at": now_ts,
+                    "session_id": state.get("session_id", ""),
+                    "acceptance": state.get("acceptance", {})
+                })
+                state["completion_history"] = hist[-20:]
             write_bridge_state(state)
         return resp
     return None
 
 
+def get_last_completed_timestamp() -> float:
+    """Trả về timestamp của lần bấm hoàn tất gần nhất (nếu có), hoặc 0.0 nếu chưa có trong phiên."""
+    state = get_bridge_state()
+    return float(state.get("last_completed_at") or 0.0)
+
+
+def record_intermediate_issue(issue_description: str, error_type: str = "BUG") -> bool:
+    """Ghi nhận một lỗi trung gian phát sinh giữa 2 mốc hoàn tất."""
+    state = get_bridge_state()
+    issues = state.get("intermediate_issues") or []
+    issues.append({
+        "timestamp": time.time(),
+        "error_type": error_type,
+        "description": issue_description
+    })
+    state["intermediate_issues"] = issues
+    return write_bridge_state(state)
+
+
+def get_intermediate_issues(clear: bool = False) -> List[Dict[str, Any]]:
+    """Lấy danh sách các lỗi trung gian phát sinh kể từ lần hoàn tất gần nhất."""
+    state = get_bridge_state()
+    issues = state.get("intermediate_issues") or []
+    if clear:
+        state["intermediate_issues"] = []
+        write_bridge_state(state)
+    return issues
+
+
 def clear_bridge(status: str = "IDLE") -> bool:
-    """Đưa trạng thái về IDLE khi hoàn thành toàn bộ công việc."""
+    """Đưa trạng thái về IDLE khi hoàn thành toàn bộ công việc, bảo toàn mốc hoàn tất gần nhất."""
+    old_state = get_bridge_state()
     state = {
         "version": "1.0",
         "updated_at": time.time(),
@@ -178,6 +258,9 @@ def clear_bridge(status: str = "IDLE") -> bool:
         "session_id": os.environ.get('ANTIGRAVITY_CONVERSATION_ID', ''),
         "proposal": None,
         "acceptance": None,
-        "response": None
+        "response": None,
+        "last_completed_at": old_state.get("last_completed_at", 0.0),
+        "completion_history": old_state.get("completion_history", []),
+        "intermediate_issues": []
     }
     return write_bridge_state(state)
