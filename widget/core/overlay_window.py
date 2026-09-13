@@ -89,6 +89,7 @@ class CockpitOverlayApp:
         self.owner_hwnd = None
         self.codex_minimized_ticks = 0
         self.has_confirmed_codex = False
+        self.has_active_antigravity = None
         self.current_tooltip_text = ""
         self.context_click_at = 0.0
         self.context_last_fire_at = 0.0
@@ -158,7 +159,15 @@ class CockpitOverlayApp:
         is_active = False
         if host:
             hwnd_host, left, top, right, bottom, _ = host
-            is_min = bool(user32.IsIconic(hwnd_host)) or (left <= -10000 and top <= -10000)
+            is_min = bool(user32.IsIconic(hwnd_host)) or (left <= -10000 and top <= -10000) or not bool(user32.IsWindowVisible(hwnd_host))
+            try:
+                cl = w.DWORD()
+                if c.windll.dwmapi.DwmGetWindowAttribute(w.HWND(hwnd_host), 14, c.byref(cl), c.sizeof(cl)) == 0:
+                    if cl.value:
+                        is_min = True
+            except Exception:
+                pass
+
             if user32.IsWindow(hwnd_host) and not is_min:
                 is_active = True
                 self.last_codex_hwnd = hwnd_host
@@ -1687,7 +1696,7 @@ class CockpitOverlayApp:
 
         if msg == 0x0024:  # WM_GETMINMAXINFO: allow smooth desktop sizing
             limits = c.cast(c.c_void_p(lp), c.POINTER(MINMAXINFO)).contents
-            limits.ptMinTrackSize.x = 350
+            limits.ptMinTrackSize.x = 40
             limits.ptMinTrackSize.y = 24
             limits.ptMaxTrackSize.x = 2500
             limits.ptMaxTrackSize.y = 250
@@ -1759,7 +1768,7 @@ class CockpitOverlayApp:
                 last_tw_updated_at = getattr(self, '_last_tw_updated_at', 0.0)
 
                 # Auto-popup when a new proposal or acceptance arrives from Antigravity IDE
-                has_pending_response = bool(tw_service and tw_service.get_state().get('response'))
+                has_pending_response = bool(self.teamwork_service and self.teamwork_service.get_state().get('response'))
                 is_new_event = (current_tw_st in ('PROPOSAL', 'ACCEPTANCE')) and not has_pending_response and (
                     current_tw_st != last_tw_st or tw_updated_at > last_tw_updated_at
                 )
@@ -1792,16 +1801,15 @@ class CockpitOverlayApp:
                     if self.teamwork_popover and self.teamwork_popover.visible:
                         self.teamwork_popover.hide()
 
-                # Auto-fallback: Khi Proposal đếm hết thời gian (rem_sec <= 0), tự động trả số 1 về Antigravity IDE
+                # Auto-fallback: Khi Proposal đếm hết thời gian (rem_sec <= 0), tự động ghi nhận phương án [1]
                 if current_tw_st == 'PROPOSAL':
                     rem_sec = tw_info.get('remaining_seconds', 0)
                     if rem_sec <= 0 and not getattr(self, '_proposal_auto_handled', False):
                         self._proposal_auto_handled = True
                         if self.teamwork_popover:
-                            self.teamwork_popover.feedback_text = "⏱️ Hết giờ: Đã tự động chọn [1] (Khuyên dùng) & Gửi về IDE!"
+                            self.teamwork_popover.feedback_text = "⏱️ Hết giờ: Đã tự động chọn [1] (Khuyên dùng)"
                             self.teamwork_popover.feedback_until = time.monotonic() + 3.0
                             self.teamwork_popover.render()
-                            self.teamwork_popover.send_to_antigravity("1")
                             self.teamwork_popover.auto_hide_at = time.monotonic() + 1.8
                         if hasattr(self, 'teamwork_service'):
                             self.teamwork_service.submit_response('SELECT_OPTION', option_id=1, note="Auto-selected [1] on countdown timeout")

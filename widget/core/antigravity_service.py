@@ -140,15 +140,34 @@ def get_native_antigravity_account():
 
 
 def _current_account_id():
-    """Return active Antigravity account ID prioritized from Cockpit IDE instance settings."""
-    inst = _read_json(INSTANCES_FILE, {}) or {}
-    bind_id = (inst.get('defaultSettings') or {}).get('bindAccountId')
-    if bind_id and bind_id != '__api_service__':
-        return str(bind_id)
+    """Return active Antigravity account ID prioritized from current Cockpit account, accounts.json, or instance."""
     doc = _read_json(ACCOUNTS_FILE, {}) or {}
+    acc_rows = doc.get('accounts') or []
+
+    # 1. Prioritize explicit active account from current_account.json
+    record = _read_json(CURRENT_FILE, {}) or {}
+    curr_email = str(record.get('email') or '').strip().lower()
+    if curr_email:
+        for acc in acc_rows:
+            if str(acc.get('email') or '').strip().lower() == curr_email:
+                return str(acc.get('id') or '')
+
+    # 2. Check accounts.json current_account_id
     cid = str(doc.get('current_account_id') or '')
     if cid:
         return cid
+
+    # 3. Check instances if active instance has bindAccountId
+    inst = _read_json(INSTANCES_FILE, {}) or {}
+    for item in (inst.get('instances') or []):
+        bid = item.get('bindAccountId')
+        if bid and bid != '__api_service__':
+            return str(bid)
+    bind_id = (inst.get('defaultSettings') or {}).get('bindAccountId')
+    if bind_id and bind_id != '__api_service__':
+        return str(bind_id)
+
+    # 4. Native Antigravity IDE
     native = get_native_antigravity_account()
     if native and native.get('email'):
         return 'native_ide'
@@ -157,18 +176,31 @@ def _current_account_id():
 
 def _current_email():
     """Resolve email for currently active account in Cockpit Antigravity IDE or Native IDE."""
+    # 1. Direct explicit active account file from Cockpit / Widget switcher
+    record = _read_json(CURRENT_FILE, {}) or {}
+    curr_email = str(record.get('email') or '').strip().lower()
+    if curr_email:
+        return curr_email
+
+    # 2. Check accounts.json current_account_id
+    doc = _read_json(ACCOUNTS_FILE, {}) or {}
+    cid = str(doc.get('current_account_id') or '')
+    for acc in (doc.get('accounts') or []):
+        if str(acc.get('id') or '') == cid:
+            em = str(acc.get('email') or '').strip().lower()
+            if em:
+                return em
+
+    # 3. Check bound instance account
     curr_id = _current_account_id()
     if curr_id and curr_id != 'native_ide':
-        acc_payload = _read_json(ACCOUNTS_FILE, {}) or {}
-        for acc in acc_payload.get('accounts') or []:
+        for acc in (doc.get('accounts') or []):
             if str(acc.get('id') or '') == curr_id:
                 em = str(acc.get('email') or '').strip().lower()
                 if em:
                     return em
-    record = _read_json(CURRENT_FILE, {}) or {}
-    em = str(record.get('email') or '').strip().lower()
-    if em:
-        return em
+
+    # 4. Native Antigravity IDE fallback
     native = get_native_antigravity_account()
     if native and native.get('email'):
         return str(native['email']).strip().lower()

@@ -255,15 +255,10 @@ class TeamworkGlassPopover:
         if self.hwnd:
             user32.ShowWindow(self.hwnd, 0)
 
-    def send_to_antigravity(self, text_to_send):
-        """Focus Antigravity IDE và gõ phím gửi trực tiếp xuống cửa sổ đang làm việc (hỗ trợ Unicode UTF-16 surrogate pair cho emoji)."""
+    def focus_antigravity(self):
+        """Kích hoạt và đưa cửa sổ Antigravity IDE lên trước màn hình một cách an toàn (tuyệt đối không gửi phím giả lập)."""
         try:
-            import struct
             from .window_tracker import find_codex_window
-            hdesk = user32.OpenInputDesktop(0, False, 0x01FF) or user32.OpenDesktopW("Default", 0, False, 0x01FF)
-            if hdesk:
-                user32.SetThreadDesktop(hdesk)
-
             host = find_codex_window(include_minimized=True)
             if not host:
                 return False
@@ -273,21 +268,15 @@ class TeamworkGlassPopover:
                 user32.ShowWindow(hwnd, 9)  # SW_RESTORE
             user32.ShowWindow(hwnd, 5)      # SW_SHOW
             user32.SetForegroundWindow(hwnd)
-            time.sleep(0.12)
-
-            utf16_bytes = str(text_to_send).encode('utf-16-le')
-            words = struct.unpack(f'<{len(utf16_bytes)//2}H', utf16_bytes)
-            for wScan in words:
-                user32.keybd_event(0, wScan, 0x0004, 0)
-                user32.keybd_event(0, wScan, 0x0004 | 0x0002, 0)
-                time.sleep(0.006)
-
-            time.sleep(0.05)
-            user32.keybd_event(0x0D, 0, 0, 0)
-            user32.keybd_event(0x0D, 0, 0x0002, 0)
             return True
         except Exception:
             return False
+
+    def send_to_antigravity(self, text_to_send):
+        """Vô hiệu hóa việc gửi phím giả lập (keybd_event) để triệt tiêu 100% rủi ro làm tắt cửa sổ hoặc gửi nhầm lệnh vào IDE.
+        Dữ liệu tương tác được điều phối an toàn qua IPC Bridge (teamwork_bridge.json).
+        Chỉ đưa IDE lên foreground an toàn mà không gõ phím."""
+        return self.focus_antigravity()
 
     def proc(self, hwnd, msg, wp, lp):
         try:
@@ -360,25 +349,15 @@ class TeamworkGlassPopover:
                     if hasattr(self.parent, '_proposal_auto_handled'):
                         self.parent._proposal_auto_handled = True
                     tw_service.submit_response('SELECT_OPTION', option_id=opt_id, note=opt_txt)
-                    self.send_to_antigravity(str(opt_id))
 
                 elif action == 'ACCEPT':
                     tw_service.submit_response('ACCEPT')
-                    self.send_to_antigravity("OK::")
 
                 elif action == 'DEBUG':
                     tw_service.submit_response('DEBUG')
-                    self.send_to_antigravity("Debug")
 
                 elif action == 'FOCUS_IDE':
-                    from .window_tracker import find_codex_window
-                    host = find_codex_window(include_minimized=True)
-                    if host:
-                        hwnd = host[0]
-                        if user32.IsIconic(hwnd):
-                            user32.ShowWindow(hwnd, 9)
-                        user32.ShowWindow(hwnd, 5)
-                        user32.SetForegroundWindow(hwnd)
+                    self.focus_antigravity()
                 break
 
     def render(self):

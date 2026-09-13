@@ -28,8 +28,8 @@ Khi lệnh trên chạy xong, toàn bộ môi trường máy mới sẽ trở n�
    - Tự động cấu hình `~/.gemini/config/hooks.json` với đường dẫn Python động (`sys.executable`), hoạt động trên mọi phiên bản Python bất kể Windows đã add Python to PATH hay chưa.
 3. **Neo Luật Toàn Cục Tối Cao (GEMINI.md)**:
    - Tự động duy trì mỏ neo Lean Teamwork trên mọi workspace của Antigravity IDE.
-4. **Hợp Nhất 2 Chiều Toàn Bộ Kho Tri Thức (19 Patterns)**:
-   - Tự động cân bằng và nạp 19 bài học kinh nghiệm từ `learned_patterns.md` vào máy tính mới.
+4. **Hợp Nhất 2 Chiều Toàn Bộ Kho Tri Thức (23 Patterns)**:
+   - Tự động cân bằng và nạp 23 bài học kinh nghiệm từ `learned_patterns.md` vào máy tính mới.
 5. **Cơ Chế Dual Account Detection (Tự Động Kết Nối Native IDE)**:
    - Nếu máy mới **chưa cài Cockpit Tool**: Widget tự động trích xuất trực tiếp tài khoản Google đang đăng nhập trong Google Antigravity IDE (`state.vscdb`), hiển thị tên và email thật, **tuyệt đối không bị lỗi đỏ `Offline` hay `No Acc`**.
 6. **Không Cần Cài Thêm Thư Viện (Zero External Pip Dependencies)**:
@@ -37,7 +37,7 @@ Khi lệnh trên chạy xong, toàn bộ môi trường máy mới sẽ trở n�
 7. **Khởi Động Widget HUD & Tạo Shortcut Desktop**:
    - Tự động tạo Shortcut `Antigravity Widget` ngoài Desktop.
    - Tự động kích hoạt Widget chạy ngầm êm ái bằng `wscript.exe` (không hiện cửa sổ cmd đen).
-8. **Kiểm Thử Toàn Vẹn Hệ Thống (18/18 Tests PASS)**:
+8. **Kiểm Thử Toàn Vẹn Hệ Thống (25/25 Tests PASS)**:
    - Tự động chạy bộ test kiểm tra, đảm bảo exit code 0 trước khi bàn giao cho người dùng.
 
 ---

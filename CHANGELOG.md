@@ -2,6 +2,29 @@
 
 Tất cả các thay đổi, bài học và tính năng nâng cấp qua từng phiên bản.
 
+## [1.5.12] — 2026-09-14
+### Fixed & Security
+- **Lọc Sạch Cửa Sổ Phantom & Cô Lập Tiêu Điểm Không Can Thiệp Trạng Thái Cửa Sổ IDE**:
+  - Khắc phục lỗi `find_codex_window()` nhận nhầm các cửa sổ ngầm 0x0 vô hình thành cửa sổ minimized.
+  - Xóa bỏ các lệnh gọi `focus_antigravity()` tự ý khi click các nút trên Popover (`ACCEPT`, `DEBUG`, `SELECT_OPTION`), chống 100% hiện tượng Antigravity IDE bị minimize hoặc mất tiêu điểm khi tương tác.
+  - **Kiểm toán bảo mật dữ liệu cá nhân (Personal Data Scrubbing)**: Khử toàn bộ email cá nhân và dữ liệu nhạy cảm khỏi `learned_patterns.md` và mã nguồn kiểm thử. Regex audit xác nhận `0` email, `0` token, `0` credential trong toàn bộ Git Diff trước khi commit/push.
+
+## [1.5.11] — 2026-09-14
+### Fixed
+- **Triệt Tiêu Hoàn Toàn Giả Lập Bàn Phím (Eliminate Blind keybd_event)**:
+  - Khử bỏ toàn bộ mã Win32 `keybd_event` và phím Enter (`0x0D`) mù quáng trong `send_to_antigravity()`.
+  - Triệt tiêu 100% rủi ro bắn nhầm phím vào nút đóng cửa sổ hoặc dialog làm tắt Antigravity IDE khi nghiệm thu.
+  - Chuyển giao toàn bộ tương tác sang IPC Bridge (`teamwork_bridge.json`) và lifecycle hook.
+
+## [1.5.10] — 2026-09-14
+### Fixed
+- **Hạ Giới Hạn MinTrackSize & Tự Co Về Chip Nghiệm Thu Khi Minimize**:
+  - Giảm `limits.ptMinTrackSize.x` từ 350px xuống 40px trong `WM_GETMINMAXINFO`, cho phép Widget co giãn xuống kích thước chip 84–152px.
+  - Khắc phục crash loop do lỗi `NameError: tw_service` tại timer 250ms.
+  - Tích hợp `DwmGetWindowAttribute(DWMWA_CLOAKED)` và `not IsWindowVisible` để phát hiện chính xác trạng thái minimize / virtual desktop.
+- **Đồng Bộ Tài Khoản Mới Nhất Thời Gian Thực**:
+  - Ưu tiên đọc `current_account.json` và `accounts.json['current_account_id']` thay vì `instances.json` cũ, cập nhật tức thì tài khoản đang active.
+
 ## [1.5.9] — 2026-09-14
 ### Added
 - **Kiểm Toán Đa Chu Kỳ & Tinh Gọn Kỹ Năng Sẵn Có (Multi-Cycle Skill Usage Audit & On-Demand Context Pruning)**:

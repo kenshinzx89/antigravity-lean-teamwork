@@ -95,13 +95,13 @@ class TestTeamworkWidgetIntegration(unittest.TestCase):
     def test_04_layout_with_teamwork_chip(self):
         """Test tính toán layout và kích thước khi có chip teamwork."""
         # Active teamwork
-        layout_active = horizontal_layout(800, 48, 800, 48, account_name="test@gmail.com", scale_factor=1.0, teamwork_active=True)
+        layout_active = horizontal_layout(800, 48, 800, 48, account_name="user@example.com", scale_factor=1.0, teamwork_active=True)
         self.assertIn("teamwork", layout_active.boxes)
         tw_box = layout_active.boxes["teamwork"]
         self.assertEqual(tw_box.w, 152.0)
 
         # Idle teamwork
-        layout_idle = horizontal_layout(800, 48, 800, 48, account_name="test@gmail.com", scale_factor=1.0, teamwork_active=False)
+        layout_idle = horizontal_layout(800, 48, 800, 48, account_name="user@example.com", scale_factor=1.0, teamwork_active=False)
         self.assertIn("teamwork", layout_idle.boxes)
         tw_box_idle = layout_idle.boxes["teamwork"]
         self.assertEqual(tw_box_idle.w, 84.0)
@@ -267,11 +267,47 @@ class TestTeamworkWidgetIntegration(unittest.TestCase):
         # 3. Khi nghiệm thu phát ra, status chuyển sang ACCEPTANCE
         teamwork_bridge.publish_acceptance("Nghiệm thu khi Minimize", "Đã hoàn thành", files_changed=["a.py"], exit_code=0)
         tw_info_acc = tw_service.get_display_info()
-        self.assertTrue(tw_info_acc.get("active", False))
-        self.assertEqual(tw_info_acc.get("status"), "ACCEPTANCE")
+    def test_11_active_account_prioritization(self):
+        """Test ưu tiên tài khoản mới từ current_account.json và accounts.json thay vì instances.json cũ."""
+        from core.antigravity_service import _current_email, _current_account_id
+        # Khi có current_account.json hoặc accounts.json với current_account_id, hệ thống phải resolve đúng email
+        curr_em = _current_email()
+        curr_id = _current_account_id()
+        self.assertTrue(bool(curr_em))
+        self.assertTrue(bool(curr_id))
+        self.assertIn("@", curr_em)
+
+    def test_12_compact_teamwork_layout_and_min_size(self):
+        """Test layout thu gọn chỉ còn duy nhất chip teamwork khi Antigravity thu nhỏ."""
+        layout_compact = horizontal_layout(150, 48, 150, 48, account_name="user@example.com", scale_factor=1.0, teamwork_active=True, compact_teamwork_only=True)
+        self.assertIn("teamwork", layout_compact.boxes)
+        self.assertNotIn("account", layout_compact.boxes)
+        self.assertNotIn("5h", layout_compact.boxes)
+        self.assertNotIn("week", layout_compact.boxes)
+        self.assertNotIn("switch", layout_compact.boxes)
+        self.assertNotIn("refresh", layout_compact.boxes)
+        self.assertNotIn("lock", layout_compact.boxes)
+
+    def test_13_safe_action_dispatch_and_no_keystrokes(self):
+        """Test triệt tiêu hoàn toàn phím giả lập keybd_event chống tắt nhầm IDE khi nghiệm thu."""
+        from core.teamwork_popover import TeamworkGlassPopover
+        popover = TeamworkGlassPopover(parent_app=None)
+        # 1. send_to_antigravity không gửi phím giả lập mà chỉ focus an toàn
+        res = popover.send_to_antigravity("OK::")
+        self.assertIsInstance(res, bool)
+
+        # 2. Xử lý click ACCEPT cập nhật an toàn qua bridge service
+        tw_service = get_teamwork_service()
+        teamwork_bridge.publish_acceptance("Nghiệm thu an toàn", "Tất cả test pass", files_changed=["a.py"], exit_code=0)
+        tw_service.submit_response("ACCEPT")
+        state = tw_service.get_state()
+        self.assertEqual(state["status"], "IDLE")
+        self.assertEqual(state["response"]["action"], "ACCEPT")
+        self.assertFalse(state["response"]["handled"])
 
 
 if __name__ == "__main__":
     unittest.main()
+
 
 

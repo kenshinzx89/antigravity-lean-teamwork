@@ -245,3 +245,33 @@ Tài liệu này là nơi lưu trữ các tri thức kỹ thuật, mẫu sửa l
     2. **On-Demand Context Pruning (`skills_archive`)**: Sử dụng công cụ `py scripts/manage_skills.py --prune` để tạm cất gọn các skills không dùng tới vào thư mục lưu trữ `~/.gemini/config/skills_archive/`, giải phóng ngay lập tức context window cho Antigravity IDE.
     3. **Transparent Reporting & Instant Recall**: Báo cáo minh bạch danh sách các skill đã cất và lý do. Bất cứ khi nào cần lại skill nào trong tương lai, người dùng hoặc AI chỉ cần nói: *"Bật lại skill [tên skill]"* (hoặc chạy `py scripts/manage_skills.py --restore <tên_skill>`), kỹ năng sẽ lập tức quay trở lại thư mục active 100%.
   - *Lệnh test*: `py scripts/manage_skills.py --audit` & `py tests/test_skill_integrity.py` -> 100% PASS (Exit code 0).
+
+## Mẫu 21: [Window Lifecycle & Realtime Account Sync] MinTrackSize Constraints & Timestamp-Based Multi-Source Account Resolution (v1.5.10)
+- **[Window Lifecycle & Realtime Account Sync] [MinTrackSize Constraints & Timestamp-Based Account Resolution]**:
+  - *Nguyên nhân gốc*:
+    1. Khi người dùng thu nhỏ Antigravity IDE, Widget không thu gọn về chip nghiệm thu được do `WM_GETMINMAXINFO` bị chặn cứng ở `limits.ptMinTrackSize.x = 350px`, đồng thời lỗi `NameError: tw_service` làm văng vòng lặp timer 250ms khiến Widget bị đơ không cập nhật trạng thái hiển thị.
+    2. Hàm `_current_account_id()` và `_current_email()` trong `antigravity_service.py` ưu tiên đọc `instances.json` cũ (chứa `bindAccountId` từ 2 ngày trước) thay vì đọc `current_account.json` và `accounts.json` (mới nhất vừa cập nhật khi đổi tài khoản), khiến Widget liên tục hiển thị tài khoản cũ và cache hạn mức không khớp.
+  - *Giải pháp tối thiểu*:
+    1. **Hạ MinTrackSize & Xóa lỗi Timer**: Đặt `limits.ptMinTrackSize.x = 40px` cho phép cửa sổ co giãn mượt mà xuống kích thước chip nghiệm thu (~84-152px), sửa `tw_service` thành `self.teamwork_service`, bổ sung kiểm tra `DwmGetWindowAttribute(DWMWA_CLOAKED)` và `not IsWindowVisible` trong `window_tracker.py` để nhận biết ngay lập tức khi IDE bị minimize/cloaked.
+    2. **Đồng Bộ Tài Khoản Mới Nhất**: Tái cấu trúc `_current_email()` và `_current_account_id()` ưu tiên `current_account.json` và `accounts.json['current_account_id']`, khớp chính xác với tập tin cache quota mới nhất của tài khoản đang chọn (tài khoản người dùng đang đăng nhập).
+  - *Lệnh test*: `py -m unittest discover -s tests` -> 12/12 PASS 100% (Exit code 0).
+
+## Mẫu 22: [Safe IPC & Window Integrity] Triệt Tiêu Giả Lập Bàn Phím (Eliminate Blind keybd_event) & Chống Đột Tử Antigravity IDE (v1.5.11)
+- **[Safe IPC & Window Integrity] [Eliminate Blind keybd_event & Anti-Crash Window Guard]**:
+  - *Nguyên nhân gốc*: Khi người dùng bấm nút nghiệm thu `[💎 100% HOÀN TẤT]` hoặc chọn phương án trên Desktop Widget Popover, hàm `send_to_antigravity()` sử dụng Win32 `keybd_event` để gõ ký tự và bấm phím `Enter` (`0x0D`) mù quáng xuống cửa sổ Antigravity IDE. Trong kiến trúc Electron/VS Code, nếu tiêu điểm (keyboard focus) không nằm trong ô nhập chat mà đang rơi vào hộp thoại đóng tab/close window/menu/close dialog, việc gửi phím `Enter` lập tức kích hoạt lệnh đóng/thoát cửa sổ Antigravity IDE.
+  - *Giải pháp tối thiểu*:
+    1. **Triệt Tiêu Hoàn Toàn Giả Lập Bàn Phím**: Khử bỏ toàn bộ `keybd_event` trong `send_to_antigravity` và `overlay_window.py`. Thay thế bằng phương thức `focus_antigravity()` thuần túy — chỉ kích hoạt đưa cửa sổ IDE lên foreground an toàn mà tuyệt đối không tiêm bất kỳ phím giả lập nào.
+    2. **Điều Phối IPC Thuần Khiết Qua Bridge File**: Tất cả hành động nghiệm thu (`ACCEPT`), gỡ lỗi (`DEBUG`), và chọn phương án (`SELECT_OPTION`) được lưu giữ qua `teamwork_service.submit_response()` ghi vào `~/.antigravity_cockpit/teamwork_bridge.json`. Vòng đời hook tự động bắt sự kiện và thông báo xuống Agent mà không cần can thiệp bàn phím, đồng thời người dùng hoàn toàn có thể xác nhận trực tiếp bằng chat ('ok' / 'OK 💎') mà không bị lệ thuộc vào click ngoài desktop.
+  - *Lệnh test*: `py -m unittest discover -s tests` -> 13/13 PASS (Exit code 0).
+
+## Mẫu 23: [Window Tracking & Focus Isolation] Lọc Sạch Cửa Sổ Phantom & Cô Lập Tiêu Điểm Không Can Thiệp Trạng Thái Cửa Sổ IDE (v1.5.12)
+- **[Window Tracking & Focus Isolation] [Phantom Window Filtering & Focus Isolation Guard]**:
+  - *Nguyên nhân gốc*:
+    1. `window_tracker.py` dùng điều kiện `not vis` để phán đoán minimized window, khiến các cửa sổ ngầm vô hình (kích thước 0x0, không tiêu đề) của Chromium bị nhận nhầm thành cửa sổ Antigravity. Khi tiến trình gọi `focus_antigravity()`, Windows 11 kích hoạt nhầm cửa sổ phụ và đẩy cửa sổ Antigravity chính xuống trạng thái minimize.
+    2. Popover tự ý gọi `focus_antigravity()` mỗi khi người dùng bấm nút (`ACCEPT`, `DEBUG`, `SELECT_OPTION`), gây tranh chấp tiêu điểm (focus competition) và làm phiền trải nghiệm người dùng.
+    3. Việc vô tình ghi địa chỉ email cá nhân vào văn bản ghi chép tạo nguy cơ rò rỉ khi push mã nguồn lên repository công khai.
+  - *Giải pháp tối thiểu*:
+    1. **Lọc Sạch Cửa Sổ Phantom**: Bỏ điều kiện `not vis` khỏi phán đoán minimized trong `window_tracker.py`. Bắt buộc kiểm tra tiêu đề hợp lệ (`title_str and title_str not in ('Default IME', 'MSCTFIME UI', 'DDE Server Window')`), triệt tiêu 100% việc nhận diện nhầm cửa sổ rác.
+    2. **Cô Lập Tiêu Điểm Popover**: Xóa bỏ các lệnh gọi `focus_antigravity()` tự ý khi click các nút hành động trên Popover. Chỉ kích hoạt đưa cửa sổ lên khi người dùng chủ động bấm nút *"🚀 Mở Cửa Sổ Antigravity IDE Đang Làm Việc"*.
+    3. **Kiểm Toán Bảo Mật & Lọc Dữ Liệu Cá Nhân**: Khử sạch toàn bộ email, tài khoản thực và thông tin nhạy cảm khỏi `learned_patterns.md` và mã nguồn kiểm thử. Kiểm toán tự động bằng regex đảm bảo `0` email, `0` token, `0` credential trong toàn bộ Git Diff trước khi commit/push.
+  - *Lệnh test*: `py -m unittest discover -s tests` -> 13/13 PASS (Exit code 0).

@@ -73,28 +73,42 @@ def find_codex_window(include_minimized=False, preferred_hwnd=None, strict_prefe
     WNDENUMPROC = c.WINFUNCTYPE(w.BOOL, w.HWND, w.LPARAM)
 
     def enum_wnd(hwnd, lparam):
-        if user32.IsWindowVisible(hwnd) or user32.IsIconic(hwnd):
-            pid = w.DWORD()
-            user32.GetWindowThreadProcessId(hwnd, c.byref(pid))
-            image_path = get_process_image_path(pid.value)
+        pid = w.DWORD()
+        user32.GetWindowThreadProcessId(hwnd, c.byref(pid))
+        image_path = get_process_image_path(pid.value)
+        if not is_codex_desktop_image(image_path):
+            return True
 
-            r = w.RECT()
-            user32.GetWindowRect(hwnd, c.byref(r))
-            w_win = r.right - r.left
-            h_win = r.bottom - r.top
+        vis = bool(user32.IsWindowVisible(hwnd))
+        iconic = bool(user32.IsIconic(hwnd))
 
-            is_minimized = bool(user32.IsIconic(hwnd)) or (r.left <= -10000 and r.top <= -10000)
-            is_codex = is_codex_desktop_image(image_path)
+        r = w.RECT()
+        user32.GetWindowRect(hwnd, c.byref(r))
+        w_win = r.right - r.left
+        h_win = r.bottom - r.top
 
-            if is_codex and (is_minimized or (w_win > 300 and h_win > 250)):
-                title_buf = c.create_unicode_buffer(256)
-                user32.GetWindowTextW(hwnd, title_buf, 256)
-                title_str = title_buf.value.strip()
-                # Score: prefer titled main window and larger area
-                area = w_win * h_win
-                score = area + (10000000 if title_str and title_str != 'Default IME' and title_str != 'MSCTFIME UI' else 0)
-                target = minimized_codex_hwnds if is_minimized else codex_hwnds
-                target.append((hwnd, r.left, r.top, r.right, r.bottom, True, pid.value, score))
+        cloaked = False
+        try:
+            cl = w.DWORD()
+            if c.windll.dwmapi.DwmGetWindowAttribute(w.HWND(hwnd), 14, c.byref(cl), c.sizeof(cl)) == 0:
+                cloaked = bool(cl.value)
+        except Exception:
+            pass
+
+        is_minimized = iconic or cloaked or (r.left <= -10000 and r.top <= -10000)
+
+        # Chỉ xét cửa sổ có tiêu đề hợp lệ (loại trừ cửa sổ ẩn/phụ/dummy của Chromium)
+        title_buf = c.create_unicode_buffer(256)
+        user32.GetWindowTextW(hwnd, title_buf, 256)
+        title_str = title_buf.value.strip()
+        if not title_str or title_str in ('Default IME', 'MSCTFIME UI', 'DDE Server Window'):
+            return True
+
+        if is_minimized or (vis and w_win > 300 and h_win > 250):
+            area = max(0, w_win * h_win)
+            score = area + 10000000
+            target = minimized_codex_hwnds if is_minimized else codex_hwnds
+            target.append((hwnd, r.left, r.top, r.right, r.bottom, True, pid.value, score))
         return True
 
     cb = WNDENUMPROC(enum_wnd)
