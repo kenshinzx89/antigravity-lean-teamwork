@@ -345,30 +345,18 @@ class TeamworkGlassPopover:
                     if hasattr(self.parent, '_proposal_auto_handled'):
                         self.parent._proposal_auto_handled = True
                     tw_service.submit_response('SELECT_OPTION', option_id=opt_id, note=opt_txt)
-                    self.feedback_text = f"✓ Đã chọn [{opt_id}] & Gửi xuống Antigravity IDE!"
-                    self.feedback_until = time.monotonic() + 3.0
-                    self.render()
-
                     self.send_to_antigravity(str(opt_id))
-                    self.auto_hide_at = time.monotonic() + 1.2
+                    self.hide()
 
                 elif action == 'ACCEPT':
                     tw_service.submit_response('ACCEPT')
-                    self.feedback_text = "💎 Đã xác nhận [100% HOÀN TẤT: OK 💎] xuống Antigravity!"
-                    self.feedback_until = time.monotonic() + 3.0
-                    self.render()
-
-                    self.send_to_antigravity("OK 💎")
-                    self.auto_hide_at = time.monotonic() + 1.2
+                    self.send_to_antigravity("OK::")
+                    self.hide()
 
                 elif action == 'DEBUG':
                     tw_service.submit_response('DEBUG')
-                    self.feedback_text = "⚡ Đã kích hoạt [SUPERPOWERS DEBUG] xuống Antigravity!"
-                    self.feedback_until = time.monotonic() + 3.0
-                    self.render()
-
                     self.send_to_antigravity("Debug")
-                    self.auto_hide_at = time.monotonic() + 1.2
+                    self.hide()
 
                 elif action == 'FOCUS_IDE':
                     from .window_tracker import find_codex_window

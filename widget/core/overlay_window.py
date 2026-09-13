@@ -1759,7 +1759,8 @@ class CockpitOverlayApp:
                 last_tw_updated_at = getattr(self, '_last_tw_updated_at', 0.0)
 
                 # Auto-popup when a new proposal or acceptance arrives from Antigravity IDE
-                is_new_event = (current_tw_st in ('PROPOSAL', 'ACCEPTANCE')) and (
+                has_pending_response = bool(tw_service and tw_service.get_state().get('response'))
+                is_new_event = (current_tw_st in ('PROPOSAL', 'ACCEPTANCE')) and not has_pending_response and (
                     current_tw_st != last_tw_st or tw_updated_at > last_tw_updated_at
                 )
                 if is_new_event:
@@ -1786,8 +1787,10 @@ class CockpitOverlayApp:
                             self.popover_until = time.monotonic() + rem_sec + 5.0
                         else:
                             self.popover_until = time.monotonic() + 86400.0
-                elif current_tw_st == 'IDLE' and last_tw_st != 'IDLE':
-                    self._last_tw_status = 'IDLE'
+                elif current_tw_st in ('IDLE', 'EXECUTING') and last_tw_st not in ('IDLE', 'EXECUTING'):
+                    self._last_tw_status = current_tw_st
+                    if self.teamwork_popover and self.teamwork_popover.visible:
+                        self.teamwork_popover.hide()
 
                 # Auto-fallback: Khi Proposal đếm hết thời gian (rem_sec <= 0), tự động trả số 1 về Antigravity IDE
                 if current_tw_st == 'PROPOSAL':

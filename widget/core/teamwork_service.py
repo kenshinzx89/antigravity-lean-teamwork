@@ -120,6 +120,7 @@ class TeamworkService:
                 "handled": False
             }
             if action == "ACCEPT":
+                state["status"] = "IDLE"
                 state["last_completed_at"] = now_ts
                 hist = state.get("completion_history") or []
                 hist.append({
@@ -128,6 +129,13 @@ class TeamworkService:
                     "acceptance": state.get("acceptance", {})
                 })
                 state["completion_history"] = hist[-20:]
+                state["acceptance"] = None
+            elif action == "SELECT_OPTION":
+                state["status"] = "EXECUTING"
+                state["proposal"] = None
+            elif action == "DEBUG":
+                state["status"] = "EXECUTING"
+                state["acceptance"] = None
             state["updated_at"] = now_ts
             BRIDGE_DIR.mkdir(parents=True, exist_ok=True)
             BRIDGE_FILE.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding='utf-8')
