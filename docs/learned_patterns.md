@@ -228,3 +228,11 @@ Tài liệu này là nơi lưu trữ các tri thức kỹ thuật, mẫu sửa l
     2. **Definitive Full vs Compact Boundary**: Khi Antigravity IDE đang mở trên màn hình (`left > -10000` và `not IsIconic`), Widget LUÔN HIỂN THỊ FULL 100% (587px - 636px) và không bao giờ co lại. Chế độ thu nhỏ về viên pill compact (~67px) CHỈ kích hoạt khi Antigravity IDE bị Minimize xuống taskbar hoặc hoàn toàn không chạy để giải phóng màn hình Desktop.
     3. **Asset Size Compression Protocol**: Dùng FFmpeg chuyển đổi video Retina 2.5K sang H.264 1080p (`scale=1920:-2`, `-crf 23`, `+faststart`), giảm dung lượng từ 131.7 MB xuống còn 3.65 MB (giảm 97.2%) giúp push GitHub thành công 100% và xem mượt mà trên web.
   - *Lệnh test*: `py tests/test_teamwork_bridge.py` & `py sync_skill.py` -> 100% PASS (Exit code 0).
+
+## Mẫu 19: [CI/CD Parity & Portability] Triệt Tiêu Tuyệt Đối Đường Dẫn Cứng Cục Bộ Cho GitHub Actions Runners (v1.5.8)
+- **[CI/CD Parity & Portability] [Triệt Tiêu Tuyệt Đối Đường Dẫn Cứng Cục Bộ Cho GitHub Actions Runners]**:
+  - *Nguyên nhân gốc*: Trong mã nguồn kiểm thử hoặc dịch vụ nền, việc vô tình để sót đường dẫn tuyệt đối cục bộ của máy phát triển cá nhân (ví dụ: `c:\Users\tient\...`) khiến toàn bộ các bộ chạy tự động trên môi trường CI/CD (như GitHub Actions `ubuntu-latest` chạy tại `/home/runner` hoặc `windows-latest` tại `C:\Users\runneradmin`) lập tức bị ném ngoại lệ `AssertionError` hoặc `FileNotFoundError` và làm sập 100% các jobs kiểm thử tự động.
+  - *Giải pháp tối thiểu*:
+    1. **Repo-Relative Test Target**: Trong tất cả các file kiểm thử (`tests/`), các tài nguyên mã nguồn và dịch vụ widget phải luôn được định vị tương đối thông qua gốc dự án: `REPO_ROOT / "widget" / "core"`, tuyệt đối không dùng đường dẫn tuyệt đối của máy dev.
+    2. **Universal User Home Resolution**: Thay thế toàn bộ các khai báo dự phòng `os.environ.get('USERPROFILE', r'C:\Users\tient')` bằng `Path.home()` tiêu chuẩn (hoặc `Path(os.environ.get('USERPROFILE') or os.path.expanduser('~'))`). Điều này đảm bảo hoạt động chuẩn xác trên cả Windows, Linux và macOS runners mà không bị phụ thuộc vào biến môi trường cục bộ hay tên tài khoản cụ thể.
+  - *Lệnh test*: `gh run view 34771122612` -> 6/6 jobs PASS 100% trên cả Ubuntu & Windows runners với Python 3.10, 3.11, 3.12 (Exit code 0).
