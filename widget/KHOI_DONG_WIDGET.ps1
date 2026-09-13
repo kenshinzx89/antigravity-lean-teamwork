@@ -5,7 +5,12 @@ $ErrorActionPreference = "SilentlyContinue"
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 $projectDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-if (-not $projectDir) { $projectDir = "C:\Users\tient\Desktop\Du An\AntigravityWidget" }
+if (-not $projectDir -or -not (Test-Path "$projectDir\main.py")) {
+    $projectDir = $PSScriptRoot
+}
+if (-not (Test-Path "$projectDir\main.py")) {
+    $projectDir = (Get-Location).Path
+}
 
 # 1. Đóng cửa sổ widget cũ một cách an toàn
 Add-Type @'
@@ -31,13 +36,28 @@ Get-CimInstance Win32_Process -Filter "CommandLine like '%main.py%'" | ForEach-O
 }
 Start-Sleep -Milliseconds 300
 
-# 2. Khởi chạy Antigravity Quota Widget qua pythonw
-$pyw = "C:\Users\tient\AppData\Local\Programs\Python\Python312\pythonw.exe"
-if (-not (Test-Path $pyw)) {
-  $pyw = (Get-Command pythonw -ErrorAction SilentlyContinue).Source
+# 2. Khởi chạy Antigravity Quota Widget qua pythonw (tìm động trên mọi máy)
+$pyw = (Get-Command pythonw -ErrorAction SilentlyContinue).Source
+if (-not $pyw) {
+    $py = (Get-Command python -ErrorAction SilentlyContinue).Source
+    if ($py) {
+        $cand = Join-Path (Split-Path $py) 'pythonw.exe'
+        if (Test-Path $cand) { $pyw = $cand }
+    }
+}
+if (-not $pyw) {
+    try {
+        $pyPath = (py -c "import sys; print(sys.executable)" 2>$null)
+        if ($pyPath) {
+            $cand = Join-Path (Split-Path $pyPath.Trim()) 'pythonw.exe'
+            if (Test-Path $cand) { $pyw = $cand }
+        }
+    } catch {}
 }
 
 if ($pyw -and (Test-Path "$projectDir\main.py")) {
   Start-Process -FilePath $pyw -ArgumentList "main.py" -WorkingDirectory $projectDir
+} elseif (Test-Path "$projectDir\main.py") {
+  Start-Process -FilePath "python" -ArgumentList "main.py" -WorkingDirectory $projectDir -WindowStyle Hidden
 }
 Start-Sleep -Milliseconds 500

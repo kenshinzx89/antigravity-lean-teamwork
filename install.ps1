@@ -3,8 +3,13 @@
 # ====================================================================
 $ErrorActionPreference = "Stop"
 
+$version = "1.5.1"
+if (Test-Path "$PSScriptRoot\VERSION") {
+    $version = (Get-Content "$PSScriptRoot\VERSION" -Raw).Trim()
+}
+
 Write-Host "============================================================" -ForegroundColor Cyan
-Write-Host "  🚀 CÀI ĐẶT ANTIGRAVITY LEAN TEAMWORK v1.5.0 + DESKTOP WIDGET" -ForegroundColor Yellow
+Write-Host "  🚀 CÀI ĐẶT ANTIGRAVITY LEAN TEAMWORK v$version + DESKTOP WIDGET" -ForegroundColor Yellow
 Write-Host "============================================================" -ForegroundColor Cyan
 
 # 1. Kiểm tra Python

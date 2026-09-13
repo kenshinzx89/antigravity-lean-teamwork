@@ -1,7 +1,13 @@
 # 🚀 HƯỚNG DẪN CÀI ĐẶT TOÀN DIỆN CHO MÁY MỚI (INSTALLATION GUIDE)
 
-> **Antigravity Lean Teamwork v1.5.0 + Desktop Widget HUD Monorepo**  
+> **Antigravity Lean Teamwork v1.5.1 + Desktop Widget HUD Monorepo**  
 > Bộ công cụ tối thượng: Kỷ luật kỹ thuật tinh gọn cho Google Antigravity IDE kết hợp thanh trạng thái kính mờ HUD nổi ngoài màn hình.
+
+> [!TIP]
+> ### 💡 Dành Cho Người Dùng Mới / Máy Mới:
+> Khi chuyển sang một máy tính mới hoàn toàn, bạn chỉ cần mở thư mục này trong Antigravity IDE và chat duy nhất một câu:  
+> **"Hãy cài và sử dụng cho tôi"** (hoặc *"setup"*, *"cài đặt"*).  
+> AI trong IDE sẽ tự động kích hoạt script cài đặt ngầm, tự động thiết lập toàn bộ môi trường đạt độ hoàn thiện 100% y hệt máy gốc mà bạn không cần phải làm thêm thao tác nào!
 
 ---
 
@@ -9,6 +15,7 @@
 
 - **Hệ điều hành**: Windows 10 / Windows 11 (64-bit).
 - **Python**: Phiên bản 3.10 trở lên (khuyên dùng Python 3.11 hoặc 3.12).
+  - Không cần cài thêm bất kỳ thư viện pip ngoài nào (100% Python Standard Library).
   - Kiểm tra trong terminal:
     ```powershell
     py --version
@@ -37,11 +44,12 @@ Chạy **DUY NHẤT 1 LỆNH**:
 *(Hoặc mở Command Prompt / PowerShell và chạy: `py sync_skill.py`)*
 
 ### 🛠️ Script Cài Đặt Sẽ Tự Động Thực Hiện:
-1. Nạp **Lean Teamwork Protocol v1.5.0** vào cấu hình Antigravity IDE (`~/.gemini/config/skills/lean-teamwork`).
+1. Nạp **Lean Teamwork Protocol v1.5.1** vào cấu hình Antigravity IDE (`~/.gemini/config/skills/lean-teamwork`).
 2. Kích hoạt **PreInvocation Lifecycle Hook** (`~/.gemini/config/hooks.json`) để IDE luôn tự động tuân thủ kỷ luật kỹ thuật.
 3. Hợp nhất kho tri thức kinh nghiệm **19 Patterns** (`learned_patterns.md`).
-4. Khởi động ngay thanh **Antigravity Desktop Widget** nổi trên màn hình.
-5. Tạo phím tắt khởi động ngoài màn hình Desktop.
+4. Dual Account Detection: Tự động trích xuất tài khoản Google Antigravity IDE cục bộ (`state.vscdb`) nếu máy chưa có Cockpit Tool (không bị `Offline`).
+5. Khởi động ngay thanh **Antigravity Desktop Widget** nổi trên màn hình.
+6. Tạo phím tắt khởi động ngoài màn hình Desktop.
 
 ---
 
