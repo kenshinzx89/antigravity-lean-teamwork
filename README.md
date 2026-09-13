@@ -5,7 +5,7 @@
 <p align="center">
   <a href="https://github.com/kenshinzx89/antigravity-lean-teamwork"><img src="https://img.shields.io/badge/target-Google%20Antigravity%20(Gemini%203.7%2F3.8)-4285F4.svg?style=for-the-badge&logo=google" alt="Google Antigravity Only"></a>
   <a href="https://github.com/kenshinzx89/antigravity-lean-teamwork"><img src="https://img.shields.io/badge/role-Phanh%20H%C3%A3m%20%E1%BA%A8u%20ABS-FF6D00.svg?style=for-the-badge" alt="Phanh Hãm Ẩu ABS"></a>
-  <a href="https://github.com/kenshinzx89/antigravity-lean-teamwork"><img src="https://img.shields.io/badge/version-1.5.7-00C853.svg?style=for-the-badge" alt="Version"></a>
+  <a href="https://github.com/kenshinzx89/antigravity-lean-teamwork"><img src="https://img.shields.io/badge/version-1.5.8-00C853.svg?style=for-the-badge" alt="Version"></a>
   <a href="https://github.com/kenshinzx89/antigravity-lean-teamwork"><img src="https://img.shields.io/badge/tests-18%2F18%20passing-brightgreen.svg?style=for-the-badge" alt="Tests"></a>
   <a href="https://github.com/kenshinzx89/antigravity-lean-teamwork"><img src="https://img.shields.io/badge/license-MIT-purple.svg?style=for-the-badge" alt="License"></a>
 </p>
@@ -14,6 +14,30 @@
   <b>⚡ Bộ Đôi Kỹ Năng Tinh Gọn + Desktop Widget HUD Dành Riêng Cho Google Antigravity.</b><br/>
   <i>Giải phóng 100% khung chat, đưa đề xuất & nghiệm thu ra thanh kính mờ HUD ngoài màn hình. Chữa dứt điểm tật làm ẩu và cãi cọ với AI.</i>
 </p>
+
+---
+
+> [!IMPORTANT]
+> ### 📢 LƯU Ý ĐẶC BIỆT DÀNH CHO BẠN (DỰ ÁN XÂY DỰNG 100% TỰ ĐỘNG BỞI AI)
+>
+> 🤖 **100% AI-Native Development & Tự Động Git Push**:
+> Toàn bộ mã nguồn, tính năng Desktop Widget HUD, hệ thống lifecycle hook và các bản cập nhật trên repo này đều do **AI (Antigravity Agent)** tự động lập trình, tự chạy kiểm thử và tự động `git push` trực tiếp trong quá trình pair-programming thực tế cùng tác giả.
+>
+> 💻 **Được Phát Triển Trên Môi Trường Thực Tế Của Tác Giả**:
+> - Vì được AI tự động build, test live và push liên tục trên máy tính thực tế của tác giả (đôi khi máy hơi lag nhẹ khi chạy nhiều tiến trình ngầm cùng lúc), một số cấu hình thư mục, file khởi động hoặc shortcut ban đầu mang các giá trị mặc định của máy gốc.
+> - **Khi bạn đem repo này về máy của mình: Bạn KHÔNG CẦN phải tự sửa tay bằng mắt!**
+>
+> 🚀 **Cách Tốt Nhất: Hãy Kêu Chính AI Của Bạn Tự Tối Ưu Lại Cho Vừa Khít Máy Bạn**:
+> Khi tải repo này về máy tính mới hoặc laptop của bạn, bạn chỉ cần mở thư mục này trong **Antigravity IDE** (hoặc công cụ AI coding agent mà bạn dùng) và ra lệnh:
+>
+> > 💬 *"Dự án này được build tự động trên máy khác. Hãy kiểm tra lại toàn bộ đường dẫn, môi trường khởi động trên máy tính của tôi, tối ưu và cài đặt hoàn thiện để chạy mượt mà 100% trên máy này!"*
+>
+> AI trên máy của bạn sẽ tự động đọc [`AGENTS.md`](AGENTS.md) / [`GEMINI.md`](GEMINI.md), nhận diện phiên bản Python, đường dẫn người dùng trên máy bạn và tự động chạy lệnh cài đặt hoàn chỉnh từ A -> Z!
+>
+> ⚡ **Hoặc bạn có thể tự kích hoạt nhanh trong 5 giây**:
+> ```powershell
+> powershell -ExecutionPolicy Bypass -File .\install.ps1
+> ```
 
 ---
 
