@@ -162,6 +162,10 @@ Hệ thống chuyển hướng toàn bộ khâu Đề xuất Kỹ thuật (🧭)
    - **Speculative Next-Step & Skill Proposal (Dự phóng nhu cầu tại Bước 1 Nghiệm Thu)**: Tại Bước 1 của Chế độ Nghiệm Thu, Agent nắm giữ trọn vẹn bức tranh kỹ thuật vừa hoàn thành và BẮT BUỘC dự phóng 2-3 kịch bản logic tự nhiên tiếp theo kèm danh mục kỹ năng đón đầu (chạy `py scripts/manage_skills.py --predict <domain>`):
      - Xác định rõ: (1) Tính năng đã xong $\rightarrow$ (2) Dự phóng kịch bản tiếp theo $\rightarrow$ (3) Kỹ năng đề xuất cất gọn (`unload`) $\rightarrow$ (4) Kỹ năng đề xuất nạp đón đầu (`preload`).
    - **Dynamic Skill Switch & Clean-Slate Turn (Chuyển giao kỹ năng động)**: Sử dụng lệnh `py scripts/manage_skills.py --switch --unload <a,b> --load <c,d>` để tự động cất kỹ năng cũ và nạp kỹ năng mới, triệt tiêu 100% xung đột quy tắc (Instruction Drift) và ô nhiễm ngữ cảnh (Context Bloat).
+9. **Kho Thẩm Mỹ UI/UX Riêng & Tự Động Nạp Gu Thiết Kế (Dedicated UI/UX Design DNA & Auto-Taste Injection)**:
+   - **Tách bạch kho tri thức (Knowledge Segregation)**: Toàn bộ quy chuẩn thẩm mỹ (Dark theme `#0D1117`, Acrylic Glassmorphism, bo góc Squircle 12-16px, macOS Spectrum 7 màu, Pill buttons, Anti-patterns) được lưu tại kho chuyên biệt [`docs/ui_ux_taste_profile.md`](../../docs/ui_ux_taste_profile.md), tuyệt đối không nhồi nhét vào `learned_patterns.md` để tránh làm rác ngữ cảnh khi thực hiện các tác vụ Backend/Script.
+   - **Khối Design DNA Siêu Tinh Gọn (~150 Tokens)**: Khi phát hiện tác vụ có liên quan đến UI/UX, Agent tự động nạp khối `<UI_UX_DESIGN_DNA>` (trích xuất nhanh qua `py scripts/manage_skills.py --dna`) giúp AI thiết kế chuẩn xác ngay từ Turn 1 (First-Time Right UI), xóa bỏ 100% việc người dùng phải lặp đi lặp lại mô tả giao diện.
+   - **Tự động trích xuất & cập nhật tại Nghiệm Thu**: Khi người dùng nghiệm thu `💎 [100% HOÀN TẤT] ✨`, Agent tự động tổng kết và cập nhật các tinh chỉnh thẩm mỹ mới nhất vào Taste Profile để các phiên làm việc sau luôn kế thừa trọn vẹn.
 
 ---
 

@@ -260,6 +260,50 @@ def switch_skills(unload_skills: List[str], load_skills: List[str]) -> Dict[str,
     }
 
 
+def get_ui_ux_design_dna(repo_path: Path = None) -> str:
+    """
+    Trích xuất khối Design DNA tinh gọn (~150 tokens) từ docs/ui_ux_taste_profile.md
+    sẵn sàng để tự động nạp (inject) vào context khi bước vào tác vụ UI/UX.
+    """
+    if repo_path is None:
+        repo_path = Path(__file__).resolve().parent.parent
+
+    profile_file = repo_path / "docs" / "ui_ux_taste_profile.md"
+    if not profile_file.exists():
+        global_profile = GLOBAL_CONFIG_DIR / "ui_ux_taste_profile.md"
+        if global_profile.exists():
+            profile_file = global_profile
+
+    if profile_file.exists():
+        try:
+            text = profile_file.read_text(encoding="utf-8")
+            import re
+            m = re.search(r"```xml\s*(<UI_UX_DESIGN_DNA>.*?</UI_UX_DESIGN_DNA>)\s*```", text, re.DOTALL)
+            if m:
+                return m.group(1).strip()
+            # Dự phòng tìm thẻ mở đầu dòng
+            m2 = re.search(r"(\n<UI_UX_DESIGN_DNA>.*?</UI_UX_DESIGN_DNA>)", text, re.DOTALL)
+            if m2:
+                return m2.group(1).strip()
+        except Exception:
+            pass
+
+    # Fallback mặc định nếu chưa có file
+    return """<UI_UX_DESIGN_DNA>
+  <theme mode="dark" background="#0D1117" surface="#161B22" surface_hover="#21262D" glassmorphism="acrylic-blur(20px)" />
+  <palette primary="#58A6FF" accent="macOS-Spectrum-7-Color" success="#2EA043" warning="#D29922" border="rgba(255,255,255,0.08)" />
+  <geometry border_radius="12px-16px (squircle)" pill_badge="999px" button_padding="8px 16px" layout_spacing="compact-lean" />
+  <typography font_family="Inter, Segoe UI, -apple-system, sans-serif" font_size_base="13px-14px" heading_weight="600-semibold" text_contrast="high" />
+  <motion transition="all 150ms-250ms cubic-bezier(0.16, 1, 0.3, 1)" hover_feedback="scale(1.02) or highlight" />
+  <anti_patterns>
+    - CẤM: Viền đen thô, border dày > 1px, drop-shadow đen kịt kiểu cũ.
+    - CẤM: Modal popup đóng băng hoặc che khuất nội dung báo cáo đang đối chứng.
+    - CẤM: Phông chữ Serif generic (Times New Roman) hoặc màu neon chói lóa nhức mắt.
+    - CẤM: Bố cục dàn trải lãng phí diện tích hiển thị (phải ưu tiên compact, clean, hiện đại).
+  </anti_patterns>
+</UI_UX_DESIGN_DNA>"""
+
+
 def print_status():
     active = get_active_skills()
     archived = get_archived_skills()
@@ -343,6 +387,10 @@ if __name__ == "__main__":
         print("🔄 KẾT QUẢ CHUYỂN GIAO KỸ NĂNG ĐỘNG (DYNAMIC SKILL SWITCH):")
         print(f"  • Đã cất (Unloaded): {res['unloaded']}")
         print(f"  • Đã nạp (Loaded): {res['loaded']}")
+    elif "--dna" in sys.argv or "--ui-dna" in sys.argv:
+        dna = get_ui_ux_design_dna(REPO_ROOT)
+        print("🎨 [UI/UX DESIGN DNA — GU THẨM MỸ CÁ NHÂN HÓA]:")
+        print(dna)
     else:
         print_status()
         print("\nCách dùng:")
@@ -353,3 +401,4 @@ if __name__ == "__main__":
         print("  py scripts/manage_skills.py --restore-all          # Khôi phục toàn bộ")
         print("  py scripts/manage_skills.py --predict <domain>    # Dự phóng nhu cầu & kỹ năng kế tiếp")
         print("  py scripts/manage_skills.py --switch --unload <a,b> --load <c,d> # Chuyển giao động")
+        print("  py scripts/manage_skills.py --dna                  # Xem khối Design DNA tinh gọn")

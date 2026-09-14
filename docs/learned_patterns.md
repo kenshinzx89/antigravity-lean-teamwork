@@ -287,3 +287,14 @@ Tài liệu này là nơi lưu trữ các tri thức kỹ thuật, mẫu sửa l
     2. **Dự Phóng Bước Kế Tiếp & Gợi Ý Skill Tại Bước 1 Nghiệm Thu (Speculative Next-Step Proposal)**: Tại Bước 1 của Nghiệm Thu Hoàn Thiện, Agent phân tích thành quả vừa hoàn thành và chủ động dự phóng 2-3 kịch bản logic tự nhiên tiếp theo cùng bộ kỹ năng tương ứng (`py scripts/manage_skills.py --predict <domain>`), chỉ rõ kỹ năng đề xuất cất gọn (`unload`) và kỹ năng đón đầu (`preload`).
     3. **Chuyển Giao Kỹ Năng Động (Dynamic Skill Switch)**: Tự động hóa qua `py scripts/manage_skills.py --switch --unload <a,b> --load <c,d>` giúp cất gọn kỹ năng thừa vào `skills_archive` và kích hoạt đúng kỹ năng cần thiết cho pha mới mà không gây ô nhiễm ngữ cảnh.
   - *Lệnh test*: `py scripts/manage_skills.py --predict ui_core` & `py tests/test_skill_integrity.py` -> 100% PASS (Exit code 0).
+
+## Mẫu 25: [UI/UX Governance & Aesthetic Memory] Kho Thẩm Mỹ UI/UX Riêng & Tự Động Nạp Gu Thiết Kế (Dedicated UI/UX Design DNA & Auto-Taste Injection) (v1.5.14)
+- **[UI/UX Governance & Aesthetic Memory] [Dedicated UI/UX Design DNA & Auto-Taste Injection]**:
+  - *Nguyên nhân gốc*:
+    1. **Thuế Gõ Lại Mô Tả Giao Diện (UI Prompting Tax)**: Mỗi lần yêu cầu AI làm giao diện mới (Web, Widget, Dashboard, Mobile UI), người dùng phải mất công gõ lại một đoạn prompt dài ngoằng mô tả gu thẩm mỹ (dark mode, bo góc 12-16px squircle, kính mờ acrylic-blur, thanh tiến trình macOS spectrum 7 màu, không viền đen thô...). Nếu quên không dặn, AI mặc định vẽ giao diện generic thô cứng, tốn thêm 2–3 lượt chat chỉ để sửa CSS/styling.
+    2. **Xung Đột Kho Tri Thức Khi Trộn Lẫn**: Nếu nhồi nhét quy chuẩn CSS/thẩm mỹ vào `learned_patterns.md` (vốn chuyên ghi nhận lỗi logic, ACID, deadlock, crash, IPC), kho tri thức bị phân mảnh và làm vấy bẩn ngữ cảnh khi AI chỉ đang thực hiện các tác vụ Backend/Script thuần túy.
+  - *Giải pháp tối thiểu*:
+    1. **Kho Thẩm Mỹ Độc Lập (`docs/ui_ux_taste_profile.md`)**: Cách ly toàn bộ quy chuẩn thiết kế, token màu sắc, vật liệu kính mờ, bo góc squircle, phông chữ và anti-patterns vào kho riêng biệt `docs/ui_ux_taste_profile.md` (và đồng bộ toàn cục tại `~/.gemini/config/ui_ux_taste_profile.md`).
+    2. **Khối Design DNA Siêu Tinh Gọn (~150 Tokens)**: Chuẩn hóa khối thẻ `<UI_UX_DESIGN_DNA>` chứa đầy đủ các thông số thẩm mỹ đã được người dùng gật đầu chấp thuận. Khi bước vào tác vụ UI/UX, chỉ nạp đúng khối này (hoặc chạy `py scripts/manage_skills.py --dna`) giúp AI thiết kế chuẩn gu 100% ngay từ Turn 1 (First-Time Right UI).
+    3. **Tự Động Trích Xuất & Tiến Hóa Khi Nghiệm Thu**: Khi hoàn tất giao diện và người dùng bấm nghiệm thu `💎 [100% HOÀN TẤT] ✨`, Agent tự động trích xuất các điều chỉnh thẩm mỹ mới nhất để cập nhật vào Taste Profile, đảm bảo hệ thống tự hoàn thiện và đồng điệu tuyệt đối với người dùng qua thời gian.
+  - *Lệnh test*: `py scripts/manage_skills.py --dna` & `py tests/test_skill_integrity.py` -> 100% PASS (Exit code 0).

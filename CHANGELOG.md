@@ -2,6 +2,14 @@
 
 Tất cả các thay đổi, bài học và tính năng nâng cấp qua từng phiên bản.
 
+## [1.5.14] — 2026-09-14
+### Added & UI/UX Governance
+- **Kho Thẩm Mỹ UI/UX Riêng & Tự Động Nạp Gu Thiết Kế (Dedicated UI/UX Design DNA & Auto-Taste Injection)**:
+  - **Kho Thẩm Mỹ Độc Lập (`docs/ui_ux_taste_profile.md`)**: Tách biệt toàn bộ gu thiết kế cá nhân hóa (Dark surface `#0D1117`, Acrylic Glassmorphism, bo góc Squircle 12-16px, gradient macOS Spectrum 7 màu, nút Pill 999px, thời gian chuyển động 150-250ms, và danh sách anti-patterns cấm viền đen thô) ra khỏi kho logic sửa lỗi để tránh làm rác ngữ cảnh khi làm backend.
+  - **Khối Design DNA Tinh Gọn (~150 Tokens)**: Chuẩn hóa khối thẻ `<UI_UX_DESIGN_DNA>` sẵn sàng tự động nạp (inject) khi bước vào các tác vụ liên quan đến UI/UX, triệt tiêu 100% "UI Prompting Tax" (người dùng không cần nhắc đi nhắc lại mô tả thẩm mỹ giao diện qua từng turn).
+  - **Công Cụ Hỗ Trợ CLI & API (`scripts/manage_skills.py`)**: Bổ sung hàm `get_ui_ux_design_dna()` và cờ CLI `--dna` để trích xuất nhanh khối Design DNA phục vụ inject hoặc tham chiếu.
+  - **Kiểm Thử Toàn Vẹn Hệ Thống**: Nâng cấp bộ kiểm thử lên 14/14 Checks PASS (Exit code 0), nạp Mẫu 25 vào `learned_patterns.md` và đồng bộ 2 chiều toàn hệ thống.
+
 ## [1.5.13] — 2026-09-14
 ### Added & Architecture
 - **Chuyển Giao Kỹ Năng Động & Dự Phóng Nhu Cầu Đón Đầu (Predictive Skill Switcher & Sandboxing)**:

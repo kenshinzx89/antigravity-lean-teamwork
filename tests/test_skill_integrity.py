@@ -307,6 +307,40 @@ def test_predictive_skill_switcher_and_sandboxing():
 
     print("[PASS] Predictive Skill Switcher, Speculative Routing & Skill Sandboxing are verified.")
 
+def test_ui_ux_taste_profile_and_auto_injection():
+    """Verify Dedicated UI/UX Design DNA Store and Auto-Taste Injection."""
+    # 1. Check docs/ui_ux_taste_profile.md
+    profile_file = REPO_ROOT / "docs" / "ui_ux_taste_profile.md"
+    assert profile_file.exists(), "docs/ui_ux_taste_profile.md must exist"
+    p_text = profile_file.read_text(encoding="utf-8")
+    assert "<UI_UX_DESIGN_DNA>" in p_text, "Must contain <UI_UX_DESIGN_DNA> tag"
+    assert "acrylic-blur" in p_text, "Must specify acrylic-blur or glassmorphism"
+    assert "macOS-Spectrum" in p_text, "Must specify macOS-Spectrum palette"
+    assert "squircle" in p_text, "Must specify squircle border radius"
+
+    # 2. Check Pattern 25 in docs/learned_patterns.md
+    patterns_file = REPO_ROOT / "docs" / "learned_patterns.md"
+    assert patterns_file.exists(), "docs/learned_patterns.md must exist"
+    pat_text = patterns_file.read_text(encoding="utf-8")
+    assert "Mẫu 25" in pat_text, "docs/learned_patterns.md must contain Mẫu 25"
+    assert "Dedicated UI/UX Design DNA" in pat_text, "Must document Dedicated UI/UX Design DNA"
+    assert "UI Prompting Tax" in pat_text, "Must address UI Prompting Tax"
+
+    # 3. Check SKILL.md rule
+    skill_file = REPO_ROOT / ".agents" / "skills" / "lean-teamwork" / "SKILL.md"
+    skill_text = skill_file.read_text(encoding="utf-8")
+    assert "Kho Thẩm Mỹ UI/UX Riêng" in skill_text, "SKILL.md must document UI/UX Taste Profile"
+    assert "<UI_UX_DESIGN_DNA>" in skill_text, "SKILL.md must mention <UI_UX_DESIGN_DNA>"
+
+    # 4. Check manage_skills.py API
+    sys.path.insert(0, str(REPO_ROOT / "scripts"))
+    import manage_skills
+    dna = manage_skills.get_ui_ux_design_dna(REPO_ROOT)
+    assert "<UI_UX_DESIGN_DNA>" in dna and "</UI_UX_DESIGN_DNA>" in dna, "get_ui_ux_design_dna must return XML block"
+    assert "dark" in dna and "#0D1117" in dna, "DNA must specify dark mode #0D1117"
+
+    print("[PASS] Dedicated UI/UX Design DNA Store & Auto-Taste Injection are verified.")
+
 if __name__ == "__main__":
     test_stock_agi_integrity()
     test_project_skill_integrity()
@@ -321,7 +355,9 @@ if __name__ == "__main__":
     test_desktop_widget_bridge()
     test_multi_cycle_skill_audit_and_pruning()
     test_predictive_skill_switcher_and_sandboxing()
+    test_ui_ux_taste_profile_and_auto_injection()
     print("\n============================================================")
-    print("ALL 13/13 SYSTEM CHECKS PASSED SUCCESSFULLY (Exit Code 0).")
-    print("Zero-Touch Auto Sync, Stock AGI, Lean Teamwork, Skill Pruning & Predictive Switcher verified.")
+    print("ALL 14/14 SYSTEM CHECKS PASSED SUCCESSFULLY (Exit Code 0).")
+    print("Zero-Touch Auto Sync, Stock AGI, Lean Teamwork, Skill Pruning & UI/UX Design DNA verified.")
     print("============================================================")
+
