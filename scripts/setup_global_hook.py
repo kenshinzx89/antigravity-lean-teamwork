@@ -106,7 +106,12 @@ if __name__ == '__main__':
 hook_py.write_text(hook_content, encoding='utf-8')
 
 hooks_json = GLOBAL_CONFIG_DIR / 'hooks.json'
-py_exe = Path(sys.executable).as_posix()
+py_exe_path = Path(sys.executable)
+if sys.platform == 'win32':
+    pyw_path = py_exe_path.with_name('pythonw.exe')
+    if pyw_path.exists():
+        py_exe_path = pyw_path
+py_exe = py_exe_path.as_posix()
 hook_py_str = hook_py.as_posix()
 hooks_json_data = {
     "lean-teamwork-global-reanchor": {

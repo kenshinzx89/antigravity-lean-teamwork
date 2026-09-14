@@ -1,4 +1,3 @@
 @echo off
-cd /d "%~dp0"
-powershell.exe -ExecutionPolicy Bypass -File "%~dp0KHOI_DONG_WIDGET.ps1"
+start "" wscript.exe "%~dp0KHOI_DONG_WIDGET.vbs"
 exit /b 0

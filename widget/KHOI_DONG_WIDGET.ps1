@@ -54,9 +54,23 @@ if (-not $pyw) {
         }
     } catch {}
 }
+if (-not $pyw) {
+    $knownSearch = @(
+        "$env:LOCALAPPDATA\Programs\Python\Python*\pythonw.exe",
+        "C:\Python*\pythonw.exe",
+        "C:\Program Files\Python*\pythonw.exe"
+    )
+    foreach ($pattern in $knownSearch) {
+        $found = Get-ChildItem -Path $pattern -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty FullName
+        if ($found -and (Test-Path $found)) {
+            $pyw = $found
+            break
+        }
+    }
+}
 
 if ($pyw -and (Test-Path "$projectDir\main.py")) {
-  Start-Process -FilePath $pyw -ArgumentList "main.py" -WorkingDirectory $projectDir
+  Start-Process -FilePath $pyw -ArgumentList "main.py" -WorkingDirectory $projectDir -WindowStyle Hidden
 } elseif (Test-Path "$projectDir\main.py") {
   Start-Process -FilePath "python" -ArgumentList "main.py" -WorkingDirectory $projectDir -WindowStyle Hidden
 }
