@@ -157,6 +157,11 @@ Hệ thống chuyển hướng toàn bộ khâu Đề xuất Kỹ thuật (🧭)
    - **Báo cáo minh bạch & Gọi lại tức thì khi cần (Transparent Report & Instant Recall On-Demand)**:
      - Báo cáo rõ ràng trong phần đúc kết: Danh sách các skill đã tắt và lý do tắt để tiết kiệm Context Window.
      - Luôn đính kèm hướng dẫn: Các skill này không hề bị mất. Bất cứ khi nào cần lại skill nào trong tương lai, người dùng hoặc AI chỉ cần yêu cầu: *"Bật lại skill [tên skill]"* (hoặc chạy `py scripts/manage_skills.py --restore <tên_skill>`), kỹ năng sẽ lập tức được kích hoạt trở lại 100%!
+8. **Chuyển Giao Kỹ Năng Động & Dự Phóng Nhu Cầu Đón Đầu (Predictive Skill Switcher & Sandboxing)**:
+   - **Skill Sandboxing (Cô lập skill kiểm thử nặng qua Subagent)**: Cấm bơm các skill nặng (`browser-qa`, `e2e-testing`, `a11y-debugging`, `postgres-patterns`...) trực tiếp vào Main Context. Các tác vụ kiểm thử và rà soát chuyên sâu bắt buộc được ủy quyền cho Subagent độc lập (`Model: "flash"`). Khi Subagent kết thúc, toàn bộ context của skill đó tự động tiêu biến, giữ cho Main Context luôn tinh gọn tuyệt đối.
+   - **Speculative Next-Step & Skill Proposal (Dự phóng nhu cầu tại Bước 1 Nghiệm Thu)**: Tại Bước 1 của Chế độ Nghiệm Thu, Agent nắm giữ trọn vẹn bức tranh kỹ thuật vừa hoàn thành và BẮT BUỘC dự phóng 2-3 kịch bản logic tự nhiên tiếp theo kèm danh mục kỹ năng đón đầu (chạy `py scripts/manage_skills.py --predict <domain>`):
+     - Xác định rõ: (1) Tính năng đã xong $\rightarrow$ (2) Dự phóng kịch bản tiếp theo $\rightarrow$ (3) Kỹ năng đề xuất cất gọn (`unload`) $\rightarrow$ (4) Kỹ năng đề xuất nạp đón đầu (`preload`).
+   - **Dynamic Skill Switch & Clean-Slate Turn (Chuyển giao kỹ năng động)**: Sử dụng lệnh `py scripts/manage_skills.py --switch --unload <a,b> --load <c,d>` để tự động cất kỹ năng cũ và nạp kỹ năng mới, triệt tiêu 100% xung đột quy tắc (Instruction Drift) và ô nhiễm ngữ cảnh (Context Bloat).
 
 ---
 

@@ -275,6 +275,38 @@ def test_multi_cycle_skill_audit_and_pruning():
 
     print("[PASS] Multi-Cycle Skill Usage Audit, On-Demand Context Pruning & manage_skills.py are verified.")
 
+def test_predictive_skill_switcher_and_sandboxing():
+    """Verify Predictive Skill Switcher, Speculative Routing and Sandboxing Protocol."""
+    # 1. Check Pattern 24 in docs/learned_patterns.md
+    patterns_file = REPO_ROOT / "docs" / "learned_patterns.md"
+    assert patterns_file.exists(), "docs/learned_patterns.md must exist"
+    p_text = patterns_file.read_text(encoding="utf-8")
+    assert "Mẫu 24" in p_text, "docs/learned_patterns.md must contain Mẫu 24"
+    assert "Predictive Skill Switcher" in p_text, "Must document Predictive Skill Switcher"
+    assert "Skill Sandboxing" in p_text, "Must document Skill Sandboxing"
+    assert "Instruction Drift" in p_text, "Must address Instruction Drift"
+
+    # 2. Check SKILL.md rule
+    skill_file = REPO_ROOT / ".agents" / "skills" / "lean-teamwork" / "SKILL.md"
+    skill_text = skill_file.read_text(encoding="utf-8")
+    assert "Predictive Skill Switcher & Sandboxing" in skill_text, "SKILL.md must document Predictive Skill Switcher & Sandboxing"
+    assert "Skill Sandboxing" in skill_text, "SKILL.md must define Skill Sandboxing"
+    assert "manage_skills.py --predict" in skill_text, "SKILL.md must mention manage_skills.py --predict"
+
+    # 3. Check manage_skills script API
+    sys.path.insert(0, str(REPO_ROOT / "scripts"))
+    import manage_skills
+    pred = manage_skills.predict_next_skills("ui_core")
+    assert "error" not in pred, "predict_next_skills('ui_core') must succeed"
+    assert len(pred["predicted_scenarios"]) > 0, "Must have predicted scenarios"
+    assert "motion-ui" in pred["preload_candidates"], "Must suggest motion-ui in preload"
+    assert "playwright-testing" in pred["unload_candidates"], "Must suggest playwright-testing in unload"
+
+    switch_res = manage_skills.switch_skills([], [])
+    assert "unloaded" in switch_res and "loaded" in switch_res, "switch_skills must return status dict"
+
+    print("[PASS] Predictive Skill Switcher, Speculative Routing & Skill Sandboxing are verified.")
+
 if __name__ == "__main__":
     test_stock_agi_integrity()
     test_project_skill_integrity()
@@ -288,7 +320,8 @@ if __name__ == "__main__":
     test_reflective_inquiry_and_knowledge_pruning()
     test_desktop_widget_bridge()
     test_multi_cycle_skill_audit_and_pruning()
+    test_predictive_skill_switcher_and_sandboxing()
     print("\n============================================================")
-    print("ALL 12/12 SYSTEM CHECKS PASSED SUCCESSFULLY (Exit Code 0).")
-    print("Zero-Touch Auto Sync, Stock AGI, Lean Teamwork, Skill Pruning & Anti-Rule-Bloat verified.")
+    print("ALL 13/13 SYSTEM CHECKS PASSED SUCCESSFULLY (Exit Code 0).")
+    print("Zero-Touch Auto Sync, Stock AGI, Lean Teamwork, Skill Pruning & Predictive Switcher verified.")
     print("============================================================")

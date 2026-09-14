@@ -2,6 +2,14 @@
 
 Tất cả các thay đổi, bài học và tính năng nâng cấp qua từng phiên bản.
 
+## [1.5.13] — 2026-09-14
+### Added & Architecture
+- **Chuyển Giao Kỹ Năng Động & Dự Phóng Nhu Cầu Đón Đầu (Predictive Skill Switcher & Sandboxing)**:
+  - **Skill Sandboxing (Cô lập kỹ năng kiểm thử qua Subagent)**: Cấm tuyệt đối việc nạp các skill kiểm thử nặng (`browser-qa`, `playwright-testing`, `e2e-testing`, `a11y-debugging`...) trực tiếp vào Main Context. Toàn bộ tác vụ kiểm thử/QA được ủy quyền cho Subagent độc lập (`flash`); khi hoàn tất, ngữ cảnh của skill tự động giải phóng hoàn toàn cùng phiên subagent.
+  - **Speculative Next-Step Proposal tại Bước 1 Nghiệm Thu**: Trang bị tính năng dự phóng 2-3 kịch bản logic tự nhiên tiếp theo kèm danh mục kỹ năng đón đầu (`preload`) và kỹ năng cần dọn dẹp (`unload`) thông qua `py scripts/manage_skills.py --predict <domain>`.
+  - **Dynamic Skill Switch (`scripts/manage_skills.py`)**: Bổ sung hàm và cờ CLI `--predict <domain>` và `--switch --unload <a,b> --load <c,d>` giúp tự động dọn dẹp kỹ năng thừa và nạp kỹ năng cho phase mới, triệt tiêu 100% Instruction Drift và Context Bloat.
+  - **Kiểm Thử Toàn Vẹn Hệ Thống**: Nâng cấp bộ kiểm thử lên 13/13 PASS (Exit code 0), nạp Mẫu 24 vào `learned_patterns.md` và đồng bộ 2 chiều toàn hệ thống.
+
 ## [1.5.12] — 2026-09-14
 ### Fixed & Security
 - **Lọc Sạch Cửa Sổ Phantom & Cô Lập Tiêu Điểm Không Can Thiệp Trạng Thái Cửa Sổ IDE**:

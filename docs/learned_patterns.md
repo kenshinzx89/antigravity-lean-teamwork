@@ -275,3 +275,15 @@ Tài liệu này là nơi lưu trữ các tri thức kỹ thuật, mẫu sửa l
     2. **Cô Lập Tiêu Điểm Popover**: Xóa bỏ các lệnh gọi `focus_antigravity()` tự ý khi click các nút hành động trên Popover. Chỉ kích hoạt đưa cửa sổ lên khi người dùng chủ động bấm nút *"🚀 Mở Cửa Sổ Antigravity IDE Đang Làm Việc"*.
     3. **Kiểm Toán Bảo Mật & Lọc Dữ Liệu Cá Nhân**: Khử sạch toàn bộ email, tài khoản thực và thông tin nhạy cảm khỏi `learned_patterns.md` và mã nguồn kiểm thử. Kiểm toán tự động bằng regex đảm bảo `0` email, `0` token, `0` credential trong toàn bộ Git Diff trước khi commit/push.
   - *Lệnh test*: `py -m unittest discover -s tests` -> 13/13 PASS (Exit code 0).
+
+## Mẫu 24: [Skill Lifecycle & Context Hygiene] Chuyển Giao Kỹ Năng Động & Dự Phóng Nhu Cầu Đón Đầu (Predictive Skill Switcher & Sandboxing) (v1.5.13)
+- **[Skill Lifecycle & Context Hygiene] [Predictive Skill Switcher & Sandboxing]**:
+  - *Nguyên nhân gốc*:
+    1. **Bơm Skill Tràn Lan Vào Main Context**: Khi chuẩn bị nghiệm thu, việc nạp các kỹ năng kiểm thử và QA nặng (`browser-qa`, `playwright-testing`, `e2e-testing`, `a11y-debugging`...) trực tiếp vào Main Context làm phình to context window từ vài nghìn đến hàng chục nghìn tokens.
+    2. **Xung Đột Quy Tắc (Instruction Drift)**: Các ràng buộc cứng của kỹ năng cũ (ví dụ: yêu cầu mọi thay đổi phải viết Playwright test và chụp ảnh màn hình) lưu cữu trong bộ nhớ ngắn hạn, gây xung đột trực tiếp với các tác vụ nhẹ ở lượt kế tiếp (như sửa hàm tiện ích, cấu hình hoặc tài liệu).
+    3. **Suy Giảm Chú Ý (Attention Degradation) & Đốt Quota**: Sự chú ý của mô hình đối với câu lệnh thực tế của người dùng bị suy yếu, dẫn đến sinh code ẩu, quên quy ước và đốt token vô nghĩa qua nhiều lượt hội thoại.
+  - *Giải pháp tối thiểu*:
+    1. **Skill Sandboxing (Cô lập skill kiểm thử qua Subagent)**: Cấm tuyệt đối việc nạp skill kiểm thử nặng vào Main Context. Mọi hoạt động kiểm thử E2E/QA được ủy quyền cho Subagent độc lập (`Model: "flash"`, `Role: "test-engineer"`). Khi Subagent hoàn tất, context skill tự động giải phóng hoàn toàn cùng phiên subagent, giữ Main Context sạch 100%.
+    2. **Dự Phóng Bước Kế Tiếp & Gợi Ý Skill Tại Bước 1 Nghiệm Thu (Speculative Next-Step Proposal)**: Tại Bước 1 của Nghiệm Thu Hoàn Thiện, Agent phân tích thành quả vừa hoàn thành và chủ động dự phóng 2-3 kịch bản logic tự nhiên tiếp theo cùng bộ kỹ năng tương ứng (`py scripts/manage_skills.py --predict <domain>`), chỉ rõ kỹ năng đề xuất cất gọn (`unload`) và kỹ năng đón đầu (`preload`).
+    3. **Chuyển Giao Kỹ Năng Động (Dynamic Skill Switch)**: Tự động hóa qua `py scripts/manage_skills.py --switch --unload <a,b> --load <c,d>` giúp cất gọn kỹ năng thừa vào `skills_archive` và kích hoạt đúng kỹ năng cần thiết cho pha mới mà không gây ô nhiễm ngữ cảnh.
+  - *Lệnh test*: `py scripts/manage_skills.py --predict ui_core` & `py tests/test_skill_integrity.py` -> 100% PASS (Exit code 0).
