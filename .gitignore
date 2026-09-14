@@ -43,3 +43,16 @@ htmlcov/
 widget/artifacts/
 widget/*.log
 widget/*.tmp
+
+# Personal data, tokens, and session credentials
+*.vscdb
+*.vscdb.backup
+*account*.json
+*session*.json
+*token*.json
+*credential*.json
+*auth*.json
+.antigravity_cockpit/
+cockpit_session/
+.codex/
+.hermes/
